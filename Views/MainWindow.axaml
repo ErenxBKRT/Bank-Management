@@ -3,7 +3,7 @@
         xmlns:vm="using:Bankmanaging.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="450"
         x:Class="Bankmanaging.Views.MainWindow"
         x:DataType="vm:MainViewModel"
         Icon="/Assets/avalonia-logo.ico"
@@ -14,9 +14,32 @@
              to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
         <vm:MainViewModel />
     </Design.DataContext>
-
-    <TextBox Text="{Binding Greeting}"
+    <StackPanel Margin="20" Spacing="10" VerticalAlignment="Center">
+    <TextBlock Text="{Binding Greeting}"
              HorizontalAlignment="Center"
              VerticalAlignment="Center" />
+
+    <TextBlock Text="Username"
+               HorizontalAlignment="Center"/>
+    <TextBox Width="500"
+             Height="20"
+             Name="Username"
+             PlaceholderText="Entrer votre nom d'utilisateur"
+             HorizontalAlignment="Center"
+             VerticalAlignment="Center" />
+
+    <TextBlock Text="Password"
+               HorizontalAlignment="Center"/>
+    <TextBox Width="500"
+             Height="20"
+             Name="Password"
+             PlaceholderText="Entrer votre mot de passe"
+             HorizontalAlignment="Center"
+             VerticalAlignment="Center"
+             PasswordChar="*" />      
+    <Button Content="Se connecter"
+            Click="Button_OnClick"
+            HorizontalAlignment="Center"/>
+    </StackPanel> 
 
 </Window>

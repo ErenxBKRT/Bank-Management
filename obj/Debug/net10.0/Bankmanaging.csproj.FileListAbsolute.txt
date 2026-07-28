@@ -90,3 +90,4 @@ D:\projet\c#\Bank C#\Bankmanaging\obj\Debug\net10.0\refint\Bankmanaging.dll
 D:\projet\c#\Bank C#\Bankmanaging\obj\Debug\net10.0\Bankmanaging.pdb
 D:\projet\c#\Bank C#\Bankmanaging\obj\Debug\net10.0\Bankmanaging.genruntimeconfig.cache
 D:\projet\c#\Bank C#\Bankmanaging\obj\Debug\net10.0\ref\Bankmanaging.dll
+D:\projet\c#\Bank C#\Bankmanaging\obj\Debug\net10.0\Bankmanaging.sourcelink.json
