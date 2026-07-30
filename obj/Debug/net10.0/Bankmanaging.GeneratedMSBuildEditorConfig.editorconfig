@@ -52,5 +52,14 @@ build_property.EnableCodeStyleSeverity =
 [d:/projet/c\#/Bank C\#/Bankmanaging/App.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
+[d:/projet/c\#/Bank C\#/Bankmanaging/Views/accueil.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
+[d:/projet/c\#/Bank C\#/Bankmanaging/Views/action.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
+[d:/projet/c\#/Bank C\#/Bankmanaging/Views/client.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
 [d:/projet/c\#/Bank C\#/Bankmanaging/Views/MainWindow.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
