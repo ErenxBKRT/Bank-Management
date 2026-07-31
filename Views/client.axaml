@@ -41,13 +41,13 @@
                         VerticalAlignment="Center"
                         PasswordChar="*" />      
                 <Button Content="Confirmer"
-                        Click="Button_OnClick"
+                        
                         HorizontalAlignment="Center"/>
                 <Button Content="Annuler"
-                        Click="Button_OnClick"
+                        
                         HorizontalAlignment="Center"/>
                 <Button Content="Nouveau"
-                        Click="Button_OnClick"
+                        
                         HorizontalAlignment="Center"/>
         </StackPanel>
     </StackPanel> 

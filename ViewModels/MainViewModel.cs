@@ -32,7 +32,6 @@ public partial class MainViewModel : ViewModelBase
             StatusMessage = "Connexion réussie !";
 
             var accueilWindow = new AccueilWindow();
-            accueilWindow.Show();
         }
         else
         {

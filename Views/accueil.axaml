@@ -1,78 +1,9 @@
-<Window xmlns="https://github.com/avaloniaui"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:vm="using:Bankmanaging.ViewModels"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="450"
-        x:Class="Bankmanaging.Views.AccueilWindow"
-        x:DataType="vm:MainViewModel"
-        Icon="/Assets/avalonia-logo.ico"
-        Title="Bankmanaging">
+<UserControl
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    x:Class="Bankmanaging.Views.AccueilWindow">
 
-    <Design.DataContext>
-        <!-- This only sets the DataContext for the previewer in an IDE,
-             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
-        <vm:MainViewModel />
-    </Design.DataContext>
-    <StackPanel Margin="20" Spacing="10">
-        <StackPanel>
-            <TextBlock HorizontalAlignment="Stretch"
-                       Height="50">Icon et BankC</TextBlock>
-        </StackPanel>
-        <StackPanel Name="Outlet"
-                    VerticalAlignment="Center">
 
-            <Grid VerticalAlignment="Center" HorizontalAlignment="Center">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-                
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
 
-            <Button Name="DepotRetraitBTN"
-                    Click="OnMenuButtonClick"
-                    Grid.Row="0" Grid.Column="0"
-                    VerticalAlignment="Center"
-                    HorizontalAlignment="Center" 
-                    Width="100" Height="100">Depot ou Retrait</Button>
-            <Button Name="VirementBTN" 
-                    Click="OnMenuButtonClick"
-                    Grid.Row="0" Grid.Column="1"
-                    VerticalAlignment="Center"
-                    HorizontalAlignment="Center"
-                    Width="100" Height="100">Virement</Button>
-            <Button Name="CreditBTN"
-                    Click="OnMenuButtonClick"
-                    Grid.Row="0" Grid.Column="2"
-                    VerticalAlignment="Center"
-                    HorizontalAlignment="Center"
-                    Width="100" Height="100">Credit</Button>
 
-            <Button Name="SoldeBTN" 
-                    Click="OnMenuButtonClick"
-                    Grid.Row="1" Grid.Column="0"
-                    VerticalAlignment="Center"
-                    HorizontalAlignment="Center"
-                    Width="100" Height="100">Solde</Button>
-            <Button Name="ClientBTN" 
-                    Click="OnMenuButtonClick"
-                    Grid.Row="1" Grid.Column="1"
-                    VerticalAlignment="Center"
-                    HorizontalAlignment="Center"
-                    Width="100" Height="100">Client</Button>
-            <Button Name="TransactionBTN" 
-                    Click="OnMenuButtonClick"
-                    Grid.Row="1" Grid.Column="2"
-                    VerticalAlignment="Center"
-                    HorizontalAlignment="Center"
-                    Width="100" Height="100">Transaction</Button>
-            </Grid>
-        </StackPanel>
-    </StackPanel> 
-
-</Window>
+</UserControl>

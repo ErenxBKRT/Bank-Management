@@ -2,10 +2,10 @@ using Avalonia.Controls;
 
 namespace Bankmanaging.Views;
 
-public partial class AccueilWindow : UserControl
+public partial class ConnexionView : UserControl
 {
-    public AccueilWindow()
+    public ConnexionView()
     {
         InitializeComponent();
-    }
+    } 
 }

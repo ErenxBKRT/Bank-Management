@@ -1,55 +1,71 @@
-DROP TABLE IF EXISTS transaction;
-DROP TABLE IF EXISTS client;
-DROP TABLE IF EXISTS employe;
-DROP TABLE IF EXISTS agence;
+DROP TABLE IF EXISTS transactions CASCADE;
+DROP TABLE IF EXISTS clients CASCADE;
+DROP TABLE IF EXISTS employe CASCADE;
+DROP TABLE IF EXISTS agence CASCADE;
+DROP TABLE IF EXISTS bank CASCADE;
+
+CREATE TABLE bank 
+(
+    id_bank INT PRIMARY KEY DEFAULT 1 CHECK (id_bank = 1),
+	namae VARCHAR(10) UNIQUE NOT NULL,
+	solde DOUBLE PRECISION
+);
+INSERT INTO bank (namae, solde) VALUES ('BANKKUN', 1040000500.75);
 
 CREATE TABLE agence
-	(
-		code_agence INT PRIMARY KEY NOT NULL,
-		lieu VARCHAR(30) NOT NULL,
-		solde_agence REAL DEFAULT 0.00,
-		adresse_agence VARCHAR(30),
-		active BOOLEAN DEFAULT true
-	);
+(
+    code_agence VARCHAR(4) PRIMARY KEY NOT NULL,
+    lieu VARCHAR(30) NOT NULL,
+    adresse_agence VARCHAR(30),
+    actives BOOLEAN DEFAULT true,
+
+    id_bank INT DEFAULT 1 NOT NULL CHECK (id_bank = 1) REFERENCES bank(id_bank) 
+);
+INSERT INTO agence (code_agence, lieu, adresse_agence) VALUES ('404', 'VOID', '404-34-VOID');
 
 CREATE TABLE employe
-	(
-		id_employe VARCHAR(10) PRIMARY KEY NOT NULL,
-		privilege BOOLEAN DEFAULT false,
-		nom VARCHAR(30) NOT NULL,
-		prenom VARCHAR(50),
-		password VARCHAR(16),
-		date_creation TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
-		code_agence INT REFERENCES agence(code_agence)
-	);
+(
+    id_employe VARCHAR(10) NOT NULL,
+    nom VARCHAR(30) NOT NULL,
+    prenom VARCHAR(50),
+    passwords VARCHAR(16),
+    date_creation TIMESTAMP(0) DEFAULT CURRENT_TIMESTAMP(0),
+    code_agence VARCHAR(4) REFERENCES agence(code_agence),
 
-CREATE TABLE client
-	(
-		id_client VARCHAR(10) PRIMARY KEY NOT NULL,
-		num_compte INT UNIQUE NOT NULL,
-		nom VARCHAR(30) NOT NULL,
-		prenom VARCHAR(50),
-		adresse VARCHAR(30) NOT NULL,
-		mail VARCHAR(100),
-		contact NUMERIC(10, 0),
-		solde REAL DEFAULT 0.00,
-		anniversaire DATE NOT NULL,
-		pin SMALLINT NOT NULL,
-		date_creation TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
-		bloque BOOLEAN DEFAULT false,
+    PRIMARY KEY (id_employe, code_agence)
+);
+INSERT INTO employe (id_employe, nom, prenom, passwords, code_agence) VALUES ('-404', 'Doe', 'Jane', 'error404', '404');
 
-		id_employe VARCHAR(10) REFERENCES employe(id_employe),
-		CONSTRAINT check_contact CHECK (contact IS NOT NULL OR mail IS NOT NULL)
-	);
+CREATE TABLE clients
+(
+    id_client VARCHAR(10) PRIMARY KEY NOT NULL,
+    nom VARCHAR(30) NOT NULL,
+    prenom VARCHAR(50),
+    adresse VARCHAR(30) NOT NULL,
+    mail VARCHAR(100),
+    contact VARCHAR(10),
+    solde DOUBLE PRECISION DEFAULT 0.00,
+    pin VARCHAR(4) NOT NULL,
+    date_creation TIMESTAMP(0) DEFAULT CURRENT_TIMESTAMP(0),
+    bloque BOOLEAN DEFAULT false,
+    dette REAL DEFAULT 0.00,
 
-CREATE TABLE transaction
-	(
-		code_transaction VARCHAR(10) PRIMARY KEY NOT NULL,
-		libelle VARCHAR(10),
-		montant REAL NOT NULL,
-		date_transaction TIMESTAMPTZ DEFAULT CURRENT_TIMESTAMP,
+    id_employe VARCHAR(10),
+    code_agence VARCHAR(4),
+    FOREIGN KEY (id_employe, code_agence) REFERENCES employe(id_employe, code_agence),
+    CONSTRAINT check_contact CHECK (contact IS NOT NULL OR mail IS NOT NULL)
+);
+INSERT INTO clients (id_client, nom, prenom, adresse, mail, solde, pin) VALUES ('0404', 'Doe', 'John', 'VOIDSTREET', 'johndoe@gmail.com', 40404.04, '0404');
 
-		id_client VARCHAR(10) REFERENCES client(id_client),
-		id_employe VARCHAR(10) REFERENCES employe(id_employe),
-		code_agence INT REFERENCES agence(code_agence)
-	);
+CREATE TABLE transactions
+(
+    code_transaction VARCHAR(10) PRIMARY KEY NOT NULL,
+    libelle VARCHAR(10),
+    montant DOUBLE PRECISION NOT NULL,
+    date_transaction TIMESTAMP(0) DEFAULT CURRENT_TIMESTAMP(0),
+
+    id_client VARCHAR(10) REFERENCES clients(id_client),
+    code_agence VARCHAR(4),
+    id_employe VARCHAR(10),
+    FOREIGN KEY (id_employe, code_agence) REFERENCES employe(id_employe, code_agence)
+);
