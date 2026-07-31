@@ -3,43 +3,21 @@
         xmlns:vm="using:Bankmanaging.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="450"
+        mc:Ignorable="d" d:DesignWidth="200" d:DesignHeight="320"
         x:Class="Bankmanaging.Views.MainWindow"
         x:DataType="vm:MainViewModel"
         Icon="/Assets/avalonia-logo.ico"
         Title="Bankmanaging">
 
     <Design.DataContext>
+        <!-- This only sets the DataContext for the previewer in an IDE,
+             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
         <vm:MainViewModel />
     </Design.DataContext>
 
-    <StackPanel Margin="24" Spacing="12" VerticalAlignment="Center" HorizontalAlignment="Center" Name="Connection">
-        <TextBlock Text="{Binding Greeting}"
-                   FontSize="22"
-                   FontWeight="SemiBold"
-                   HorizontalAlignment="Center" />
-
-        <TextBlock Text="Nom d'utilisateur"
-                   HorizontalAlignment="Center" />
-        <TextBox Width="280"
-                 Text="{Binding Username, Mode=TwoWay}"
-                 PlaceholderText="Entrez votre nom d'utilisateur" />
-
-        <TextBlock Text="Mot de passe"
-                   HorizontalAlignment="Center" />
-        <TextBox Width="280"
-                 Text="{Binding Password, Mode=TwoWay}"
-                 PlaceholderText="Entrez votre mot de passe"
-                 PasswordChar="*" />
-
-        <Button Content="Se connecter"
-                Command="{Binding LoginCommand}"
-                HorizontalAlignment="Center"
-                Padding="12,6" />
-
-        <TextBlock Text="{Binding StatusMessage}"
-                   HorizontalAlignment="Center"
-                   TextWrapping="Wrap"
-                   MaxWidth="280" />
+    <StackPanel>
+        <Button Content="Trying connecting if work" Click="Connecting" HorizontalAlignment="Center"/>
+        <TextBlock Name="Status" Text="Not Connected" TextAlignment="Center"/>
     </StackPanel>
+
 </Window>
