@@ -48,7 +48,7 @@ CREATE TABLE clients
     pin VARCHAR(4) NOT NULL,
     date_creation TIMESTAMP(0) DEFAULT CURRENT_TIMESTAMP(0),
     bloque BOOLEAN DEFAULT false,
-    dette REAL DEFAULT 0.00,
+    dette DOUBLE PRECISION DEFAULT 0.00,
 
     id_employe VARCHAR(10),
     code_agence VARCHAR(4),
