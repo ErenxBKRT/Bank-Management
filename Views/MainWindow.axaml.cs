@@ -1,31 +1,14 @@
 using Avalonia.Controls;
-using Avalonia.Interactivity;
-using BankManaging.Kaeru;
-using Npgsql;
+using Bankmanaging.Models;
 
 namespace Bankmanaging.Views;
 
 public partial class MainWindow : Window
 {
+    private readonly IDatabaseConnection _kaeru;
     public MainWindow()
     {
         InitializeComponent();
+        _kaeru = DatabaseConnection.Instance;
     }
-
-    private async void Connecting (object sender, RoutedEventArgs e)
-    {
-        Status.Text = "Connecting...";
-        try
-        {
-            IDatabaseConnection kaeru = new DatabaseConnection();
-            using var conn = kaeru.Connected();
-            await conn.OpenAsync();
-            Status.Text = "Connected successfully";
-        }
-        catch (NpgsqlException ex)
-        {
-            Status.Text = $"{ex.Message} : Error during connection";
-        }
-    }
-
 }
