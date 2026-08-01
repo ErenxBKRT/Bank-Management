@@ -14,7 +14,7 @@ public sealed class DatabaseConnection : IDatabaseConnection
 
     private static readonly Lazy<DatabaseConnection> _instance = new Lazy<DatabaseConnection>(() => new DatabaseConnection());
     
-    public static DatabaseConnection Instance => _instance.Value;
+    public static IDatabaseConnection Instance => _instance.Value;
 
     private DatabaseConnection() {}
 
