@@ -9,37 +9,5 @@
         Icon="/Assets/avalonia-logo.ico"
         Title="Bankmanaging">
 
-    <Design.DataContext>
-        <vm:MainViewModel />
-    </Design.DataContext>
-
-    <StackPanel Margin="24" Spacing="12" VerticalAlignment="Center" HorizontalAlignment="Center" Name="fenetre">
-        <TextBlock Text="{Binding Greeting}"
-                   FontSize="22"
-                   FontWeight="SemiBold"
-                   HorizontalAlignment="Center" />
-
-        <TextBlock Text="Nom d'utilisateur"
-                   HorizontalAlignment="Center" />
-        <TextBox Width="280"
-                 Text="{Binding Username, Mode=TwoWay}"
-                 PlaceholderText="Entrez votre nom d'utilisateur" />
-
-        <TextBlock Text="Mot de passe"
-                   HorizontalAlignment="Center" />
-        <TextBox Width="280"
-                 Text="{Binding Password, Mode=TwoWay}"
-                 PlaceholderText="Entrez votre mot de passe"
-                 PasswordChar="*" />
-
-        <Button Content="Se connecter"
-                Command="{Binding LoginCommand}"
-                HorizontalAlignment="Center"
-                Padding="12,6" />
-
-        <TextBlock Text="{Binding StatusMessage}"
-                   HorizontalAlignment="Center"
-                   TextWrapping="Wrap"
-                   MaxWidth="280" />
-    </StackPanel>
+    <ContentControl Content="{Binding currentView}" />
 </Window>
