@@ -1,25 +1,32 @@
 {
   "format": 1,
   "restore": {
-    "D:\\projet\\c#\\Bank C#\\Bankmanaging\\Bankmanaging.csproj": {}
+    "D:\\projet_dev\\etudes\\C#\\Bank-Management\\Bankmanaging.csproj": {}
   },
   "projects": {
-    "D:\\projet\\c#\\Bank C#\\Bankmanaging\\Bankmanaging.csproj": {
+    "D:\\projet_dev\\etudes\\C#\\Bank-Management\\Bankmanaging.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\projet\\c#\\Bank C#\\Bankmanaging\\Bankmanaging.csproj",
+        "projectUniqueName": "D:\\projet_dev\\etudes\\C#\\Bank-Management\\Bankmanaging.csproj",
         "projectName": "Bankmanaging",
-        "projectPath": "D:\\projet\\c#\\Bank C#\\Bankmanaging\\Bankmanaging.csproj",
-        "packagesPath": "C:\\Users\\ADMIN\\.nuget\\packages\\",
-        "outputPath": "D:\\projet\\c#\\Bank C#\\Bankmanaging\\obj\\",
+        "projectPath": "D:\\projet_dev\\etudes\\C#\\Bank-Management\\Bankmanaging.csproj",
+        "packagesPath": "C:\\Users\\antsa\\.nuget\\packages\\",
+        "outputPath": "D:\\projet_dev\\etudes\\C#\\Bank-Management\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\ADMIN\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\antsa\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
           "net10.0"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -69,6 +76,10 @@
             "CommunityToolkit.Mvvm": {
               "target": "Package",
               "version": "[8.4.2, )"
+            },
+            "Npgsql": {
+              "target": "Package",
+              "version": "[10.0.3, )"
             }
           },
           "imports": [
