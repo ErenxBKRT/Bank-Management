@@ -17,7 +17,6 @@ public partial class DashViewModel : ViewModelBase
     [RelayCommand]
     private void Action(string e)
     {
-        // Change the current view to ClientListViewModel
         if (e == "Depot")
         {
             _headerViewModel.ChangerAction("depot");

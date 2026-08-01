@@ -18,10 +18,13 @@ public partial class HeaderViewModel : ViewModelBase
     }
     public void ChangerAction(string act)
     {
-        ControlView= new ActionViewModel(act);
+        ControlView= new ActionViewModel(act, this);
+    }
+    public void AnnulerAction()
+    {
+        ControlView = new DashViewModel(this);
     }
 
-    [RelayCommand]
     private void Deconnexion()
     {
         _mainViewModel.FermerApplication();

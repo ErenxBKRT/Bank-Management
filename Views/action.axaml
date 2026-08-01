@@ -24,6 +24,7 @@
         <Button Content="Confirmer"
                 HorizontalAlignment="Center" />
         <Button Content="Annuler"
+                Command="{Binding AnnulerActionCommand}"
                 HorizontalAlignment="Center" />
     </StackPanel>
 </UserControl>
