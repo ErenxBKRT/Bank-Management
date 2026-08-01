@@ -6,5 +6,21 @@ namespace Bankmanaging.ViewModels;
 
 public partial class MainViewModel : ViewModelBase
 {
-    public ViewModelBase currentView { get; set; }
+    [ObservableProperty]
+    private ViewModelBase currentView;
+
+    public MainViewModel()
+    {
+        CurrentView = new ConnexionViewModel(this);
+    }
+
+    public void OuvrirApplication()
+    {
+        CurrentView = new HeaderViewModel(this);
+    }
+
+    public void FermerApplication()
+    {
+        CurrentView = new ConnexionViewModel(this);
+    }
 }

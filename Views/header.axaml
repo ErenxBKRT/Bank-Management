@@ -1,13 +1,24 @@
 <UserControl
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    x:Class="Bankmanaging.Views.HeaderView">
+    xmlns:vm="using:Bankmanaging.ViewModels"
+    x:Class="Bankmanaging.Views.HeaderView"
+    x:DataType="vm:HeaderViewModel">
 
-    <StackPanel>
-        <StackPanel Orientation="Horizontal">
-            <TextBlock Text="LOGO et BANKKUN" FontSize="24" FontWeight="ExtraBold"/>
-            <Button Content="deconnexion" HorizontalAlignment="Right" Margin="0,10,0,0"/>
+    <StackPanel HorizontalAlignment="Stretch">
+        <StackPanel Orientation="Horizontal"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Top"
+                    Margin="10">
+            <TextBlock Text="LOGO et BANKKUN" 
+                       FontSize="24" 
+                       FontWeight="ExtraBold"/>
+            <Button Content="deconnexion" 
+                    Command="{Binding DeconnexionCommand}" 
+                    HorizontalAlignment="Right"/>
         </StackPanel>
+        <ContentControl Content="{Binding ControlView}"/>
     </StackPanel>
 
 </UserControl>
+

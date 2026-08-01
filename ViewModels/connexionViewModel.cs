@@ -4,10 +4,9 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace Bankmanaging.ViewModels;
 
-public partial class MainViewModel : ViewModelBase
+public partial class ConnexionViewModel : ViewModelBase
 {
-    [ObservableProperty]
-    private string greeting = "Bienvenue dans Cbanque";
+    private readonly MainViewModel _mainViewModel;
 
     [ObservableProperty]
     private string username = string.Empty;
@@ -17,6 +16,11 @@ public partial class MainViewModel : ViewModelBase
 
     [ObservableProperty]
     private string statusMessage = "Entrez vos identifiants pour continuer.";
+
+    public ConnexionViewModel(MainViewModel mainViewModel)
+    {
+        _mainViewModel = mainViewModel;
+    }
 
     [RelayCommand]
     private void Login()
@@ -30,12 +34,11 @@ public partial class MainViewModel : ViewModelBase
         if (Username.Equals("admin", System.StringComparison.OrdinalIgnoreCase) && Password == "1234")
         {
             StatusMessage = "Connexion réussie !";
-
-            var accueilWindow = new AccueilWindow();
+            _mainViewModel.OuvrirApplication();
         }
         else
         {
-            StatusMessage = "Identifiants invalides. Essayez admin / 1234.";
+            StatusMessage = "Identifiants invalides";
         }
     }
 }

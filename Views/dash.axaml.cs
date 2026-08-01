@@ -2,9 +2,9 @@ using Avalonia.Controls;
 
 namespace Bankmanaging.Views;
 
-public partial class AccueilWindow : UserControl
+public partial class DashView : UserControl
 {
-    public AccueilWindow()
+    public DashView()
     {
         InitializeComponent();
     }

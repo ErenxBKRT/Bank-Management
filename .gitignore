@@ -1,0 +1,9 @@
+# Dossiers de compilation (exclut bin/ et obj/ partout dans le projet)
+[Bb]in/
+[Oo]bj/
+
+# Dossiers spécifiques aux IDE (optionnel mais recommandé)
+.vs/
+.idea/
+*.user
+*.userossc

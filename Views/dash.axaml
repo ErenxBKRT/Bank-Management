@@ -1,0 +1,38 @@
+<UserControl
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:vm="using:Bankmanaging.ViewModels"
+    x:Class="Bankmanaging.Views.DashView"
+    x:DataType="vm:DashViewModel">
+
+    <StackPanel>
+        <Grid RowSpacing="30" ColumnSpacing="20" RowDefinitions="Auto,Auto" ColumnDefinitions="Auto,Auto,Auto" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20">
+            <Button Content="Depot" 
+                    Grid.Row="0" Grid.Column="0"
+                    Command="{Binding ActionCommand}" 
+                    CommandParameter="Depot"/>
+            <Button Content="Retrait" 
+                    Grid.Row="0" Grid.Column="1"
+                    Command="{Binding ActionCommand}" 
+                    CommandParameter="Retrait"/>
+            <Button Content="Virement" 
+                    Grid.Row="0" Grid.Column="2"    
+                    Command="{Binding ActionCommand}" 
+                    CommandParameter="Virement"/>
+            <Button Content="Credit" 
+                    Grid.Row="1" Grid.Column="0"
+                    Command="{Binding ActionCommand}" 
+                    CommandParameter="Credit"/>
+            <Button Content="Client" 
+                    Grid.Row="1" Grid.Column="1"
+                    Command="{Binding ActionCommand}" 
+                    CommandParameter="Client"/>
+            <Button Content="Transaction" 
+                    Grid.Row="1" Grid.Column="2"
+                    Command="{Binding ActionCommand}" 
+                    CommandParameter="Transaction"/>
+        </Grid>
+    </StackPanel>
+
+
+</UserControl>

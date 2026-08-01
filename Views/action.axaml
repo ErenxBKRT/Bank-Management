@@ -5,10 +5,10 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="450"
         x:Class="Bankmanaging.Views.ActionView"
-        x:DataType="vm:MainViewModel">
+        x:DataType="vm:ActionViewModel">
 
     <StackPanel Margin="20" Spacing="10" VerticalAlignment="Center">
-        <TextBlock Text="Action"
+        <TextBlock Text="{Binding Action_AFaire}"
                    HorizontalAlignment="Center"
                    VerticalAlignment="Center" />
 

@@ -3,11 +3,11 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:vm="using:Bankmanaging.ViewModels"
     x:Class="Bankmanaging.Views.ConnexionView"
-    x:DataType="vm:MainViewModel">
+    x:DataType="vm:ConnexionViewModel">
     
 
-<StackPanel Margin="24" Spacing="12" VerticalAlignment="Center" HorizontalAlignment="Center" Name="fenetre">
-        <TextBlock Text="{Binding Greeting}"
+<StackPanel Margin="24" Spacing="12" VerticalAlignment="Center" HorizontalAlignment="Center">
+        <TextBlock Text="Bienvenue dans l'application BANKKUN"
                    FontSize="22"
                    FontWeight="SemiBold"
                    HorizontalAlignment="Center" />

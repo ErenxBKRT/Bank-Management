@@ -9,5 +9,5 @@
         Icon="/Assets/avalonia-logo.ico"
         Title="Bankmanaging">
 
-    <ContentControl Content="{Binding currentView}" />
+    <ContentControl Content="{Binding CurrentView}"/>
 </Window>
