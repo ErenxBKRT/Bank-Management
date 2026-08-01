@@ -13,12 +13,12 @@
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center" />
 
-                <TextBlock Text="Username"
+                <TextBlock Text="id"
                         HorizontalAlignment="Center"/>
                 <TextBox Width="500"
                         Height="20"
-                        Name="Username"
-                        PlaceholderText="Entrer votre nom d'utilisateur"
+                        Name="id"
+                        PlaceholderText="Entrer votre nom id utilisateur"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center" />
 

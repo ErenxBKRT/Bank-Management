@@ -5,14 +5,7 @@
 
 
     <StackPanel>
-        <Grid RowSpacing="30" ColumnSpacing="20" RowDefinitions="Auto,Auto,Auto" ColumnDefinitions="Auto,*">
-            <Button Content="Depot"/>
-            <Button Content="Retrait"/>
-            <Button Content="Virement"/>
-            <Button Content="Credit"/>
-            <Button Content="Client"/>
-            <Button Content="Transaction"/>
-        </Grid>
+    <!--lister les transaction effectuer-->
     </StackPanel>
 
 </UserControl>
