@@ -1,0 +1,18 @@
+<UserControl
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    x:Class="Bankmanaging.Views.TransactionList">
+
+
+    <StackPanel>
+        <Grid RowSpacing="30" ColumnSpacing="20" RowDefinitions="Auto,Auto,Auto" ColumnDefinitions="Auto,*">
+            <Button Content="Depot"/>
+            <Button Content="Retrait"/>
+            <Button Content="Virement"/>
+            <Button Content="Credit"/>
+            <Button Content="Client"/>
+            <Button Content="Transaction"/>
+        </Grid>
+    </StackPanel>
+
+</UserControl>

@@ -67,8 +67,17 @@ build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 [d:/projet/c\#/Bank C\#/Bankmanaging/Views/connexion.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
+[d:/projet/c\#/Bank C\#/Bankmanaging/Views/creation.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
 [d:/projet/c\#/Bank C\#/Bankmanaging/Views/header.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
 [d:/projet/c\#/Bank C\#/Bankmanaging/Views/MainWindow.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
+[d:/projet/c\#/Bank C\#/Bankmanaging/Views/transactionList.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
+[d:/projet/c\#/Bank C\#/Bankmanaging/Views/virement.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml

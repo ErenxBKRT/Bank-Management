@@ -1,0 +1,21 @@
+<UserControl
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    x:Class="Bankmanaging.Views.VirementView">
+
+    <Grid RowSpacing="30" ColumnSpacing="20" RowDefinitions="Auto,Auto,Auto" ColumnDefinitions="Auto,*">
+
+        <TextBlock Text="Virement" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"/>
+        <StackPanel Grid.Row="1" Grid.Column="0">
+            <TextBlock Text="Compte"/>
+            <TextBlock Text="Somme"/>
+            <TextBlock Text="Expediteur"/>
+        </StackPanel>
+        <StackPanel Grid.Row="1" Grid.Column="1">
+            <TextBlock />
+            <TextBlock />
+            <TextBlock />
+        </StackPanel>
+
+    </Grid>
+</UserControl>
