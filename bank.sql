@@ -52,7 +52,7 @@ CREATE TABLE clients
     code_agence VARCHAR(4) NULL,
 
     CONSTRAINT fk_clients_employe_agence FOREIGN KEY (id_employe, code_agence) REFERENCES employe(id_employe, code_agence),
-    CONSTRAINT check_contact CHECK (contact IS NOT NULL OR mail IS NOT NULL)
+    CONSTRAINT clients_check_contact_mail CHECK (contact IS NOT NULL OR mail IS NOT NULL)
 );
 -- INSERT INTO clients (id_client, nom, prenom, adresse, mail, solde, pin) VALUES ('0404', 'Doe', 'John', 'VOIDSTREET', 'johndoe@gmail.com', 40404.04, '0404');
 
