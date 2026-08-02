@@ -59,10 +59,11 @@ CREATE TABLE clients
 
 CREATE TABLE transactions
 (
-    code_transaction VARCHAR(10) PRIMARY KEY NOT NULL,
+    code_transaction VARCHAR(7) PRIMARY KEY NOT NULL,
     libelle VARCHAR(10),
     montant DOUBLE PRECISION NOT NULL,
     date_transaction TIMESTAMP(0) DEFAULT CURRENT_TIMESTAMP(0),
+    nom VARCHAR(80),
 
     recepteur VARCHAR(10) REFERENCES clients(id_client),
     emetteur VARCHAR(10) REFERENCES clients(id_client),

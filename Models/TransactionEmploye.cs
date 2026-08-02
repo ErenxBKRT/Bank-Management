@@ -1,35 +1,57 @@
 using Npgsql;
+using System;
 using System.Threading.Tasks;
-using System.Diagnostics;
+using System.Security.Cryptography;
 
 namespace Bankmanaging.Models;
 
-public class AddEmploye (string id, string nom, string password, string codeAgence, string prenom = "")
+public static class Transaction
 {
-    public string IdEmploye { get; set; } = id;
-    public string Nom { get; set; } = nom;
-    public string Prenom { get; set; } = prenom;
-    public string Password { get; set; } = password;
-    public string CodeAgence { get; set; } = codeAgence;
-
-    public async Task<string> InsertIntoEmploye (IDatabaseConnection kaeru)
+    // VIREMENT BANCAIRE
+    public static async Task<string> VirementBancaireAsync (string libelle, decimal montant, string recepteur, string idEmploye, string codeAgence, string nom)
     {
-        const string query = "INSERT INTO employe (id_employe, nom, prenom, passwords, code_agence) VALUES (@id, @nom, @prenom, @password, @code);";
+        DateTime now = DateTime.Now;
+        string microSecond = now.ToString("ffff");
+        int randomNumber = RandomNumberGenerator.GetInt32(0, 100);
+        string codeTransaction = microSecond + "-" + randomNumber.ToString("D3");
+
+        IDatabaseConnection kaeru = DatabaseConnection.Instance;
         using var conn = kaeru.Connected();
         await conn.OpenAsync();
-        using var prepareQuery = new NpgsqlCommand(query, conn);
-        prepareQuery.Parameters.AddWithValue("id", IdEmploye);
-        prepareQuery.Parameters.AddWithValue("nom", Nom);
-        prepareQuery.Parameters.AddWithValue("prenom", Prenom);
-        prepareQuery.Parameters.AddWithValue("password", Password);
-        prepareQuery.Parameters.AddWithValue("code", CodeAgence);
-        try {
-            prepareQuery.ExecuteNonQuery();
-            return "Success";
-        } catch (NpgsqlException ex) {
-            Debug.WriteLine(ex); //temporary
-            return $"Error";
+
+        await using var transaction = await conn.BeginTransactionAsync();
+        try 
+        {
+            string depot = await ServiceClient.DepositAsync(montant, recepteur, conn, transaction);
+            if (depot == "error" || depot == "no id_client found")
+            {
+                await transaction.RollbackAsync();
+                return "Transaction failed";
+            }
+            
+            const string query = @"INSERT INTO transactions (code_transaction, libelle, montant, nom, recepteur, code_agence, id_employe)
+                                                     VALUES (@codeTransaction, @libelle, @montant, @nom, @recepteur, @codeAgence, @idEmploye);";
+            using var preparedQuery = new NpgsqlCommand(query, conn, transaction);
+            preparedQuery.Parameters.AddWithValue("codeTransaction", codeTransaction);
+            preparedQuery.Parameters.AddWithValue("libelle", libelle);
+            preparedQuery.Parameters.AddWithValue("montant", montant);
+            preparedQuery.Parameters.AddWithValue("nom", nom);
+            preparedQuery.Parameters.AddWithValue("recepteur", recepteur);
+            preparedQuery.Parameters.AddWithValue("codeAgence", codeAgence);
+            preparedQuery.Parameters.AddWithValue("idEmploye", idEmploye);
+            
+            if (await preparedQuery.ExecuteNonQueryAsync() == 0)
+            {
+                await transaction.RollbackAsync();
+                return "Transaction failed";
+            }
+            await transaction.CommitAsync();
+            return "success";
+        }
+        catch (NpgsqlException ex)
+        {
+            await transaction.RollbackAsync();
+            Console.WriteLine(ex.Message);
         }
     }
-
 }
