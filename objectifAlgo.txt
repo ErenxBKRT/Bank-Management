@@ -1,0 +1,142 @@
+//Algorythme de base pour l'application
+
+ouvrir page de connexion 
+user = input user 
+pswd = input pswd
+verifier si l'utilisateur existe dans la base de donnee
+
+if ( user =="admin"){
+    ouvrir la page administrateur
+    user=id_user
+
+    action="n"
+    if (action== "employer"){
+        filtre = "tout"
+        lister tout les employer existant dans la base de donnee
+        if (filtre= agence){
+            lister les employer de cette agence
+        } 
+    }
+
+    else if (action == "agence"){
+        lister la liste des agence existant
+    }
+
+    else if (action== "transaction"){
+        ouvrir une selection d'agence
+        if (agence=certain agence){
+            lister tout les transaction de cette agence
+        }
+
+    else {reouvrir la page administrateur}
+    }
+}
+
+else if (user="employer"){
+    ouvrir la page d'employer
+    user = id_user
+
+    action="n"
+    if (action=depot){
+        ouvrir page de logclient
+        client = input_logclient
+
+        if (client existe){
+            ouvrir page de depot 
+            somme = input_somme 
+            if (confirmer){
+                ajouter la valeur au solde du client dans la base de donnee
+            }
+            else if (annuler){
+                reouvrir page d'employer
+            }
+        }
+    }
+
+    else if (action=retrait){
+        ouvrir page de logclient
+        client = input_logclient
+
+        if (client existe){
+            ouvrir page de depot 
+            somme = input_somme 
+            if (confirmer){
+                if (somme>solde){
+                    votre solde est insuffisant pour ce retrait
+                }
+                else{
+                    ajouter la valeur au solde du client dans la base de donnee
+                }
+            }
+            else if (annuler){
+                reouvrir page d'employer
+            }
+        }
+    }
+
+    else if (action == virement){
+        ouvrir la page de virement
+        client = input_compte
+        if (client existe){
+            perso = input
+            somme = input_somme
+            ajouter la somme dans le solde du client 
+        }
+        else{
+            client inexistant 
+            reouvrir la page d'employer
+        }
+    }
+
+    else if (action == credit){
+        ouvrir page de logclient
+        client = input_logclient
+
+        if (client existe){
+            if (Credit_client>0){
+                    vous avez encore des credit a rembourser
+                    reouvrir page employe
+                }
+            else if{
+                ouvrir page de credit 
+                somme = input_somme
+                if (somme>solde_agence){
+                    votre solde est insuffisant pour ce credit
+                }
+                else{
+                    
+                    if (confirmer){
+                        ajouter la somme au solde du client dans la base de donnee
+                        soustraire la somme au solde de l'agence
+                    }
+
+                    else if (annuler){
+                        reouvrir page d'employer
+                    }   
+                }
+            }   
+        }
+        else {
+            client inexistant
+            reouvrir page d'employer
+        }        
+    }
+
+    else if (action == client){
+        filtre =""
+        if (filtre == ??){
+            lister les client de cette filtre 
+        }
+        if (consulter){
+            ouvrir la page d'autentification client
+            ouvrir la page d'information complet du client
+        }
+    }   
+
+    else if (action == transaction){
+        ouvrir une selection d'agence
+        if (agence=??){
+            lister tout les transaction de cette agence
+        }
+    }
+}

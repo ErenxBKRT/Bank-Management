@@ -9,15 +9,18 @@
         Icon="/Assets/avalonia-logo.ico"
         Title="Bankmanaging">
 
-    <Design.DataContext>
-        <!-- This only sets the DataContext for the previewer in an IDE,
-             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
-        <vm:MainViewModel />
-    </Design.DataContext>
+	<Design.DataContext>
+		<vm:MainViewModel />
+	</Design.DataContext>
 
-    <StackPanel>
-        <Button Content="Trying connecting if work" Click="Connecting" HorizontalAlignment="Center"/>
-        <TextBlock Name="Status" Text="Not Connected" TextAlignment="Center"/>
-    </StackPanel>
+	<StackPanel>
+		<!-- <StackPanel Margin="0,0,0,10">
+			<Button Content="Trying connecting if work" Click="Connecting" HorizontalAlignment="Center"/>
+			<TextBlock Name="Status" Text="Not Connected" TextAlignment="Center"/>
+		</StackPanel> -->
+
+
+		<ContentControl Content="{Binding CurrentView}"/>
+	</StackPanel>
 
 </Window>

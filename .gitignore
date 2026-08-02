@@ -4,3 +4,9 @@ obj/
 *.pdb
 [Bb]in/
 [Oo]bj/
+
+# Dossiers spécifiques aux IDE (optionnel mais recommandé)
+.vs/
+.idea/
+*.user
+*.userossc

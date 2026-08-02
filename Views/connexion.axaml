@@ -1,0 +1,42 @@
+<UserControl
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:vm="using:Bankmanaging.ViewModels"
+    x:Class="Bankmanaging.Views.ConnexionView"
+    x:DataType="vm:ConnexionViewModel">
+    
+
+<StackPanel Margin="24" Spacing="12" VerticalAlignment="Center" HorizontalAlignment="Center">
+        <TextBlock Text="Bienvenue dans l'application BANKKUN"
+                   FontSize="22"
+                   FontWeight="SemiBold"
+                   HorizontalAlignment="Center" />
+
+        <TextBlock Text="Nom d'utilisateur"
+                   HorizontalAlignment="Center" />
+        <TextBox Width="280"
+                 Text="{Binding Username, Mode=TwoWay}"
+                 PlaceholderText="Entrez votre nom d'utilisateur" />
+
+        <TextBlock Text="Mot de passe"
+                   HorizontalAlignment="Center" />
+        <TextBox Width="280"
+                 Text="{Binding Password, Mode=TwoWay}"
+                 PlaceholderText="Entrez votre mot de passe"
+                 PasswordChar="*" />
+
+        <Button Content="Se connecter"
+                Command="{Binding LoginCommand}"
+                HorizontalAlignment="Center"
+                Padding="12,6" />
+
+        <TextBlock Text="{Binding StatusMessage}"
+                   HorizontalAlignment="Center"
+                   TextWrapping="Wrap"
+                   MaxWidth="280" />
+    </StackPanel>
+
+
+</UserControl>
+
+   

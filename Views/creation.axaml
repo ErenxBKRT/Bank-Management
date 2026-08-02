@@ -1,0 +1,28 @@
+<UserControl
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    x:Class="Bankmanaging.Views.Creation">
+
+    <Grid>
+        <StackPanel>
+            <TextBlock Text="Nom"/>
+            <TextBlock Text="Prenom"/>
+            <TextBlock Text="Date de naissance"/>
+            <TextBlock Text="Adresse"/>
+            <TextBlock Text="Mail"/>
+            <TextBlock Text="PIN"/>
+            <TextBlock Text="Confirmation PIN"/>
+        </StackPanel>
+
+        <StackPanel>
+            <TextBox />
+            <TextBox />
+            <TextBox />
+            <TextBox />
+            <TextBox />
+            <TextBox />
+            <TextBox />
+        </StackPanel>
+
+    </Grid>
+</UserControl>

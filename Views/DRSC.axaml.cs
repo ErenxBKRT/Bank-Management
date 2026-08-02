@@ -2,11 +2,10 @@ using Avalonia.Controls;
 
 namespace Bankmanaging.Views;
 
-public partial class ActionView : UserControl
+public partial class DRSCView : UserControl
 {
-    public ActionView()
+    public DRSCView()
     {
         InitializeComponent();
     }
-
 }

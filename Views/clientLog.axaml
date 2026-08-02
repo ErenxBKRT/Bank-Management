@@ -4,30 +4,21 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="450"
-        x:Class="Bankmanaging.Views.ClientView"
-        x:DataType="vm:MainViewModel">
+        x:Class="Bankmanaging.Views.ClientLogView"
+        x:DataType="vm:ClientLogViewModel">
 
-    <Design.DataContext>
-        <!-- This only sets the DataContext for the previewer in an IDE,
-             to set the actual DataContext for runtime, set the DataContext property in code (look at App.axaml.cs) -->
-        <vm:MainViewModel />
-    </Design.DataContext>
     <StackPanel Margin="20" Spacing="10" VerticalAlignment="Center">
-        <StackPanel>
-            <TextBlock HorizontalAlignment="Stretch"
-                       Height="50">Icon et BankC</TextBlock>
-        </StackPanel>
         <StackPanel>
                 <TextBlock Text="Client"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center" />
 
-                <TextBlock Text="Username"
+                <TextBlock Text="id"
                         HorizontalAlignment="Center"/>
                 <TextBox Width="500"
                         Height="20"
-                        Name="Username"
-                        PlaceholderText="Entrer votre nom d'utilisateur"
+                        Name="id"
+                        PlaceholderText="Entrer votre id utilisateur"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center" />
 
@@ -40,15 +31,15 @@
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
                         PasswordChar="*" />      
-                <Button Content="Confirmer"
-                        Click="Button_OnClick"
-                        HorizontalAlignment="Center"/>
-                <Button Content="Annuler"
-                        Click="Button_OnClick"
-                        HorizontalAlignment="Center"/>
-                <Button Content="Nouveau"
-                        Click="Button_OnClick"
-                        HorizontalAlignment="Center"/>
+
+                <Button Content="Confirmer"  
+                        HorizontalAlignment="Center"
+                        Command="{Binding SelectionnerCommand}"/>
+
+                <Button Content="Annuler"   
+                        HorizontalAlignment="Center"
+                        Command="{Binding AnnulerLogCommand}"/>
+                        
         </StackPanel>
     </StackPanel> 
 
