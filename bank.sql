@@ -7,8 +7,8 @@ DROP TABLE IF EXISTS bank CASCADE;
 CREATE TABLE bank 
 (
     id_bank INT PRIMARY KEY DEFAULT 1 CHECK (id_bank = 1),
-	namae VARCHAR(10) UNIQUE NOT NULL,
-	solde DOUBLE PRECISION
+    namae VARCHAR(10) UNIQUE NOT NULL,
+    solde DOUBLE PRECISION
 );
 INSERT INTO bank (namae, solde) VALUES ('BANKKUN', 1040000500.75);
 
@@ -48,7 +48,7 @@ CREATE TABLE clients
     pin VARCHAR(4) NOT NULL,
     date_creation TIMESTAMP(0) DEFAULT CURRENT_TIMESTAMP(0),
     bloque BOOLEAN DEFAULT false,
-    dette REAL DEFAULT 0.00,
+    dette DOUBLE PRECISION DEFAULT 0.00,
 
     id_employe VARCHAR(10),
     code_agence VARCHAR(4),
