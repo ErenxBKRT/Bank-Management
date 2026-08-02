@@ -25,10 +25,10 @@ public static class ServiceClient
         using var preparedQuery = new NpgsqlCommand(query, conn);
         preparedQuery.Parameters.AddWithValue("id", client.IdClient);
         preparedQuery.Parameters.AddWithValue("nom", client.Nom);
-        preparedQuery.Parameters.AddWithValue("prenom", client.Prenom);
+        preparedQuery.Parameters.AddWithValue("prenom", (object?)client.Prenom ?? DBNull.Value);
         preparedQuery.Parameters.AddWithValue("adresse", client.Adresse);
-        preparedQuery.Parameters.AddWithValue("mail", client.Mail);
-        preparedQuery.Parameters.AddWithValue("contact", client.Contact);
+        preparedQuery.Parameters.AddWithValue("mail", (object?)client.Mail ?? DBNull.Value);
+        preparedQuery.Parameters.AddWithValue("contact", (object?)client.Contact ?? DBNull.Value);
         preparedQuery.Parameters.AddWithValue("solde", client.Solde);
         preparedQuery.Parameters.AddWithValue("pin", client.Pin);
 
@@ -57,10 +57,10 @@ public static class ServiceClient
 
         using var preparedQuery = new NpgsqlCommand(query, conn);
         preparedQuery.Parameters.AddWithValue("nom", client.Nom);
-        preparedQuery.Parameters.AddWithValue("prenom", client.Prenom);
+        preparedQuery.Parameters.AddWithValue("prenom", (object?)client.Prenom ?? DBNull.Value);
         preparedQuery.Parameters.AddWithValue("adresse", client.Adresse);
-        preparedQuery.Parameters.AddWithValue("mail", client.Mail);
-        preparedQuery.Parameters.AddWithValue("contact", client.Contact);
+        preparedQuery.Parameters.AddWithValue("mail", (object?)client.Mail ?? DBNull.Value);
+        preparedQuery.Parameters.AddWithValue("contact", (object?)client.Contact ?? DBNull.Value);
         preparedQuery.Parameters.AddWithValue("idClient", client.IdClient);
 
         try 
