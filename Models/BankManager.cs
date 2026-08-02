@@ -1,25 +1,26 @@
 using System;
 using Npgsql;
 
-namespace Bankmanaging.Models;
-
-public interface IDatabaseConnection
+namespace Bankmanaging.Models
 {
-    NpgsqlConnection Connected();
-}
-
-public sealed class DatabaseConnection : IDatabaseConnection
-{
-    private const string Owner = "Host=localhost;Database=bank;Username=bank_manager;Password=bankmanager";
-
-    private static readonly Lazy<DatabaseConnection> _instance = new Lazy<DatabaseConnection>(() => new DatabaseConnection());
-    
-    public static IDatabaseConnection Instance => _instance.Value;
-
-    private DatabaseConnection() {}
-
-    public NpgsqlConnection Connected()
+    public interface IDatabaseConnection
     {
-        return new NpgsqlConnection(Owner);
+        NpgsqlConnection Connected();
+    }
+
+    public sealed class DatabaseConnection : IDatabaseConnection
+    {
+        private const string Owner = "Host=localhost;Database=bank;Username=bank_manager;Password=bankmanager";
+
+        private static readonly Lazy<DatabaseConnection> _instance = new Lazy<DatabaseConnection>(() => new DatabaseConnection());
+        
+        public static IDatabaseConnection Instance => _instance.Value;
+
+        private DatabaseConnection() {}
+
+        public NpgsqlConnection Connected()
+        {
+            return new NpgsqlConnection(Owner);
+        }
     }
 }
