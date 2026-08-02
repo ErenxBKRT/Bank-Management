@@ -6,31 +6,23 @@
     x:DataType="vm:DashViewModel">
 
     <StackPanel>
-        <Grid RowSpacing="30" ColumnSpacing="20" RowDefinitions="Auto,Auto" ColumnDefinitions="Auto,Auto,Auto" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20">
-            <Button Content="Depot" 
-                    Grid.Row="0" Grid.Column="0"
-                    Command="{Binding ActionCommand}" 
-                    CommandParameter="Depot"/>
-            <Button Content="Retrait" 
-                    Grid.Row="0" Grid.Column="1"
-                    Command="{Binding ActionCommand}" 
-                    CommandParameter="Retrait"/>
-            <Button Content="Virement" 
-                    Grid.Row="0" Grid.Column="2"    
-                    Command="{Binding ActionCommand}" 
-                    CommandParameter="Virement"/>
-            <Button Content="Credit" 
-                    Grid.Row="1" Grid.Column="0"
-                    Command="{Binding ActionCommand}" 
-                    CommandParameter="Credit"/>
+        <Grid RowSpacing="30" ColumnSpacing="20" ColumnDefinitions="Auto,Auto,Auto,Auto" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20">
             <Button Content="Client" 
-                    Grid.Row="1" Grid.Column="1"
-                    Command="{Binding ActionCommand}" 
+                    Grid.Column="0"
+                    Command="{Binding ActionClientCommand}" 
                     CommandParameter="Client"/>
-            <Button Content="Transaction" 
-                    Grid.Row="1" Grid.Column="2"
-                    Command="{Binding ActionCommand}" 
-                    CommandParameter="Transaction"/>
+            <Button Content="Employe" 
+                    Grid.Column="1"
+                    Command="{Binding ActionEmployerCommand}" 
+                    CommandParameter="Employe"/>
+            <Button Content="Historique" 
+                    Grid.Column="2"    
+                    Command="{Binding ActionAgenceCommand}" 
+                    CommandParameter="Historique"/>
+            <Button Content="Agence" 
+                    Grid.Column="3"
+                    Command="{Binding ActionHistoriqueCommand}" 
+                    CommandParameter="Agence"/>
         </Grid>
     </StackPanel>
 

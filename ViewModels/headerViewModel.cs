@@ -16,17 +16,27 @@ public partial class HeaderViewModel : ViewModelBase
         _mainViewModel = mainViewModel;
         ControlView = new DashViewModel(this);
     }
-    public void ChangerAction(string act)
+    
+    public void ConnecterClient()
     {
-        ControlView= new ActionViewModel(act, this);
+        ControlView= new ClientLogViewModel(this);
     }
-    public void AnnulerAction()
+    public void RevenirClient()
+    {
+        ControlView= new ClientViewModel(this);
+    }
+    public void ActionClient()
+    {
+        ControlView = new DRSCViewModel(this);
+    }
+    public void MainMenu()
     {
         ControlView = new DashViewModel(this);
     }
-
+    
+    [RelayCommand]
     private void Deconnexion()
     {
-        _mainViewModel.FermerApplication();
+        _mainViewModel.Deco();
     }
 }

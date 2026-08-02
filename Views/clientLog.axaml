@@ -4,8 +4,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="450"
-        x:Class="Bankmanaging.Views.ClientLog"
-        x:DataType="vm:MainViewModel">
+        x:Class="Bankmanaging.Views.ClientLogView"
+        x:DataType="vm:ClientLogViewModel">
 
     <StackPanel Margin="20" Spacing="10" VerticalAlignment="Center">
         <StackPanel>
@@ -18,7 +18,7 @@
                 <TextBox Width="500"
                         Height="20"
                         Name="id"
-                        PlaceholderText="Entrer votre nom id utilisateur"
+                        PlaceholderText="Entrer votre id utilisateur"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center" />
 
@@ -31,15 +31,15 @@
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
                         PasswordChar="*" />      
-                <Button Content="Confirmer"
+
+                <Button Content="Confirmer"  
+                        HorizontalAlignment="Center"
+                        Command="{Binding SelectionnerCommand}"/>
+
+                <Button Content="Annuler"   
+                        HorizontalAlignment="Center"
+                        Command="{Binding AnnulerLogCommand}"/>
                         
-                        HorizontalAlignment="Center"/>
-                <Button Content="Annuler"
-                        
-                        HorizontalAlignment="Center"/>
-                <Button Content="Nouveau"
-                        
-                        HorizontalAlignment="Center"/>
         </StackPanel>
     </StackPanel> 
 

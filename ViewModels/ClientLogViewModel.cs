@@ -3,31 +3,25 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace Bankmanaging.ViewModels;
 
-public partial class ClientViewModel : ViewModelBase
+public partial class ClientLogViewModel : ViewModelBase
 {
     private readonly HeaderViewModel _headerViewModel;
 
-    public ClientViewModel (HeaderViewModel headerViewModel)
+    public ClientLogViewModel (HeaderViewModel headerViewModel)
     {
         _headerViewModel = headerViewModel;
     }
 
     [RelayCommand]
-    private void Connecter()
-    {
-        _headerViewModel.ConnecterClient();
-    }
-
-    [RelayCommand]
     private void Selectionner()
     {
-        _headerViewModel.RevenirClient();
+        _headerViewModel.ActionClient();
     }
 
     [RelayCommand]
-    private void MenuP()
+    private void AnnulerLog()
     {
-        _headerViewModel.MainMenu();
+        _headerViewModel.RevenirClient();
     }
 
 }

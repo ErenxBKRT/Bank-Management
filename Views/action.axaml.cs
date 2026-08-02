@@ -7,5 +7,6 @@ public partial class ActionView : UserControl
     public ActionView()
     {
         InitializeComponent();
-    } 
+    }
+
 }

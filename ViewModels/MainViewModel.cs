@@ -19,7 +19,7 @@ public partial class MainViewModel : ViewModelBase
         CurrentView = new HeaderViewModel(this);
     }
 
-    public void FermerApplication()
+    public void Deco()
     {
         CurrentView = new ConnexionViewModel(this);
     }

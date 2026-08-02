@@ -8,23 +8,25 @@
         x:DataType="vm:ActionViewModel">
 
     <StackPanel Margin="20" Spacing="10" VerticalAlignment="Center">
-        <TextBlock Text="{Binding Action_AFaire}"
+        <TextBlock Text="akory"
                    HorizontalAlignment="Center"
                    VerticalAlignment="Center" />
 
         <TextBlock Text="Montant"
-                   HorizontalAlignment="Center" />
+                   HorizontalAlignment="Center"/>
         <TextBox Width="500"
                  Height="20"
-                 Name="Montant"
+                 Margin="50"
                  PlaceholderText="Entrer la somme"
                  HorizontalAlignment="Center"
-                 VerticalAlignment="Center" />
+                 VerticalAlignment="Center"
+                 />
 
         <Button Content="Confirmer"
+                
                 HorizontalAlignment="Center" />
         <Button Content="Annuler"
-                Command="{Binding AnnulerActionCommand}"
+                
                 HorizontalAlignment="Center" />
     </StackPanel>
 </UserControl>

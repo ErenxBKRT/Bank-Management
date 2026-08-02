@@ -1,0 +1,24 @@
+<UserControl
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:vm="using:Bankmanaging.ViewModels"
+    x:Class="Bankmanaging.Views.DRSCView"
+    x:DataType="vm:DRSCViewModel">
+
+    <StackPanel>
+        <Grid ColumnDefinitions="Auto,Auto">
+            <StackPanel Width="400" VerticalAlignment="Center" Grid.Column="0">
+                <Button Content="Depot"/>
+                <Button Content="Retrait"/>
+                <Button Content="Credit"/>
+            </StackPanel>
+            <StackPanel Width="300" VerticalAlignment="Center" Grid.Column="1">
+                <TextBlock Text="Solde"/>
+                <TextBlock Text="Credit"/>
+                <Button Content="Rembourser"/>
+                <Button Content="Se Deconnecter"
+                        Command="{Binding RetourClientCommand}"/>
+            </StackPanel>
+        </Grid>
+    </StackPanel>
+</UserControl>

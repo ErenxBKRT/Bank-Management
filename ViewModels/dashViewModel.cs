@@ -15,32 +15,24 @@ public partial class DashViewModel : ViewModelBase
     }
 
     [RelayCommand]
-    private void Action(string e)
+    private void ActionClient()
     {
-        if (e == "Depot")
-        {
-            _headerViewModel.ChangerAction("depot");
-        }
-        else if (e == "Retrait")
-        {
-            _headerViewModel.ChangerAction("retrait");
-        }
-        else if (e == "Virement")
-        {
-            _headerViewModel.ChangerAction("virement");
-        }
-        else if (e == "Credit")
-        {
-            _headerViewModel.ChangerAction("credit");
-        }
-        else if (e == "Client")
-        {                   
-            _headerViewModel.ChangerAction("client");
-        }
-        else if (e == "Transaction")
-        {
-            _headerViewModel.ChangerAction("transaction");
-        }
+        _headerViewModel.RevenirClient();
+    }
+    [RelayCommand]
+    private void ActionEmployer()
+    {
+        _headerViewModel.RevenirClient();
+    }
+    [RelayCommand]
+    private void ActionAgence()
+    {
+        _headerViewModel.RevenirClient();
+    }
+    [RelayCommand]
+    private void ActionHistorique()
+    {
+        _headerViewModel.RevenirClient();
     }
 
 }
