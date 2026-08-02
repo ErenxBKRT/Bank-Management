@@ -6,13 +6,12 @@ DROP TABLE IF EXISTS admins CASCADE;
 
 DROP TABLE IF EXISTS carte_bancaire CASCADE;
 
-CREATE TABLE bank 
+CREATE TABLE admin
 (
-    id_bank INT PRIMARY KEY DEFAULT 1 CHECK (id_bank = 1),
-	namae VARCHAR(10) UNIQUE NOT NULL,
-	solde DOUBLE PRECISION
+    name VARCHAR(10) NOT NULL,
+    passcode VARCHAR(10)
 );
-INSERT INTO bank (namae, solde) VALUES ('BANKKUN', 1040000500.75);
+INSERT INTO admin VALUES ('superuser', 'superuser');
 
 CREATE TABLE agence
 (
