@@ -52,6 +52,7 @@ public static class Transaction
         {
             await transaction.RollbackAsync();
             Console.WriteLine(ex.Message);
+            return "error";
         }
     }
 }

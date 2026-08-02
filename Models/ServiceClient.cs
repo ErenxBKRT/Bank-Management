@@ -1,6 +1,7 @@
 using Npgsql;
 using System;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 using System.Security.Cryptography;
 
 namespace Bankmanaging.Models;
@@ -140,8 +141,7 @@ public static class ServiceClient
 
         try
         {
-            int rowAffected = await preparedQuery.ExecuteNonQueryAsync();
-            if (rowAffected == 0)
+            if (await preparedQuery.ExecuteNonQueryAsync() == 0)
             {
                 return "no id_client found";
             }
@@ -205,6 +205,47 @@ public static class ServiceClient
         }
     }
 
-    //
+    // ~ GET LIST OF CLIENT
+    public static async Task<List<Client>> GetClientListAsync ()
+    {
+        var listClient = new List<Client>();
+
+        IDatabaseConnection kaeru = DatabaseConnection.Instance;
+        using var conn = kaeru.Connected();
+        await conn.OpenAsync();
+
+        const string query = @"SELECT * FROM clients;";
+        using var preparedQuery = new NpgsqlCommand(query, conn);
+        try 
+        {
+            using var row = await preparedQuery.ExecuteReaderAsync();
+            while (await row.ReadAsync())
+            {
+                var client = new Client
+                {
+                    IdClient = row.GetString(0),
+                    Nom = row.GetString(1),
+                    Prenom = row.GetString(2),
+                    Adresse = row.GetString(3),
+                    Mail = row.GetString(4),
+                    Contact = row.GetString(5),
+                    Solde = row.GetDecimal(6),
+                    Pin = row.GetString(7),
+                    DateCreation = row.GetDateTime(8),
+                    Bloque = row.GetBoolean(9),
+                    Dette = row.GetDecimal(10),
+                    IdEmploye = row.GetString(11),
+                    CodeAgence = row.GetString(12)
+                };
+                listClient.Add(client);
+            }
+            return listClient;
+        }
+        catch (NpgsqlException ex)
+        {
+            Console.WriteLine(ex.Message); // temporary!
+            throw;
+        }
+    }
 
 }
