@@ -3,23 +3,21 @@ DROP TABLE IF EXISTS clients CASCADE;
 DROP TABLE IF EXISTS employe CASCADE;
 DROP TABLE IF EXISTS agence CASCADE;
 DROP TABLE IF EXISTS admins CASCADE; 
-
 DROP TABLE IF EXISTS carte_bancaire CASCADE;
 
-CREATE TABLE admin
-(
-    name VARCHAR(10) NOT NULL,
-    passcode VARCHAR(10)
-);
-INSERT INTO admin VALUES ('superuser', 'superuser');
+CREATE TABLE admins (username VARCHAR(10) NOT NULL CHECK (username = 'superuser'));
+
+INSERT INTO admins VALUES ('superuser');
 
 CREATE TABLE agence
 (
-    code_agence VARCHAR(4) PRIMARY KEY NOT NULL,
+    code_agence VARCHAR(4) NOT NULL,
     lieu VARCHAR(30) NOT NULL,
     adresse_agence VARCHAR(30),
     actives BOOLEAN DEFAULT true,
-    solde DOUBLE PRECISION DEFAULT 0.00 NOT NULL
+    solde DOUBLE PRECISION DEFAULT 0.00 NOT NULL,
+    
+    CONSTRAINT pk_agence_code_agence PRIMARY KEY (code_agence)
 );
 -- INSERT INTO agence (code_agence, lieu, adresse_agence) VALUES ('404', 'VOID', '404-34-VOID');
 
@@ -29,10 +27,11 @@ CREATE TABLE employe
     nom VARCHAR(30) NOT NULL,
     prenom VARCHAR(50),
     passwords VARCHAR(16),
-    date_creation TIMESTAMP(0) DEFAULT CURRENT_TIMESTAMP(0),
-    code_agence VARCHAR(4) REFERENCES agence(code_agence),
+    date_entre TIMESTAMP(0) DEFAULT CURRENT_TIMESTAMP(0)NOT NULL,
+    code_agence VARCHAR(4) NOT NULL,
 
-    PRIMARY KEY (id_employe, code_agence)
+    CONSTRAINT fk_employe_code_agence FOREIGN KEY (code_agence) REFERENCES agence(code_agence),
+    CONSTRAINT pk_employe_id_employe_code_agence PRIMARY KEY (id_employe, code_agence)
 );
 -- INSERT INTO employe (id_employe, nom, prenom, passwords, code_agence) VALUES ('-404', 'Doe', 'Jane', 'error404', '404');
 
@@ -46,13 +45,13 @@ CREATE TABLE clients
     contact VARCHAR(10),
     solde DOUBLE PRECISION DEFAULT 0.00 NOT NULL,
     pin VARCHAR(4) NOT NULL,
-    date_creation TIMESTAMP(0) DEFAULT CURRENT_TIMESTAMP(0),
+    date_creation TIMESTAMP(0) DEFAULT CURRENT_TIMESTAMP(0) NOT NULL,
     bloque BOOLEAN DEFAULT false,
     dette DOUBLE PRECISION DEFAULT 0.00 NOT NULL,
+    id_employe VARCHAR(10) NULL,
+    code_agence VARCHAR(4) NULL,
 
-    id_employe VARCHAR(10),
-    code_agence VARCHAR(4),
-    FOREIGN KEY (id_employe, code_agence) REFERENCES employe(id_employe, code_agence),
+    CONSTRAINT fk_clients_employe_agence FOREIGN KEY (id_employe, code_agence) REFERENCES employe(id_employe, code_agence),
     CONSTRAINT check_contact CHECK (contact IS NOT NULL OR mail IS NOT NULL)
 );
 -- INSERT INTO clients (id_client, nom, prenom, adresse, mail, solde, pin) VALUES ('0404', 'Doe', 'John', 'VOIDSTREET', 'johndoe@gmail.com', 40404.04, '0404');
@@ -62,18 +61,24 @@ CREATE TABLE transactions
     code_transaction VARCHAR(7) PRIMARY KEY NOT NULL,
     libelle VARCHAR(10),
     montant DOUBLE PRECISION NOT NULL,
-    date_transaction TIMESTAMP(0) DEFAULT CURRENT_TIMESTAMP(0),
+    date_transaction TIMESTAMP(0) DEFAULT CURRENT_TIMESTAMP(0) NOT NULL,
     nom VARCHAR(80),
+    id_employe VARCHAR(10) NULL,
+    code_agence VARCHAR(4) NULL,
+    recepteur VARCHAR(10),
+    emetteur VARCHAR(10),
 
-    recepteur VARCHAR(10) REFERENCES clients(id_client),
-    emetteur VARCHAR(10) REFERENCES clients(id_client),
-    code_agence VARCHAR(4),
-    id_employe VARCHAR(10),
-    FOREIGN KEY (id_employe, code_agence) REFERENCES employe(id_employe, code_agence)
+    CONSTRAINT fk_transactions_recepteur FOREIGN KEY (recepteur) REFERENCES clients(id_client),
+    CONSTRAINT fk_transaction_emetteur FOREIGN KEY (emetteur) REFERENCES clients(id_client),
+
+    CONSTRAINT fk_trasactions_agence FOREIGN KEY (code_agence) REFERENCES agence(code_agence),
+    CONSTRAINT fk_transaction_agence_employe FOREIGN KEY (id_employe, code_agence) REFERENCES employe(id_employe, code_agence) MATCH SIMPLE
 );
 
 CREATE TABLE carte_bancaire 
 (
-    id_client VARCHAR(10) REFERENCES clients(id_client),
-    date_creation TIMESTAMP(0) DEFAULT CURRENT_TIMESTAMP
+    id_client VARCHAR(10), 
+    date_creation TIMESTAMP(0) DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    
+    CONSTRAINT fk_carte_bancaire FOREIGN KEY (id_client) REFERENCES clients(id_client)
 );
