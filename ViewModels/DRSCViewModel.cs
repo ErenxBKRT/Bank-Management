@@ -17,7 +17,28 @@ public partial class DRSCViewModel : ViewModelBase
     [RelayCommand]
     private void RetourClient()
     {
-        _headerViewModel.RevenirClient();
+        _headerViewModel.MenuClient();
+    }
+    [RelayCommand]
+    private void Depot()
+    {
+        _headerViewModel.ActionClient("Depot");
+    }
+    [RelayCommand]
+    private void Retrait()
+    {
+        _headerViewModel.ActionClient("Retrait");
     }
 
+    [RelayCommand]
+    private void Credit()
+    {
+        _headerViewModel.ActionClient("Credit");
+    }
+
+    [RelayCommand]
+    private void Rembourser()
+    {
+        _headerViewModel.ActionClient("Rembourser");
+    }
 }

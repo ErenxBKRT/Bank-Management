@@ -9,7 +9,7 @@ build_property.AvaloniaNameGeneratorAttachDevTools = true
 build_property.AvaloniaUseCompiledBindingsByDefault = true
 build_property.AvaloniaMainPackageVersion = 12.1.0
 build_property.AvaloniaPreviewerNetCoreToolPath = C:\Users\ADMIN\.nuget\packages\avalonia\12.1.0\buildTransitive\\..\tools\net8.0\designer\Avalonia.Designer.HostApp.dll
-build_property.AvaloniaResourcePaths = D:\projet\c#\Bank C#\Bankmanaging\Assets\avalonia-logo.ico,D:\projet\c#\Bank C#\Bankmanaging\App.axaml,D:\projet\c#\Bank C#\Bankmanaging\Views\action.axaml,D:\projet\c#\Bank C#\Bankmanaging\Views\ClientList.axaml,D:\projet\c#\Bank C#\Bankmanaging\Views\clientLog.axaml,D:\projet\c#\Bank C#\Bankmanaging\Views\connexion.axaml,D:\projet\c#\Bank C#\Bankmanaging\Views\creation.axaml,D:\projet\c#\Bank C#\Bankmanaging\Views\dash.axaml,D:\projet\c#\Bank C#\Bankmanaging\Views\DRSC.axaml,D:\projet\c#\Bank C#\Bankmanaging\Views\header.axaml,D:\projet\c#\Bank C#\Bankmanaging\Views\MainWindow.axaml,D:\projet\c#\Bank C#\Bankmanaging\Views\transactionList.axaml,D:\projet\c#\Bank C#\Bankmanaging\Views\virement.axaml
+build_property.AvaloniaResourcePaths = D:\projet\c#\Bank C#\Bankmanaging\Assets\avalonia-logo.ico,D:\projet\c#\Bank C#\Bankmanaging\App.axaml,D:\projet\c#\Bank C#\Bankmanaging\Views\action.axaml,D:\projet\c#\Bank C#\Bankmanaging\Views\agence.axaml,D:\projet\c#\Bank C#\Bankmanaging\Views\ClientList.axaml,D:\projet\c#\Bank C#\Bankmanaging\Views\clientLog.axaml,D:\projet\c#\Bank C#\Bankmanaging\Views\connexion.axaml,D:\projet\c#\Bank C#\Bankmanaging\Views\creation.axaml,D:\projet\c#\Bank C#\Bankmanaging\Views\dash.axaml,D:\projet\c#\Bank C#\Bankmanaging\Views\DRSC.axaml,D:\projet\c#\Bank C#\Bankmanaging\Views\Employe.axaml,D:\projet\c#\Bank C#\Bankmanaging\Views\header.axaml,D:\projet\c#\Bank C#\Bankmanaging\Views\historique.axaml,D:\projet\c#\Bank C#\Bankmanaging\Views\MainWindow.axaml,D:\projet\c#\Bank C#\Bankmanaging\Views\transactionList.axaml,D:\projet\c#\Bank C#\Bankmanaging\Views\virement.axaml
 build_property.MvvmToolkitEnableINotifyPropertyChangingSupport = true
 build_property._MvvmToolkitIsUsingWindowsRuntimePack = false
 build_property.CsWinRTComponent = 
@@ -39,6 +39,9 @@ build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 [D:/projet/c\#/Bank C\#/Bankmanaging/Views/action.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
+[D:/projet/c\#/Bank C\#/Bankmanaging/Views/agence.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
 [D:/projet/c\#/Bank C\#/Bankmanaging/Views/ClientList.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
@@ -57,7 +60,13 @@ build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 [D:/projet/c\#/Bank C\#/Bankmanaging/Views/DRSC.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
+[D:/projet/c\#/Bank C\#/Bankmanaging/Views/Employe.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
 [D:/projet/c\#/Bank C\#/Bankmanaging/Views/header.axaml]
+build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
+
+[D:/projet/c\#/Bank C\#/Bankmanaging/Views/historique.axaml]
 build_metadata.AdditionalFiles.SourceItemGroup = AvaloniaXaml
 
 [D:/projet/c\#/Bank C\#/Bankmanaging/Views/MainWindow.axaml]

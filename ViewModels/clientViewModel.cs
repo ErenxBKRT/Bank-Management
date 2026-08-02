@@ -21,13 +21,19 @@ public partial class ClientViewModel : ViewModelBase
     [RelayCommand]
     private void Selectionner()
     {
-        _headerViewModel.RevenirClient();
+        _headerViewModel.MenuClient();
     }
 
     [RelayCommand]
     private void MenuP()
     {
         _headerViewModel.MainMenu();
+    }
+
+    [RelayCommand]
+    private void Nouveau()
+    {
+        _headerViewModel.Nouveau("Client");
     }
 
 }

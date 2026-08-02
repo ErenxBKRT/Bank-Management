@@ -5,18 +5,23 @@
     x:Class="Bankmanaging.Views.HeaderView"
     x:DataType="vm:HeaderViewModel">
 
-    <StackPanel HorizontalAlignment="Stretch">
+    <StackPanel HorizontalAlignment="Center">
+        <ScrollViewer>
         <StackPanel Orientation="Horizontal"
                     HorizontalAlignment="Stretch"
                     VerticalAlignment="Top"
                     Margin="10">
             <TextBlock Text="LOGO et BANKKUN" 
                        FontSize="24" 
-                       FontWeight="ExtraBold"/>
+                       FontWeight="ExtraBold"
+                       Margin="10,10,300,10"
+                       HorizontalAlignment="Left"/>
             <Button Content="deconnexion" 
                     Command="{Binding DeconnexionCommand}" 
-                    HorizontalAlignment="Right"/>
+                    HorizontalAlignment="Right"
+                    Margin="300,10,10,10"/>
         </StackPanel>
+        </ScrollViewer>
         <ContentControl Content="{Binding ControlView}"/>
     </StackPanel>
 

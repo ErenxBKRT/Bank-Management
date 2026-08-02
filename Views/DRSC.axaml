@@ -8,14 +8,18 @@
     <StackPanel>
         <Grid ColumnDefinitions="Auto,Auto">
             <StackPanel Width="400" VerticalAlignment="Center" Grid.Column="0">
-                <Button Content="Depot"/>
-                <Button Content="Retrait"/>
-                <Button Content="Credit"/>
+                <Button Content="Depot"
+                        Command="{Binding DepotCommand}"/>
+                <Button Content="Retrait"
+                        Command="{Binding RetraitCommand}"/>
+                <Button Content="Credit"
+                        Command="{Binding CreditCommand}"/>
             </StackPanel>
             <StackPanel Width="300" VerticalAlignment="Center" Grid.Column="1">
                 <TextBlock Text="Solde"/>
                 <TextBlock Text="Credit"/>
-                <Button Content="Rembourser"/>
+                <Button Content="Rembourser"
+                        Command="{Binding RembourserCommand}"/>
                 <Button Content="Se Deconnecter"
                         Command="{Binding RetourClientCommand}"/>
             </StackPanel>

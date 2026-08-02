@@ -10,6 +10,7 @@
         <TextBlock Text="Bienvenue dans l'application BANKKUN"
                    FontSize="22"
                    FontWeight="SemiBold"
+                   Margin="0,0,0,20"
                    HorizontalAlignment="Center" />
 
         <TextBlock Text="Nom d'utilisateur"

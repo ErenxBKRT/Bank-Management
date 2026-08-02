@@ -2,25 +2,22 @@
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:vm="using:Bankmanaging.ViewModels"
-    x:Class="Bankmanaging.Views.ClientView"
-    x:DataType="vm:ClientViewModel">
+    x:Class="Bankmanaging.Views.EmployeView"
+    x:DataType="vm:EmployeViewModel">
 
     <StackPanel>
         <Grid>
             <StackPanel Width="400">
                 <!--liste client-->
-                <TextBlock Text="Client"/>
+                <TextBlock Text="Employe"/>
             </StackPanel>
             <StackPanel HorizontalAlignment="Right" VerticalAlignment="Center" Width="200">
-                <Button Content="Connexion" 
-                        HorizontalAlignment="Center"
-                        Command="{Binding ConnecterCommand}"/>
                 <Button Content="Nouveau" 
                         HorizontalAlignment="Center"
-                        Command ="{Binding NouveauCommand}"/>
+                        Command="{Binding CreerCommand}"/>
                 <Button Content="Menu Principale" 
                         HorizontalAlignment="Center"
-                        Command="{Binding MenuPCommand}"/>
+                        Command="{Binding MenuCommand}"/>
             </StackPanel>
         </Grid>
     </StackPanel>

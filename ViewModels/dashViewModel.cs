@@ -17,22 +17,22 @@ public partial class DashViewModel : ViewModelBase
     [RelayCommand]
     private void ActionClient()
     {
-        _headerViewModel.RevenirClient();
+        _headerViewModel.MenuClient();
     }
     [RelayCommand]
     private void ActionEmployer()
     {
-        _headerViewModel.RevenirClient();
+        _headerViewModel.MenuEmploye();
     }
     [RelayCommand]
     private void ActionAgence()
     {
-        _headerViewModel.RevenirClient();
+        _headerViewModel.MenuAgence();
     }
     [RelayCommand]
     private void ActionHistorique()
     {
-        _headerViewModel.RevenirClient();
+        _headerViewModel.MenuHistorique();
     }
 
 }

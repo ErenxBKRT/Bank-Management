@@ -17,11 +17,11 @@
                     CommandParameter="Employe"/>
             <Button Content="Historique" 
                     Grid.Column="2"    
-                    Command="{Binding ActionAgenceCommand}" 
+                    Command="{Binding ActionHistoriqueCommand}" 
                     CommandParameter="Historique"/>
             <Button Content="Agence" 
                     Grid.Column="3"
-                    Command="{Binding ActionHistoriqueCommand}" 
+                    Command="{Binding ActionAgenceCommand}" 
                     CommandParameter="Agence"/>
         </Grid>
     </StackPanel>

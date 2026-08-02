@@ -1,28 +1,38 @@
 <UserControl
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    x:Class="Bankmanaging.Views.Creation">
+    xmlns:vm="using:Bankmanaging.ViewModels"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="450"
+    x:Class="Bankmanaging.Views.NouveauView"
+    x:DataType="vm:NouveauViewModel">
 
-    <Grid>
-        <StackPanel>
-            <TextBlock Text="Nom"/>
-            <TextBlock Text="Prenom"/>
-            <TextBlock Text="Date de naissance"/>
-            <TextBlock Text="Adresse"/>
-            <TextBlock Text="Mail"/>
-            <TextBlock Text="PIN"/>
-            <TextBlock Text="Confirmation PIN"/>
+    <StackPanel Orientation="Horizontal">
+        <Grid ColumnDefinitions="Auto,Auto" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto" ColumnSpacing="20" RowSpacing="20" Margin="20" VerticalAlignment="Center" HorizontalAlignment="Center">
+                <TextBlock Text="Nom" Grid.Column="0" Grid.Row="0"/>
+                <TextBlock Text="Prenom" Grid.Column="0" Grid.Row="1"/>
+                <TextBlock Text="Date de naissance" Grid.Column="0" Grid.Row="2"/>
+                <TextBlock Text="Adresse" Grid.Column="0" Grid.Row="3"/>
+                <TextBlock Text="Mail" Grid.Column="0" Grid.Row="4"/>
+                <TextBlock Text="PIN" Grid.Column="0" Grid.Row="5"/>
+                <TextBlock Text="Confirmation PIN" Grid.Column="0" Grid.Row="6"/>
+            
+                <TextBox Grid.Column="1" Grid.Row="0" Width="500"/>
+                <TextBox Grid.Column="1" Grid.Row="1" Width="500"/>
+                <DatePicker Grid.Column="1" Grid.Row="2" Width="500"/>
+                <TextBox Grid.Column="1" Grid.Row="3" Width="500"/>
+                <TextBox Grid.Column="1" Grid.Row="4" Width="500"/>
+                <TextBox Grid.Column="1" Grid.Row="5" Width="500"/>
+                <TextBox Grid.Column="1" Grid.Row="6" Width="500"/>
+
+        </Grid>
+        <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+            <Button Content="Enregistrer"
+                    Command="{Binding ConfirmerCommand}"/>
+            <Button Content="Annuler"
+                    Command="{Binding AnnulerCommand}"/>
         </StackPanel>
+    </StackPanel>
 
-        <StackPanel>
-            <TextBox />
-            <TextBox />
-            <TextBox />
-            <TextBox />
-            <TextBox />
-            <TextBox />
-            <TextBox />
-        </StackPanel>
-
-    </Grid>
 </UserControl>
