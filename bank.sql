@@ -19,7 +19,7 @@ CREATE TABLE agence
     lieu VARCHAR(30) NOT NULL,
     adresse_agence VARCHAR(30),
     actives BOOLEAN DEFAULT true,
-    solde DOUBLE PRECISION DEFAULT 0.00,
+    solde DOUBLE PRECISION DEFAULT 0.00 NOT NULL
 );
 -- INSERT INTO agence (code_agence, lieu, adresse_agence) VALUES ('404', 'VOID', '404-34-VOID');
 
@@ -44,11 +44,11 @@ CREATE TABLE clients
     adresse VARCHAR(30) NOT NULL,
     mail VARCHAR(100),
     contact VARCHAR(10),
-    solde DOUBLE PRECISION DEFAULT 0.00,
+    solde DOUBLE PRECISION DEFAULT 0.00 NOT NULL,
     pin VARCHAR(4) NOT NULL,
     date_creation TIMESTAMP(0) DEFAULT CURRENT_TIMESTAMP(0),
     bloque BOOLEAN DEFAULT false,
-    dette DOUBLE PRECISION DEFAULT 0.00,
+    dette DOUBLE PRECISION DEFAULT 0.00 NOT NULL,
 
     id_employe VARCHAR(10),
     code_agence VARCHAR(4),
