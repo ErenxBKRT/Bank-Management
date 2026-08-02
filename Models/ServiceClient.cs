@@ -1,8 +1,7 @@
 using Npgsql;
 using System.Threading.Tasks;
-using System.Diagnostics;
 using System;
-using System.Security.Cryptography; //temp
+using System.Security.Cryptography;
 
 namespace Bankmanaging.Models
 {
@@ -40,7 +39,7 @@ namespace Bankmanaging.Models
             } 
             catch (NpgsqlException ex) 
             {
-                Debug.WriteLine(ex); // temporary!
+                Console.WriteLine(ex); // temporary!
                 return "error";
             }
         }
@@ -71,7 +70,7 @@ namespace Bankmanaging.Models
             } 
             catch (NpgsqlException ex) 
             {
-                Debug.WriteLine(ex); // temporary!
+                Console.WriteLine(ex); // temporary!
                 return "error";
             }
         }
@@ -96,7 +95,7 @@ namespace Bankmanaging.Models
             } 
             catch (NpgsqlException ex) 
             {
-                Debug.WriteLine(ex); // temporary!
+                Console.WriteLine(ex); // temporary!
                 return "error";
             }
         }
@@ -125,7 +124,7 @@ namespace Bankmanaging.Models
             } 
             catch (NpgsqlException ex) 
             {
-                Debug.WriteLine(ex); // temporary!
+                Console.WriteLine(ex); // temporary!
                 return "error";
             }
         }
@@ -150,7 +149,7 @@ namespace Bankmanaging.Models
             }
             catch (NpgsqlException ex)
             {
-                Debug.WriteLine(ex); // temporary!
+                Console.WriteLine(ex); // temporary!
                 return "error";
             }
         }
@@ -173,9 +172,37 @@ namespace Bankmanaging.Models
             }
             catch (NpgsqlException ex)
             {
-                Debug.WriteLine(ex); // temporary!;
+                Console.WriteLine(ex); // temporary!;
                 return "error";
             }
         }
+        
+        // ~CONSULTER SOLDE
+        public static async Task<decimal> ConsulterSoldeAsync (string idClient)
+        {
+            IDatabaseConnection kaeru = DatabaseConnection.Instance;
+            using var conn = kaeru.Connected();
+            await conn.OpenAsync();
+
+            const string query = "SELECT solde FROM clients WHERE id_client = @idClient;";
+            using var preparedQuery = new NpgsqlCommand(query, conn);
+            preparedQuery.Parameters.AddWithValue("idClient", idClient);
+
+            try
+            {
+                object? solde = await preparedQuery.ExecuteScalarAsync();
+                if (solde == null || solde == DBNull.Value)
+                {
+                    throw new InvalidOperationException("Client non existant");
+                }
+                return (solde as decimal?) ?? 0.00m;
+            }
+            catch (NpgsqlException ex)
+            {
+                Console.WriteLine(ex);
+                throw;
+            }
+        }
+
     }
 }
