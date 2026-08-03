@@ -2,87 +2,78 @@ using Npgsql;
 using System;
 using System.Threading.Tasks;
 using System.Collections.Generic;
-using System.Security.Cryptography;
 
 namespace Bankmanaging.Models;
 public static class ServiceClient
 {
-    // ~INSERT THE NEW CLIENT INTO THE DATABASE 
-    public static async Task<string> CreateClientAsync (Client client, string pin)
+    // ~ INSERT THE NEW CLIENT INTO THE DATABASE 
+    public static async Task<bool> CreateClientAsync (string nom, string adresse, string contact, string? prenom)
     {
-        DateTime now = DateTime.Now;
-        string microSecond = now.ToString("ffff");
-        int randomNumber = RandomNumberGenerator.GetInt32(0, 1000);
-        client.IdClient = "C" + microSecond + randomNumber.ToString("D3");
 
         IDatabaseConnection kaeru = DatabaseConnection.Instance;
         using var conn = kaeru.Connected();
         await conn.OpenAsync();
 
-        const string query = @"INSERT INTO clients (id_client, nom, prenom, adresse, mail, contact, solde, pin)
-                            VALUES (@id, @nom, @prenom, @adresse, @mail, @contact, @solde, @pin);";
+        const string query = "INSERT INTO client (nom, prenom, adresse, contact) VALUES (@nom, @prenom, @adresse, @contact);";
 
         using var preparedQuery = new NpgsqlCommand(query, conn);
-        preparedQuery.Parameters.AddWithValue("id", client.IdClient);
-        preparedQuery.Parameters.AddWithValue("nom", client.Nom);
-        preparedQuery.Parameters.AddWithValue("prenom", (object?)client.Prenom ?? DBNull.Value);
-        preparedQuery.Parameters.AddWithValue("adresse", client.Adresse);
-        preparedQuery.Parameters.AddWithValue("mail", (object?)client.Mail ?? DBNull.Value);
-        preparedQuery.Parameters.AddWithValue("contact", (object?)client.Contact ?? DBNull.Value);
-        preparedQuery.Parameters.AddWithValue("solde", client.Solde);
-        preparedQuery.Parameters.AddWithValue("pin", pin);
-
+        preparedQuery.Parameters.AddWithValue("nom", nom);
+        preparedQuery.Parameters.AddWithValue("prenom", prenom ?? (object)DBNull.Value);
+        preparedQuery.Parameters.AddWithValue("adresse", adresse);
+        preparedQuery.Parameters.AddWithValue("contact", contact);
+        
         try 
         {
             await preparedQuery.ExecuteNonQueryAsync();
-            return "success";
+            return true;
         } 
         catch (NpgsqlException ex) 
         {
             Console.WriteLine(ex.Message); // temporary!
-            return "error";
+            return false;
         }
     }
 
     // ~READJUST/UPDATE CLIENT INFORMATION
-    public static async Task<string> UpdateClientAsync (Client client)
+    public static async Task<bool> UpdateClientAsync (int idClient, string nom, string adresse, string contact, string? prenom)
     {
         IDatabaseConnection kaeru = DatabaseConnection.Instance;
         using var conn = kaeru.Connected();
         await conn.OpenAsync();
 
-        const string query = @"UPDATE clients 
-                            SET nom = @nom, prenom = @prenom, adresse = @adresse, mail = @mail, contact = @contact
-                            WHERE id_client = @idClient;";
+        const string query = "UPDATE client SET nom = @nom, prenom = @prenom, adresse = @adresse, contact = @contact WHERE id_client = @idClient;";
 
         using var preparedQuery = new NpgsqlCommand(query, conn);
-        preparedQuery.Parameters.AddWithValue("nom", client.Nom);
-        preparedQuery.Parameters.AddWithValue("prenom", (object?)client.Prenom ?? DBNull.Value);
-        preparedQuery.Parameters.AddWithValue("adresse", client.Adresse);
-        preparedQuery.Parameters.AddWithValue("mail", (object?)client.Mail ?? DBNull.Value);
-        preparedQuery.Parameters.AddWithValue("contact", (object?)client.Contact ?? DBNull.Value);
-        preparedQuery.Parameters.AddWithValue("idClient", client.IdClient);
+        preparedQuery.Parameters.AddWithValue("nom", nom);
+        preparedQuery.Parameters.AddWithValue("prenom", prenom ?? (object)DBNull.Value);
+        preparedQuery.Parameters.AddWithValue("adresse", adresse);
+        preparedQuery.Parameters.AddWithValue("contact", contact);
+        preparedQuery.Parameters.AddWithValue("idClient", idClient);
 
         try 
         {
-            await preparedQuery.ExecuteNonQueryAsync();
-            return "success";
+            if(await preparedQuery.ExecuteNonQueryAsync() == 0)
+            {
+                Console.WriteLine("aucun ID trouve");
+                return false;
+            }
+            return true;
         } 
         catch (NpgsqlException ex) 
         {
             Console.WriteLine(ex.Message); // temporary!
-            return "error";
+            return false;
         }
     }
 
     // ~CHANGE PIN!!
-    public static async Task<string> ChangePinAsync (string newPin, string idClient)
+    public static async Task<bool> ChangePinAsync (string newPin, string idClient)
     {
         IDatabaseConnection kaeru = DatabaseConnection.Instance;
         using var conn = kaeru.Connected();
         await conn.OpenAsync();
 
-        const string query = "UPDATE clients SET pin = @pin WHERE id_client = @idClient;";
+        const string query = "UPDATE client SET pin = @pin WHERE id_client = @idClient;";
 
         using var preparedQuery = new NpgsqlCommand(query, conn);
         preparedQuery.Parameters.AddWithValue("pin", newPin);
@@ -90,51 +81,59 @@ public static class ServiceClient
 
         try 
         {
-            await preparedQuery.ExecuteNonQueryAsync();
-            return "success";
+            if (await preparedQuery.ExecuteNonQueryAsync() == 0)
+            {
+                Console.WriteLine("ID inexistant");
+                return false;
+            }
+            return true;
         } 
         catch (NpgsqlException ex) 
         {
             Console.WriteLine(ex.Message); // temporary!
-            return "error";
+            return false;
         }
     }
 
     // ~LOCK/UNLOCK A CLIENT ACCOUNT
-    public static async Task<string> LockClientAsync (bool bloque, string idClient, string idEmploye, string codeAgence)
+    public static async Task<bool> LockClientAsync (bool bloque, string idClient)
     {
         IDatabaseConnection kaeru = DatabaseConnection.Instance;
         using var conn = kaeru.Connected();
         await conn.OpenAsync();
 
-        const string query = @"UPDATE clients 
-                            SET bloque = @bloque, id_employe = @idEmploye, code_agence = @codeAgence 
-                            WHERE id_client = @idClient;";
+        const string query = "UPDATE client SET bloque = @bloque WHERE id_client = @idClient;";
 
         using var preparedQuery = new NpgsqlCommand(query, conn);
         preparedQuery.Parameters.AddWithValue("bloque", bloque);
-        preparedQuery.Parameters.AddWithValue("idEmploye", idEmploye);
-        preparedQuery.Parameters.AddWithValue("codeAgence", codeAgence);
         preparedQuery.Parameters.AddWithValue("idClient", idClient);
 
         try 
         {
-            await preparedQuery.ExecuteNonQueryAsync();
-            return "success";
+            if (await preparedQuery.ExecuteNonQueryAsync() == 0)
+            {
+                Console.WriteLine("ID inexistant");
+                return false;
+            }
+            return true;
         } 
         catch (NpgsqlException ex) 
         {
             Console.WriteLine(ex.Message); // temporary!
-            return "error";
+            return false;
         }
     }
 
     // ~ USE TO DO A TRANSACTION
-    public static async Task<string> DepositAsync (decimal amount, string idClient, NpgsqlConnection conn, NpgsqlTransaction? transaction)
+    public static async Task<bool> DepositAsync (decimal amount, int idClient, NpgsqlConnection conn, NpgsqlTransaction? transaction)
     {
-        if (amount <= 0) return "amount should be positif";
+        if (amount <= 0) 
+        {
+            Console.WriteLine("montant negatif");
+            return false;
+        }
 
-        const string query = "UPDATE clients SET solde = solde + @amount WHERE id_client = @idClient FOR UPDATE;";
+        const string query = "UPDATE client SET solde = solde + @amount WHERE id_client = @idClient FOR UPDATE;";
         using var preparedQuery = new NpgsqlCommand(query, conn, transaction);
         preparedQuery.Parameters.AddWithValue("amount", amount);
         preparedQuery.Parameters.AddWithValue("idClient", idClient);
@@ -143,49 +142,50 @@ public static class ServiceClient
         {
             if (await preparedQuery.ExecuteNonQueryAsync() == 0)
             {
-                return "no id_client found";
+                Console.WriteLine("ID inexistant");
+                return false;
             }
-            return $"success";
+            return true;
         }
         catch (NpgsqlException ex)
         {
             Console.WriteLine(ex.Message); // temporary!
-            return "error";
+            return false;
         }
     }
-    public static async Task<string> WithdrawAsync (decimal amount, string idClient, NpgsqlConnection conn, NpgsqlTransaction? transaction)
+    public static async Task<bool> WithdrawAsync (decimal amount, int idClient, NpgsqlConnection conn, NpgsqlTransaction? transaction)
     {
-        if (amount <= 0) return "amount should be positif";
+        if (amount <= 0) 
+        {
+            Console.WriteLine("montant negatif");
+            return false;
+        }
 
-        const string query = "UPDATE clients SET solde = solde - @amount WHERE id_client = @idClient AND solde >= @amount FOR UPDATE;";
+        const string query = "UPDATE client SET solde = solde - @amount WHERE id_client = @idClient AND solde >= @amount FOR UPDATE;";
         using var preparedQuery = new NpgsqlCommand(query, conn, transaction);
         preparedQuery.Parameters.AddWithValue("amount", amount);
         preparedQuery.Parameters.AddWithValue("idClient", idClient);
 
         try
         {
-            int rowAffected = await preparedQuery.ExecuteNonQueryAsync();
-            if (rowAffected == 0)
+            if (await preparedQuery.ExecuteNonQueryAsync() == 0)
             {
-                return "no id_client found";
+                Console.WriteLine("ID inexistant");
+                return false;
             }
-            return $"success";
+            return true;
         }
         catch (NpgsqlException ex)
         {
-            Console.WriteLine(ex.Message); // temporary!;
-            return "error";
+            Console.WriteLine(ex.Message); // temporary!
+            return false;
         }
     }
     
     // ~CONSULTER SOLDE
-    public static async Task<decimal> ConsulterSoldeAsync (string idClient)
+    public static async Task<decimal> ConsulterSoldeAsync (string idClient, NpgsqlConnection conn)
     {
-        IDatabaseConnection kaeru = DatabaseConnection.Instance;
-        using var conn = kaeru.Connected();
-        await conn.OpenAsync();
-
-        const string query = "SELECT solde FROM clients WHERE id_client = @idClient;";
+        const string query = "SELECT solde FROM client WHERE id_client = @idClient;";
         using var preparedQuery = new NpgsqlCommand(query, conn);
         preparedQuery.Parameters.AddWithValue("idClient", idClient);
 
@@ -194,7 +194,7 @@ public static class ServiceClient
             object? solde = await preparedQuery.ExecuteScalarAsync();
             if (solde == null || solde == DBNull.Value)
             {
-                throw new InvalidOperationException("Client non existant");
+                throw new InvalidOperationException("ID inexistant");
             }
             return (solde as decimal?) ?? 0.00m;
         }
@@ -206,7 +206,7 @@ public static class ServiceClient
     }
 
     // ~ GET LIST OF CLIENT
-    public static async Task<List<Client>> GetClientListAsync (string? idClient = null, string? idEmploye = null, bool? bloque = null, string? nom = null)
+    public static async Task<List<Client>> GetClientListAsync (int? idClient = null, bool? bloque = null, string? nom = null)
     {
         var listClient = new List<Client>();
 
@@ -214,11 +214,10 @@ public static class ServiceClient
         using var conn = kaeru.Connected();
         await conn.OpenAsync();
 
-        const string query = "SELECT * FROM clients WHERE (id_client = @idClient OR @idClient IS NULL) AND (bloque = @bloque OR @bloque IS NULL) AND (id_employe = @idEmploye OR @idEmploye IS NULL) AND (nom LIKE @nom OR prenom LIKE @nom OR @nom IS NULL));";
+        const string query = "SELECT * FROM client WHERE (id_client = @idClient OR @idClient IS NULL) AND (bloque = @bloque OR @bloque IS NULL) AND (nom LIKE @nom OR prenom LIKE @nom OR @nom IS NULL));";
         using var preparedQuery = new NpgsqlCommand(query, conn);
         preparedQuery.Parameters.AddWithValue("bloque", bloque == null ? DBNull.Value : bloque);
         preparedQuery.Parameters.AddWithValue("idClient", idClient == null ? DBNull.Value : idClient);
-        preparedQuery.Parameters.AddWithValue("idEmpoye", idEmploye == null ? DBNull.Value : idEmploye);
         preparedQuery.Parameters.AddWithValue("nom", nom == null ? DBNull.Value : nom);
         try 
         {
@@ -227,18 +226,14 @@ public static class ServiceClient
             {
                 Client client = new()
                 {
-                    IdClient = row.GetString(0),
+                    IdClient = row.GetInt32(0),
                     Nom = row.GetString(1),
                     Prenom = row.IsDBNull(2) ? null : row.GetString(2),
                     Adresse = row.GetString(3),
-                    Mail = row.IsDBNull(4) ? null : row.GetString(4),
-                    Contact = row.IsDBNull(5) ? null : row.GetString(5),
-                    Solde = row.GetDecimal(6),
-                    DateCreation = row.GetDateTime(8),
-                    Bloque = row.GetBoolean(9),
-                    Dette = row.GetDecimal(10),
-                    IdEmploye = row.IsDBNull(11) ? null : row.GetString(11),
-                    CodeAgence = row.IsDBNull(12) ? null : row.GetString(12)
+                    Contact = row.GetString(4),
+                    Solde = row.GetDecimal(5),
+                    Bloque = row.GetBoolean(6),
+                    Credit = row.GetDecimal(7)
                 };
                 listClient.Add(client);
             }
