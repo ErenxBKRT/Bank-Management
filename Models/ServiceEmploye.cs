@@ -9,161 +9,165 @@ namespace Bankmanaging.Models;
 public static class ServiceEmploye
 {
     // VIREMENT BANCAIRE
-    public static async Task<string> VirementBancaireAsync (decimal montant, string refClient, string idEmploye, string codeAgence, string nom)
+    public static async Task<bool> VirementBancaireAsync (decimal montant, string numero, string pin, string codeAgence, string nom)
     {
-        if (montant <= 0) return "montont doit etre positif";
+        if (montant <= 0) 
+        {
+            Console.WriteLine("montant negatif");
+            return false;
+        }
+
         DateTime now = DateTime.Now;
         string microSecond = now.ToString("ffff");
         int randomNumber = RandomNumberGenerator.GetInt32(0, 100);
-        string codeTransaction = microSecond + "-" + randomNumber.ToString("D2");
+        string code = microSecond + "-" + randomNumber.ToString("D2");
+        
+        using var kaeru = await DatabaseConnection.Instance.KaeruConnectAsync();
+        bool eligible = await ServiceCarte.EstBloquerAsync(numero, kaeru);
+        if (!eligible)
+        {
+            Console.WriteLine("le compte est bloquer");
+            return false;
+        }
 
-        IDatabaseConnection kaeru = DatabaseConnection.Instance;
-        using var conn = kaeru.Connected();
-        await conn.OpenAsync();
-
-        await using var transaction = await conn.BeginTransactionAsync();
+        await using var kaeruTransac = await kaeru.BeginTransactionAsync();
         try 
         {
-            string depot = await ServiceClient.DepositAsync(montant, refClient, conn, transaction);
-            if (depot == "error" || depot == "no id_client found")
+            int refClient = await ServiceCarte.GetIdAsync(numero, kaeru, kaeruTransac);
+            if (refClient == 0) return false;
+
+            bool depot = await ServiceClient.DepositAsync(montant, refClient, kaeru, kaeruTransac);
+            if (!depot)
             {
-                await transaction.RollbackAsync();
-                return "Transaction failed";
+                await kaeruTransac.RollbackAsync();
+                return false;
             }
             
-            const string query = @"INSERT INTO transactions (code_transaction, libelle, montant, nom, refclient, code_agence, id_employe)
-                                                     VALUES (@codeTransaction, 'Virement', @montant, @nom, @refClient, @codeAgence, @idEmploye);";
-            using var preparedQuery = new NpgsqlCommand(query, conn, transaction);
-            preparedQuery.Parameters.AddWithValue("codeTransaction", codeTransaction);
+            const string query = "INSERT INTO transaction (code, libelle, montant, nom, refclient, code_agence) VALUES (@code, 'Virement', @montant, @nom, @refClient, @codeAgence);";
+            using var preparedQuery = new NpgsqlCommand(query, kaeru, kaeruTransac);
+            preparedQuery.Parameters.AddWithValue("code", code);
             preparedQuery.Parameters.AddWithValue("montant", montant);
             preparedQuery.Parameters.AddWithValue("nom", nom);
             preparedQuery.Parameters.AddWithValue("refClient", refClient);
             preparedQuery.Parameters.AddWithValue("codeAgence", codeAgence);
-            preparedQuery.Parameters.AddWithValue("idEmploye", idEmploye);
             
-            if (await preparedQuery.ExecuteNonQueryAsync() == 0)
-            {
-                await transaction.RollbackAsync();
-                return "Transaction failed";
-            }
-            await transaction.CommitAsync();
-            return "success";
+            await preparedQuery.ExecuteNonQueryAsync();
+            await kaeruTransac.CommitAsync();
+            return true;
         }
         catch (NpgsqlException ex)
         {
-            await transaction.RollbackAsync();
+            await kaeruTransac.RollbackAsync();
             Console.WriteLine(ex.Message);
-            return "error";
+            return false;
         }
     }
 
     // ~ DEPOT BANCAIRE
-    public static async Task<string> DepotBancaireAsync (string idClient, decimal montant, string codeAgence, string idEmploye)
+    public static async Task<bool> DepotBancaireAsync (string numero, decimal montant, string codeAgence)
     {
-        if (montant <= 0) return "montont doit etre positif";
+        if (montant <= 0) return false;
+
         DateTime now = DateTime.Now;
         string microSecond = now.ToString("ffff");
         int randomNumber = RandomNumberGenerator.GetInt32(0, 100);
-        string codeTransaction = microSecond + "-" + randomNumber.ToString("D2");
+        string code = microSecond + "-" + randomNumber.ToString("D2");
 
-        IDatabaseConnection kaeru = DatabaseConnection.Instance;
-        using var conn = kaeru.Connected();
-        await conn.OpenAsync();
+        using var kaeru = await DatabaseConnection.Instance.KaeruConnectAsync();
+        await using var kaeruTransac = await kaeru.BeginTransactionAsync();
+        if (!await ServiceCarte.EstBloquerAsync(numero, kaeru, kaeruTransac))
+        {
+            Console.WriteLine("compte bloque");
+            return false;
+        }
 
-        await using var transaction = await conn.BeginTransactionAsync();
         try
         {
-            string depot = await ServiceClient.DepositAsync(montant, idClient, conn, transaction);
-            if (depot == "no id found" || depot == "error")
+            int refClient = await ServiceCarte.GetIdAsync(numero, kaeru, kaeruTransac);
+            if (refClient == 0)
             {
-                await transaction.RollbackAsync();
-                return "Transaction failed";
+                Console.WriteLine("numero ou pin incorrect");
+                return false;
             }
 
-            const string query = @"INSERT INTO transactions (code_transaction, libelle, montant, refclient, id_employe)
-                                                    VALUES (@codeTransaction, 'Depot', @montant, @refclient, @idEmploye);";
-            using var preparedQuery = new NpgsqlCommand(query, conn, transaction);
-            preparedQuery.Parameters.AddWithValue("codeTransaction", codeTransaction);
+            if (!await ServiceClient.DepositAsync(montant, refClient, kaeru, kaeruTransac))
+            {
+                await kaeruTransac.RollbackAsync();
+                return false;
+            }
+
+            const string query = "INSERT INTO transaction (code, libelle, montant, refclient) VALUES (@code, 'Depot', @montant, @refClient);";
+            using var preparedQuery = new NpgsqlCommand(query, kaeru, kaeruTransac);
+            preparedQuery.Parameters.AddWithValue("code", code);
             preparedQuery.Parameters.AddWithValue("montant", montant);
-            preparedQuery.Parameters.AddWithValue("refClient", idClient);
-            preparedQuery.Parameters.AddWithValue("codeAgence", codeAgence);
-            preparedQuery.Parameters.AddWithValue("idEmploye", idEmploye);
+            preparedQuery.Parameters.AddWithValue("refClient", refClient);
 
-            if (await preparedQuery.ExecuteNonQueryAsync() == 0)
-            {
-                await transaction.RollbackAsync();
-                return "Transaction failed";
-            }
-            await transaction.CommitAsync();
-            return "success";
+            await preparedQuery.ExecuteNonQueryAsync();
+            await kaeruTransac.CommitAsync();
+            return true;
         }
         catch (NpgsqlException ex)
         {
-            await transaction.RollbackAsync();
+            await kaeruTransac.RollbackAsync();
             Console.WriteLine(ex.Message);
-            return "error";
+            return false;
         }
     }
 
     // ~ RETRAIT BANCAIRE
-    public static async Task<string> RetraitBancaireAsync (string refClient, decimal montant, string codeAgence, string idEmploye)
+    public static async Task<bool> RetraitBancaireAsync (string numero, string pin, decimal montant, string codeAgence)
     {
-        if (montant <= 0) return "montant doit etre positif";
+        if (montant <= 0) return false;
         DateTime now = DateTime.Now;
         string microSecond = now.ToString("ffff");
         int randomNumber = RandomNumberGenerator.GetInt32(0, 100);
-        string codeTransaction = microSecond + "-" + randomNumber.ToString("D2");
+        string code = microSecond + "-" + randomNumber.ToString("D2");
 
-        IDatabaseConnection kaeru = DatabaseConnection.Instance;
-        using var conn = kaeru.Connected();
-        await conn.OpenAsync();
+        using var kaeru = await DatabaseConnection.Instance.KaeruConnectAsync();
+        await using var kaeruTransac = await kaeru.BeginTransactionAsync();
+        if (!await ServiceCarte.EstBloquerAsync(numero, kaeru, kaeruTransac))
+        {
+            Console.WriteLine("compte bloque");
+            return false;
+        }
 
-        await using var transaction = await conn.BeginTransactionAsync();
         try
         {
-            string retrait = await ServiceClient.WithdrawAsync(montant, refClient, conn, transaction);
-            if (retrait == "no id found" || retrait == "error")
+            int refClient = await ServiceCarte.GetIdAsync(numero, kaeru, kaeruTransac, pin);
+            if (refClient == 0) return false;
+
+            if (!await ServiceClient.WithdrawAsync(montant, refClient, kaeru, kaeruTransac))
             {
-                await transaction.RollbackAsync();
-                return "Transaction failed";
+                await kaeruTransac.RollbackAsync();
+                return false;
             }
 
-            const string query = @"INSERT INTO transactions (code_transaction, libelle, montant, refclient, code_agence, id_employe)
-                                                    VALUES (@codeTransaction, 'Retrait', @montant, @refclient, @codeAgence, @idEmploye);";
-            using var preparedQuery = new NpgsqlCommand(query, conn, transaction);
-            preparedQuery.Parameters.AddWithValue("codeTransaction", codeTransaction);
+            const string query = "INSERT INTO transaction (code, libelle, montant, refclient) VALUES (@code, 'Retrait', @montant, @refClient);";
+            using var preparedQuery = new NpgsqlCommand(query, kaeru, kaeruTransac);
+            preparedQuery.Parameters.AddWithValue("code", code);
             preparedQuery.Parameters.AddWithValue("montant", montant);
-            preparedQuery.Parameters.AddWithValue("refclient", refClient);
-            preparedQuery.Parameters.AddWithValue("codeAgence", codeAgence);
-            preparedQuery.Parameters.AddWithValue("idEmploye", idEmploye);
+            preparedQuery.Parameters.AddWithValue("refClient", refClient);
 
-            if (await preparedQuery.ExecuteNonQueryAsync() == 0)
-            {
-                await transaction.RollbackAsync();
-                return "Transaction failed";
-            }
-            await transaction.CommitAsync();
-            return "success";
+            await preparedQuery.ExecuteNonQueryAsync();
+            await kaeruTransac.CommitAsync();
+            return true;
         }
         catch (NpgsqlException ex)
         {
-            await transaction.RollbackAsync();
+            await kaeruTransac.RollbackAsync();
             Console.WriteLine(ex.Message);
-            return "error";
+            return false;
         }
     }
 
     // ~ HISTORIQUE TRANSACTION
-    public static async Task<List<Transactions>> HistoriqueTransactionAsync(string? idClient = null, string? libelle = null, string? codeAgence = null)
+    public static async Task<List<Transaction>> HistoriqueTransactionAsync(string? idClient = null, string? libelle = null, string? codeAgence = null)
     {
-        var listTransaction = new List<Transactions>();
+        var listTransaction = new List<Transaction>();
+        using var kaeru = await DatabaseConnection.Instance.KaeruConnectAsync();
+        const string query = "SELECT * FROM transaction WHERE (refclient = @idClient OR @idClient IS NULL) AND (libelle = @libelle OR @libelle IS NULL) AND (code_agence = @codeAgence OR @codeAgence is NULL));";
 
-        IDatabaseConnection kaeru = DatabaseConnection.Instance;
-        using var conn = kaeru.Connected();
-        await conn.OpenAsync();
-
-        const string query = "SELECT * FROM transactions WHERE (id_client = @idClient OR @idClient IS NULL) AND (libelle = @libelle OR @libelle IS NULL) AND (code_agence = @codeAgence OR @codeAgence is NULL));";
-        using var preparedQuery = new NpgsqlCommand(query, conn);
+        using var preparedQuery = new NpgsqlCommand(query, kaeru);
         preparedQuery.Parameters.AddWithValue("codeAgence", codeAgence ?? (object)DBNull.Value);
         preparedQuery.Parameters.AddWithValue("idClient", idClient ?? (object)DBNull.Value);
         preparedQuery.Parameters.AddWithValue("libelle", libelle ?? (object)DBNull.Value);
@@ -172,16 +176,15 @@ public static class ServiceEmploye
             using var row = await preparedQuery.ExecuteReaderAsync();
             while (await row.ReadAsync())
             {
-                Transactions transaction = new()
+                Transaction transaction = new()
                 {
-                    CodeTransaction = row.GetString(0),
+                    Code = row.GetString(0),
                     Libelle = row.GetString(1),
                     Montant = row.GetDecimal(2),
-                    DateTransaction = row.GetDateTime(3),
+                    Date = row.GetDateTime(3),
                     Nom = await row.IsDBNullAsync(4) ? null : row.GetString(4),
-                    IdEmploye = await row.IsDBNullAsync(5) ? null : row.GetString(5),
-                    CodeAgence = await row.IsDBNullAsync(6) ? null : row.GetString(6),
-                    RefClient = await row.IsDBNullAsync(7) ? null : row.GetString(7),
+                    CodeAgence = await row.IsDBNullAsync(5) ? null : row.GetString(5),
+                    RefClient = row.GetString(6),
                 };
                 listTransaction.Add(transaction);
             }
@@ -197,12 +200,10 @@ public static class ServiceEmploye
     // ~ LIST CLIENT AYANT CREDIT
     public static async Task<List<Client>> ClientAvecCreditAsync ()
     {
-        IDatabaseConnection kaeru = DatabaseConnection.Instance;
-        using var conn = kaeru.Connected();
-        await conn.OpenAsync();
+        using var kaeru = await DatabaseConnection.Instance.KaeruConnectAsync();
 
-        const string query = "SELECT * FROM clients WHERE dette > 0.00;";
-        using var preparedQuery = new NpgsqlCommand(query, conn);
+        const string query = "SELECT nom, prenom, adresse, contact FROM client WHERE credit > 0.00;";
+        using var preparedQuery = new NpgsqlCommand(query, kaeru);
         var listClient = new List<Client>();
 
         try
@@ -212,13 +213,10 @@ public static class ServiceEmploye
             {
                 Client client = new()
                 {
-                    IdClient = row.GetString(0),
-                    Nom = row.GetString(1),
-                    Prenom = await row.IsDBNullAsync(2) ? null : row.GetString(2),
-                    Adresse = row.GetString(3),
-                    Mail = await row.IsDBNullAsync(4) ? null : row.GetString(4),
-                    Contact = await row.IsDBNullAsync(5) ? null : row.GetString(5),
-                    Dette = row.GetDecimal(10)
+                    Nom = row.GetString(0),
+                    Prenom = await row.IsDBNullAsync(1) ? null : row.GetString(1),
+                    Adresse = row.GetString(2),
+                    Contact = row.GetString(3),
                 };
                 listClient.Add(client);
             }
@@ -232,57 +230,60 @@ public static class ServiceEmploye
     }
 
     // ~ FAIRE UN CREDIT
-    public static async Task<string> DemanderCreditAsync (string refClient, string codeAgence, string idEmploye, decimal montant)
+    public static async Task<bool> DemanderCreditAsync (string numero, string codeAgence, decimal montant)
     {
-        if (montant <= 0) return "montant doit etre positif";
+        if (montant <= 0)
+        {
+            Console.WriteLine("montant negatif");
+            return false;
+        }
         DateTime now = DateTime.Now;
         string microSecond = now.ToString("ffff");
         int randomNumber = RandomNumberGenerator.GetInt32(0, 100);
-        string codeTransaction = microSecond + "-" + randomNumber.ToString("D2");
+        string code = microSecond + "-" + randomNumber.ToString("D2");
 
-        IDatabaseConnection kaeru = DatabaseConnection.Instance;
-        using var conn = kaeru.Connected();
-        await conn.OpenAsync();
-
-        await using var transaction = await conn.BeginTransactionAsync();
+        using var kaeru = await DatabaseConnection.Instance.KaeruConnectAsync();
+        await using var kaeruTransac = await kaeru.BeginTransactionAsync();
         try
         {
             //retrait depuit l'agence
-            var compareSolde = new NpgsqlCommand("SELECT solde FROM agence WHERE code_agence = @codeAgence;", conn, transaction);
+            var compareSolde = new NpgsqlCommand("SELECT solde FROM agence WHERE code_agence = @codeAgence;", kaeru, kaeruTransac);
             compareSolde.Parameters.AddWithValue("codeAgence", codeAgence);
-            if (((decimal?)await compareSolde.ExecuteScalarAsync() ?? 0m) < montant) return "solde agence insuffisant";
+            if (((decimal?)await compareSolde.ExecuteScalarAsync() ?? 0m) < montant)
+            {
+                Console.WriteLine("solde agence insuffisant");
+                return false;
+            }
 
-            var getCreditFromAgence = new NpgsqlCommand("UPDATE agence SET solde = solde - @montant WHERE code_agence = @codeAgence FOR UPDATE;", conn, transaction);
+            var getCreditFromAgence = new NpgsqlCommand("UPDATE agence SET solde = solde - @montant WHERE code_agence = @codeAgence FOR UPDATE;", kaeru, kaeruTransac);
             getCreditFromAgence.Parameters.AddWithValue("codeAgence", codeAgence);
             getCreditFromAgence.Parameters.AddWithValue("montant", montant);
             if (await getCreditFromAgence.ExecuteNonQueryAsync() == 0)
             {
-                await transaction.RollbackAsync();
-                return "code agence missing";
+                await kaeruTransac.RollbackAsync();
+                Console.WriteLine("code agence missing");
+                return false;
             }
 
-            const string query = @"INSERT INTO transactions (code_transaction, libelle, montant, refclient, code_agence, id_employe)
-                                        VALUES (@codeTransaction, 'Credit', @montant, @refclient, @codeAgence, @idEmploye);";
-            using var preparedQuery = new NpgsqlCommand(query, conn, transaction);
-            preparedQuery.Parameters.AddWithValue("codeTransaction", codeTransaction);
+            int refClient = await ServiceCarte.GetIdAsync(numero, kaeru, kaeruTransac);
+            if (refClient == 0) return false;
+
+            const string query = "INSERT INTO transaction (code, libelle, montant, refclient, code_agence) VALUES (@code, 'Credit', @montant, @refClient, @codeAgence);";
+            using var preparedQuery = new NpgsqlCommand(query, kaeru, kaeruTransac);
+            preparedQuery.Parameters.AddWithValue("code", code);
             preparedQuery.Parameters.AddWithValue("montant", montant);
             preparedQuery.Parameters.AddWithValue("refClient", refClient);
             preparedQuery.Parameters.AddWithValue("codeAgence", codeAgence);
-            preparedQuery.Parameters.AddWithValue("idEmploye", idEmploye);
 
-            if (await preparedQuery.ExecuteNonQueryAsync() == 0)
-            {
-                await transaction.RollbackAsync();
-                return "Transaction failed";
-            }
-            await transaction.CommitAsync();
-            return "success";
+            await preparedQuery.ExecuteNonQueryAsync();
+            await kaeruTransac.CommitAsync();
+            return true;
         }
         catch (NpgsqlException ex)
         {
             Console.WriteLine(ex.Message);
-            await transaction.RollbackAsync();
-            return "error";
+            await kaeruTransac.RollbackAsync();
+            return false;
         }
     }
 

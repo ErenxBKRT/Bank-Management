@@ -44,7 +44,7 @@ CREATE TABLE carte_bancaire
     date_creation TIMESTAMP(0) DEFAULT CURRENT_TIMESTAMP(0) NOT NULL,
     pin VARCHAR(4) NOT NULL,
     refclient INT NOT NULL,
-    carte_bloquer BOOLEAN DEFAULT FALSE NOT NULL,
+    carte_bloquer BOOLEAN DEFAULT false NOT NULL,
 
     CONSTRAINT pk_carte_numero PRIMARY KEY (num_compte),
     CONSTRAINT fk_carte_client FOREIGN KEY (refclient) REFERENCES client(id_client)
