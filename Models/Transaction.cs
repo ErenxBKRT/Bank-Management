@@ -2,7 +2,7 @@ using System;
 
 namespace Bankmanaging.Models;
 
-public class Transaction
+public class Transactions
 {
     public string CodeTransaction { get; set; } = string.Empty;
     public string Libelle { get; set; } = string.Empty;

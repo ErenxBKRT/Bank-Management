@@ -214,28 +214,28 @@ public static class ServiceClient
         using var conn = kaeru.Connected();
         await conn.OpenAsync();
 
-        const string query = @"SELECT * FROM clients;";
+        const string query = "SELECT * FROM clients;";
         using var preparedQuery = new NpgsqlCommand(query, conn);
         try 
         {
             using var row = await preparedQuery.ExecuteReaderAsync();
             while (await row.ReadAsync())
             {
-                var client = new Client
+                Client client = new()
                 {
                     IdClient = row.GetString(0),
                     Nom = row.GetString(1),
-                    Prenom = row.GetString(2),
+                    Prenom = row.IsDBNull(2) ? null : row.GetString(2),
                     Adresse = row.GetString(3),
-                    Mail = row.GetString(4),
-                    Contact = row.GetString(5),
+                    Mail = row.IsDBNull(4) ? null : row.GetString(4),
+                    Contact = row.IsDBNull(5) ? null : row.GetString(5),
                     Solde = row.GetDecimal(6),
                     Pin = row.GetString(7),
                     DateCreation = row.GetDateTime(8),
                     Bloque = row.GetBoolean(9),
                     Dette = row.GetDecimal(10),
-                    IdEmploye = row.GetString(11),
-                    CodeAgence = row.GetString(12)
+                    IdEmploye = row.IsDBNull(11) ? null : row.GetString(11),
+                    CodeAgence = row.IsDBNull(12) ? null : row.GetString(12)
                 };
                 listClient.Add(client);
             }

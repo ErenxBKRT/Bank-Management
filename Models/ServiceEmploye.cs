@@ -1,6 +1,7 @@
 using Npgsql;
 using System;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 using System.Security.Cryptography;
 
 namespace Bankmanaging.Models;
@@ -104,6 +105,44 @@ public static class ServiceEmploye
     }
 
     // ~ HISTORIQUE TRANSACTION
-    public static async 
+    public static async Task<List<Transactions>> HistoriqueTransactionAsync(bool condition, string? idClient = null, string? libelle = null, string? codeAgence = null)
+    {
+        var listTransaction = new List<Transactions>();
 
+        IDatabaseConnection kaeru = DatabaseConnection.Instance;
+        using var conn = kaeru.Connected();
+        await conn.OpenAsync();
+
+        const string query = "SELECT * FROM transactions WHERE (id_client = @idClient OR @idClient IS NULL) AND (libelle = @libelle OR @libelle IS NULL) AND (code_agence = @codeAgence OR @codeAgence is NULL));";
+        using var preparedQuery = new NpgsqlCommand(query, conn);
+        preparedQuery.Parameters.AddWithValue("codeAgence", codeAgence ?? (object)DBNull.Value);
+        preparedQuery.Parameters.AddWithValue("idClient", idClient ?? (object)DBNull.Value);
+        preparedQuery.Parameters.AddWithValue("libelle", libelle ?? (object)DBNull.Value);
+        try
+        {
+            using var row = await preparedQuery.ExecuteReaderAsync();
+            while (await row.ReadAsync())
+            {
+                Transactions transaction = new()
+                {
+                    CodeTransaction = row.GetString(0),
+                    Libelle = row.GetString(1),
+                    Montant = row.GetDecimal(2),
+                    DateTransaction = row.GetDateTime(3),
+                    Nom = await row.IsDBNullAsync(4) ? null : row.GetString(4),
+                    IdEmploye = await row.IsDBNullAsync(5) ? null : row.GetString(5),
+                    CodeAgence = await row.IsDBNullAsync(6) ? null : row.GetString(6),
+                    Recepteur = await row.IsDBNullAsync(7) ? null : row.GetString(7),
+                    Emetteur = await row.IsDBNullAsync(8) ? null : row.GetString(8)
+                };
+                listTransaction.Add(transaction);
+            }
+            return listTransaction;
+        }
+        catch (NpgsqlException ex)
+        {
+            Console.WriteLine(ex.Message);
+            throw;
+        }
+    }
 }
