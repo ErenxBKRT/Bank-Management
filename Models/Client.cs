@@ -11,7 +11,6 @@ public class Client
     public string? Mail { get; set; }
     public string? Contact { get; set; }
     public decimal Solde = 0.00m;
-    public string Pin { get; set; } = string.Empty;
     public DateTime DateCreation;
     public bool Bloque = false;
     public decimal Dette = 0.00m;

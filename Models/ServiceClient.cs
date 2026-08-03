@@ -8,7 +8,7 @@ namespace Bankmanaging.Models;
 public static class ServiceClient
 {
     // ~INSERT THE NEW CLIENT INTO THE DATABASE 
-    public static async Task<string> CreateClientAsync (Client client)
+    public static async Task<string> CreateClientAsync (Client client, string pin)
     {
         DateTime now = DateTime.Now;
         string microSecond = now.ToString("ffff");
@@ -30,7 +30,7 @@ public static class ServiceClient
         preparedQuery.Parameters.AddWithValue("mail", (object?)client.Mail ?? DBNull.Value);
         preparedQuery.Parameters.AddWithValue("contact", (object?)client.Contact ?? DBNull.Value);
         preparedQuery.Parameters.AddWithValue("solde", client.Solde);
-        preparedQuery.Parameters.AddWithValue("pin", client.Pin);
+        preparedQuery.Parameters.AddWithValue("pin", pin);
 
         try 
         {
@@ -134,7 +134,7 @@ public static class ServiceClient
     {
         if (amount <= 0) return "amount should be positif";
 
-        const string query = "UPDATE clients SET solde = solde + @amount WHERE id_client = @idClient;";
+        const string query = "UPDATE clients SET solde = solde + @amount WHERE id_client = @idClient FOR UPDATE;";
         using var preparedQuery = new NpgsqlCommand(query, conn, transaction);
         preparedQuery.Parameters.AddWithValue("amount", amount);
         preparedQuery.Parameters.AddWithValue("idClient", idClient);
@@ -157,7 +157,7 @@ public static class ServiceClient
     {
         if (amount <= 0) return "amount should be positif";
 
-        const string query = "UPDATE clients SET solde = solde - @amount WHERE id_client = @idClient AND solde >= @amount;";
+        const string query = "UPDATE clients SET solde = solde - @amount WHERE id_client = @idClient AND solde >= @amount FOR UPDATE;";
         using var preparedQuery = new NpgsqlCommand(query, conn, transaction);
         preparedQuery.Parameters.AddWithValue("amount", amount);
         preparedQuery.Parameters.AddWithValue("idClient", idClient);
@@ -234,7 +234,6 @@ public static class ServiceClient
                     Mail = row.IsDBNull(4) ? null : row.GetString(4),
                     Contact = row.IsDBNull(5) ? null : row.GetString(5),
                     Solde = row.GetDecimal(6),
-                    Pin = row.GetString(7),
                     DateCreation = row.GetDateTime(8),
                     Bloque = row.GetBoolean(9),
                     Dette = row.GetDecimal(10),

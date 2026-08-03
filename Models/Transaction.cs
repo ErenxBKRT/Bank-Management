@@ -11,6 +11,5 @@ public class Transactions
     public string? Nom { get; set; }
     public string? IdEmploye { get; set; }
     public string? CodeAgence { get; set; }
-    public string? Recepteur { get; set; }
-    public string? Emetteur { get; set; }
+    public string? RefClient { get; set; }
 }

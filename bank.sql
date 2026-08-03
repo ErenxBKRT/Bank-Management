@@ -13,7 +13,7 @@ CREATE TABLE agence
 (
     code_agence VARCHAR(4) NOT NULL,
     lieu VARCHAR(30) NOT NULL,
-    adresse_agence VARCHAR(30),
+    adresse_agence VARCHAR(30) UNIQUE NOT NULL,
     actives BOOLEAN DEFAULT true,
     solde DOUBLE PRECISION DEFAULT 0.00 NOT NULL,
     
@@ -41,7 +41,7 @@ CREATE TABLE clients
     nom VARCHAR(30) NOT NULL,
     prenom VARCHAR(50),
     adresse VARCHAR(30) NOT NULL,
-    mail VARCHAR(100),
+    mail VARCHAR(50),
     contact VARCHAR(10),
     solde DOUBLE PRECISION DEFAULT 0.00 NOT NULL,
     pin VARCHAR(4) NOT NULL,
@@ -65,12 +65,9 @@ CREATE TABLE transactions
     nom VARCHAR(80),
     id_employe VARCHAR(10) NULL,
     code_agence VARCHAR(4) NULL,
-    recepteur VARCHAR(10),
-    emetteur VARCHAR(10),
+    refclient VARCHAR(10),
 
-    CONSTRAINT fk_transactions_recepteur FOREIGN KEY (recepteur) REFERENCES clients(id_client),
-    CONSTRAINT fk_transaction_emetteur FOREIGN KEY (emetteur) REFERENCES clients(id_client),
-
+    CONSTRAINT fk_transaction_refclient FOREIGN KEY (refclient) REFERENCES clients(id_client),
     CONSTRAINT fk_trasactions_agence FOREIGN KEY (code_agence) REFERENCES agence(code_agence),
     CONSTRAINT fk_transaction_agence_employe FOREIGN KEY (id_employe, code_agence) REFERENCES employe(id_employe, code_agence) MATCH SIMPLE
 );
