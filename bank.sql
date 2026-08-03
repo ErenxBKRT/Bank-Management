@@ -32,7 +32,7 @@ CREATE TABLE transaction
     date TIMESTAMP(0) DEFAULT CURRENT_TIMESTAMP(0) NOT NULL,
     nom VARCHAR(80),
     code_agence VARCHAR(4),
-    refclient INT,
+    refclient INT NOT NULL,
 
     CONSTRAINT fk_transaction_refclient FOREIGN KEY (refclient) REFERENCES client(id_client),
     CONSTRAINT fk_trasactions_agence FOREIGN KEY (code_agence) REFERENCES agence(code_agence)
@@ -43,8 +43,8 @@ CREATE TABLE carte_bancaire
     num_compte VARCHAR(10) NOT NULL,
     date_creation TIMESTAMP(0) DEFAULT CURRENT_TIMESTAMP(0) NOT NULL,
     pin VARCHAR(4) NOT NULL,
-    id_client INT NOT NULL,
+    refclient INT NOT NULL,
 
     CONSTRAINT pk_carte_numero PRIMARY KEY (num_compte),
-    CONSTRAINT fk_carte_client FOREIGN KEY (id_client) REFERENCES client(id_client)
+    CONSTRAINT fk_carte_client FOREIGN KEY (refclient) REFERENCES client(id_client)
 );
