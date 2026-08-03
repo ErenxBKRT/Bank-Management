@@ -206,7 +206,7 @@ public static class ServiceClient
     }
 
     // ~ GET LIST OF CLIENT
-    public static async Task<List<Client>> GetClientListAsync ()
+    public static async Task<List<Client>> GetClientListAsync (string? idClient = null, string? idEmploye = null, bool? bloque = null, string? nom = null)
     {
         var listClient = new List<Client>();
 
@@ -214,8 +214,12 @@ public static class ServiceClient
         using var conn = kaeru.Connected();
         await conn.OpenAsync();
 
-        const string query = "SELECT * FROM clients;";
+        const string query = "SELECT * FROM clients WHERE (id_client = @idClient OR @idClient IS NULL) AND (bloque = @bloque OR @bloque IS NULL) AND (id_employe = @idEmploye OR @idEmploye IS NULL) AND (nom LIKE @nom OR prenom LIKE @nom OR @nom IS NULL));";
         using var preparedQuery = new NpgsqlCommand(query, conn);
+        preparedQuery.Parameters.AddWithValue("bloque", bloque == null ? DBNull.Value : bloque);
+        preparedQuery.Parameters.AddWithValue("idClient", idClient == null ? DBNull.Value : idClient);
+        preparedQuery.Parameters.AddWithValue("idEmpoye", idEmploye == null ? DBNull.Value : idEmploye);
+        preparedQuery.Parameters.AddWithValue("nom", nom == null ? DBNull.Value : nom);
         try 
         {
             using var row = await preparedQuery.ExecuteReaderAsync();

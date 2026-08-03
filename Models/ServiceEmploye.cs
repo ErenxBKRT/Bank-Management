@@ -105,7 +105,7 @@ public static class ServiceEmploye
     }
 
     // ~ HISTORIQUE TRANSACTION
-    public static async Task<List<Transactions>> HistoriqueTransactionAsync(bool condition, string? idClient = null, string? libelle = null, string? codeAgence = null)
+    public static async Task<List<Transactions>> HistoriqueTransactionAsync(string? idClient = null, string? libelle = null, string? codeAgence = null)
     {
         var listTransaction = new List<Transactions>();
 
