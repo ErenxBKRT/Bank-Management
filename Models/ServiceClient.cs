@@ -9,11 +9,9 @@ public static class ServiceClient
     // ~ INSERT THE NEW CLIENT INTO THE DATABASE 
     public static async Task<bool> CreateClientAsync (string nom, string adresse, string contact, string? prenom = null)
     {
-        using var kaeru = await DatabaseConnection.Instance.KaeruConnectAsync();
+        using NpgsqlConnection kaeru = await DatabaseConnection.Instance.KaeruConnectAsync();
 
-        const string query = "INSERT INTO client (nom, prenom, adresse, contact) VALUES (@nom, @prenom, @adresse, @contact);";
-
-        using var preparedQuery = new NpgsqlCommand(query, kaeru);
+        using NpgsqlCommand preparedQuery = new ("INSERT INTO client (nom, prenom, adresse, contact) VALUES (@nom, @prenom, @adresse, @contact);", kaeru);
         preparedQuery.Parameters.AddWithValue("nom", nom);
         preparedQuery.Parameters.AddWithValue("prenom", prenom ?? (object)DBNull.Value);
         preparedQuery.Parameters.AddWithValue("adresse", adresse);
@@ -34,11 +32,9 @@ public static class ServiceClient
     // ~READJUST/UPDATE CLIENT INFORMATION
     public static async Task<bool> UpdateClientAsync (int idClient, string nom, string adresse, string contact, string? prenom = null)
     {
-        using var kaeru = await DatabaseConnection.Instance.KaeruConnectAsync();
+        using NpgsqlConnection kaeru = await DatabaseConnection.Instance.KaeruConnectAsync();
 
-        const string query = "UPDATE client SET nom = @nom, prenom = @prenom, adresse = @adresse, contact = @contact WHERE id_client = @idClient;";
-
-        using var preparedQuery = new NpgsqlCommand(query, kaeru);
+        using NpgsqlCommand preparedQuery = new ("UPDATE client SET nom = @nom, prenom = @prenom, adresse = @adresse, contact = @contact WHERE id_client = @idClient;", kaeru);
         preparedQuery.Parameters.AddWithValue("nom", nom);
         preparedQuery.Parameters.AddWithValue("prenom", prenom ?? (object)DBNull.Value);
         preparedQuery.Parameters.AddWithValue("adresse", adresse);
@@ -64,11 +60,9 @@ public static class ServiceClient
     // ~LOCK/UNLOCK A CLIENT ACCOUNT
     public static async Task<bool> LockClientAsync (bool bloque, int idClient)
     {
-        using var kaeru = await DatabaseConnection.Instance.KaeruConnectAsync();
+        using NpgsqlConnection kaeru = await DatabaseConnection.Instance.KaeruConnectAsync();
 
-        const string query = "UPDATE client SET bloque = @bloque WHERE id_client = @idClient;";
-
-        using var preparedQuery = new NpgsqlCommand(query, kaeru);
+        using NpgsqlCommand preparedQuery = new ("UPDATE client SET bloque = @bloque WHERE id_client = @idClient;", kaeru);
         preparedQuery.Parameters.AddWithValue("bloque", bloque);
         preparedQuery.Parameters.AddWithValue("idClient", idClient);
 
@@ -92,8 +86,7 @@ public static class ServiceClient
     // CHECK CLIENT BLOQUER
     public static async Task<bool> CheckLockedClientAsync (int idClient, NpgsqlConnection kaeru, NpgsqlTransaction? kaeruTransac = null)
     {
-        const string query = "SELECT bloque FROM client WHERE id_client = @idClient;";
-        using var preparedQuery = new NpgsqlCommand(query, kaeru, kaeruTransac);
+        using NpgsqlCommand preparedQuery = new ("SELECT bloque FROM client WHERE id_client = @idClient;", kaeru, kaeruTransac);
         preparedQuery.Parameters.AddWithValue("idClient", idClient);
 
         object? status = await preparedQuery.ExecuteScalarAsync();
@@ -129,8 +122,7 @@ public static class ServiceClient
             return false;
         }
 
-        const string query = "UPDATE client SET solde = solde + @amount WHERE id_client = @idClient FOR UPDATE;";
-        using var preparedQuery = new NpgsqlCommand(query, kaeru, kaeruTransac);
+        using NpgsqlCommand preparedQuery = new ("UPDATE client SET solde = solde + @amount WHERE id_client = @idClient FOR UPDATE;", kaeru, kaeruTransac);
         preparedQuery.Parameters.AddWithValue("amount", amount);
         preparedQuery.Parameters.AddWithValue("idClient", idClient);
 
@@ -159,8 +151,7 @@ public static class ServiceClient
             return false;
         }
 
-        const string query = "UPDATE client SET solde = solde - @amount WHERE id_client = @idClient AND solde >= @amount FOR UPDATE;";
-        using var preparedQuery = new NpgsqlCommand(query, kaeru, kaeruTransac);
+        using NpgsqlCommand preparedQuery = new ("UPDATE client SET solde = solde - @amount WHERE id_client = @idClient AND solde >= @amount FOR UPDATE;", kaeru, kaeruTransac);
         preparedQuery.Parameters.AddWithValue("amount", amount);
         preparedQuery.Parameters.AddWithValue("idClient", idClient);
 
@@ -179,12 +170,11 @@ public static class ServiceClient
     // ~CONSULTER SOLDE
     public static async Task<decimal> ConsulterSoldeAsync (string numero, string pin)
     {
-        using var kaeru = await DatabaseConnection.Instance.KaeruConnectAsync();
+        using NpgsqlConnection kaeru = await DatabaseConnection.Instance.KaeruConnectAsync();
         int idClient = await ServiceCarte.GetIdAsync(numero, kaeru, pin: pin);
         if (idClient == 0) throw new KeyNotFoundException("pin ou numero incorrect!");
 
-        const string query = "SELECT solde FROM client WHERE id_client = @idClient;";
-        using var preparedQuery = new NpgsqlCommand(query, kaeru);
+        using NpgsqlCommand preparedQuery = new ("SELECT solde FROM client WHERE id_client = @idClient;", kaeru);
         preparedQuery.Parameters.AddWithValue("idClient", idClient);
 
         try
@@ -208,17 +198,16 @@ public static class ServiceClient
     // ~ GET LIST OF CLIENT
     public static async Task<List<Client>> GetClientListAsync (int? idClient = null, bool? bloque = null, string? nom = null)
     {
-        var listClient = new List<Client>();
-        using var kaeru = await DatabaseConnection.Instance.KaeruConnectAsync();
+        List<Client> listClient = [];
+        using NpgsqlConnection kaeru = await DatabaseConnection.Instance.KaeruConnectAsync();
 
-        const string query = "SELECT * FROM client WHERE (id_client = @idClient OR @idClient IS NULL) AND (bloque = @bloque OR @bloque IS NULL) AND (nom LIKE @nom OR prenom LIKE @nom OR @nom IS NULL));";
-        using var preparedQuery = new NpgsqlCommand(query, kaeru);
+        using NpgsqlCommand preparedQuery = new ("SELECT * FROM client WHERE (id_client = @idClient OR @idClient IS NULL) AND (bloque = @bloque OR @bloque IS NULL) AND (nom LIKE @nom OR prenom LIKE @nom OR @nom IS NULL));", kaeru);
         preparedQuery.Parameters.AddWithValue("bloque", bloque == null ? DBNull.Value : bloque);
         preparedQuery.Parameters.AddWithValue("idClient", idClient == null ? DBNull.Value : idClient);
         preparedQuery.Parameters.AddWithValue("nom", nom == null ? DBNull.Value : nom);
         try 
         {
-            using var row = await preparedQuery.ExecuteReaderAsync();
+            using NpgsqlDataReader row = await preparedQuery.ExecuteReaderAsync();
             while (await row.ReadAsync())
             {
                 Client client = new()
@@ -241,5 +230,6 @@ public static class ServiceClient
             throw;
         }
     }
+
 
 }
