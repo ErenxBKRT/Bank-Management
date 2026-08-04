@@ -29,12 +29,13 @@ CREATE TABLE transaction
     code VARCHAR(7) PRIMARY KEY NOT NULL,
     libelle VARCHAR(10),
     montant DOUBLE PRECISION NOT NULL,
+    status VARCHAR(12) CHECK (status IN ("EN ATTENTE", "CONFIRMER"))
     date TIMESTAMP(0) DEFAULT CURRENT_TIMESTAMP(0) NOT NULL,
     nom VARCHAR(80),
-    code_agence VARCHAR(4),
-    refclient INT NOT NULL,
+    code_agence VARCHAR(4) NOT NULL,
+    num_compte VARCHAR(10) NOT NULL,
 
-    CONSTRAINT fk_transaction_refclient FOREIGN KEY (refclient) REFERENCES client(id_client),
+    CONSTRAINT fk_transaction_numero FOREIGN KEY (num_compte) REFERENCES carte_bancaire(num_compte),
     CONSTRAINT fk_trasactions_agence FOREIGN KEY (code_agence) REFERENCES agence(code_agence)
 );
 
