@@ -2,30 +2,15 @@ using System;
 using Npgsql;
 using System.Threading.Tasks;
 
-namespace Bankmanaging.Models;
-
-public interface IDatabaseConnection
+namespace Bankmanaging.Models
 {
-    Task<NpgsqlConnection> KaeruConnectAsync();
-}
-
-public sealed class DatabaseConnection : IDatabaseConnection
-{
-    private const string Owner = "Host=localhost;Database=bank;Username=bank_manager;Password=bankmanager";
-
-    private static readonly Lazy<DatabaseConnection> _instance = new (()=> new DatabaseConnection());
-    
-    public static IDatabaseConnection Instance => _instance.Value;
-
-    private DatabaseConnection() {}
-
-    private static NpgsqlConnection Connected()
+    public interface IDatabaseConnection
     {
         NpgsqlConnection Connected();
         string TestConnection();
     }
-    
-    public async Task<NpgsqlConnection> KaeruConnectAsync()
+
+    public sealed class DatabaseConnection : IDatabaseConnection
     {
          private const string Owner = "Host=localhost;Database=bank;Username=bank_manager;Password=bankmanager;Timeout=3;";
 
