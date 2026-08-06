@@ -7,7 +7,8 @@ CREATE TABLE agence
 (
     code_agence VARCHAR(4) NOT NULL,
     adresse_agence VARCHAR(30) UNIQUE NOT NULL,
-    solde DOUBLE PRECISION DEFAULT 0.00 NOT NULL,
+    solde NUMERIC(18, 2) DEFAULT 0.00 NOT NULL,
+    creation TIMESTAMP(0) DEFAULT CURRENT_TIMESTAMP(0) NOT NULL,
     
     CONSTRAINT pk_agence_code_agence PRIMARY KEY (code_agence)
 );
@@ -19,17 +20,17 @@ CREATE TABLE client
     prenom VARCHAR(50),
     adresse VARCHAR(30) NOT NULL,
     contact VARCHAR(10) NOT NULL,
-    solde DOUBLE PRECISION DEFAULT 0.00 NOT NULL,
+    solde NUMERIC(18, 2) DEFAULT 0.00 NOT NULL,
     bloque BOOLEAN DEFAULT false,
-    credit DOUBLE PRECISION DEFAULT 0.00 NOT NULL
+    credit NUMERIC(18, 2) DEFAULT 0.00 NOT NULL
 );
 
 CREATE TABLE transaction
 (
     code VARCHAR(7) PRIMARY KEY NOT NULL,
     libelle VARCHAR(10),
-    montant DOUBLE PRECISION NOT NULL,
-    status VARCHAR(12) CHECK (status IN ("EN ATTENTE", "CONFIRMER"))
+    montant NUMERIC(18, 2) NOT NULL,
+    status VARCHAR(12) CHECK (status IN ("EN ATTENTE", "CONFIRMER", "NON PAYER", "PAYER"))
     date TIMESTAMP(0) DEFAULT CURRENT_TIMESTAMP(0) NOT NULL,
     nom VARCHAR(80),
     code_agence VARCHAR(4) NOT NULL,

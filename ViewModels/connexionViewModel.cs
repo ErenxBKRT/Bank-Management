@@ -1,6 +1,8 @@
+using Bankmanaging.Models;
 using Bankmanaging.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using System.Threading.Tasks;
 
 namespace Bankmanaging.ViewModels;
 
@@ -23,22 +25,23 @@ public partial class ConnexionViewModel : ViewModelBase
     }
 
     [RelayCommand]
-    private void Login()
+    private async Task Login()
     {
-        if (string.IsNullOrWhiteSpace(Username) || string.IsNullOrWhiteSpace(Password))
-        {
-            StatusMessage = "Veuillez remplir tous les champs.";
-            return;
-        }
+        await Mock.CallMeToMockTest();
+        // if (string.IsNullOrWhiteSpace(Username) || string.IsNullOrWhiteSpace(Password))
+        // {
+        //     StatusMessage = "Veuillez remplir tous les champs.";
+        //     return;
+        // }
 
-        if (Username.Equals("admin", System.StringComparison.OrdinalIgnoreCase) && Password == "1234")
-        {
-            StatusMessage = "Connexion réussie !";
+        // if (Username.Equals("admin", System.StringComparison.OrdinalIgnoreCase) && Password == "1234")
+        // {
+        //     StatusMessage = "Connexion réussie !";
             _mainViewModel.OuvrirApplication();
-        }
-        else
-        {
-            StatusMessage = "Identifiants invalides";
-        }
+        // }
+        // else
+        // {
+        //     StatusMessage = "Identifiants invalides";
+        // }
     }
 }
