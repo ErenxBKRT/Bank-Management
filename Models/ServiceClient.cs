@@ -10,19 +10,26 @@ public static class ServiceClient
     {
         using NpgsqlConnection kaeru = await DatabaseConnection.Instance.KaeruConnectAsync();
         using NpgsqlCommand preparedQuery = new ("INSERT INTO client (nom, prenom, adresse, contact) VALUES (@nom, @prenom, @adresse, @contact);", kaeru);
-        preparedQuery.Parameters.AddWithValue("nom", nom);
-        preparedQuery.Parameters.AddWithValue("prenom", prenom ?? (object)DBNull.Value);
-        preparedQuery.Parameters.AddWithValue("adresse", adresse);
-        preparedQuery.Parameters.AddWithValue("contact", contact);
 
         try 
         {
+            preparedQuery.Parameters.AddWithValue("nom", nom);
+            preparedQuery.Parameters.AddWithValue("prenom", prenom ?? (object)DBNull.Value);
+            preparedQuery.Parameters.AddWithValue("adresse", adresse);
+            preparedQuery.Parameters.AddWithValue("contact", contact);
+
             await preparedQuery.ExecuteNonQueryAsync();
-            return "SUCCESS";
+            return "Ajout du nouveau client terminé avec succès.";
         } 
         catch (NpgsqlException ex) 
         {
-            throw new NpgsqlException(ex.Message);
+            Debug.WriteLine($"Error : {ex.Message}"); 
+            return "L'ajout du nouveau client a échoué.";
+        }
+        catch (Exception ex) 
+        {
+            Debug.WriteLine($"Error : {ex.Message}"); 
+            return "L'ajout du nouveau client a échoué.";
         }
     }
 
@@ -30,21 +37,27 @@ public static class ServiceClient
     {
         using NpgsqlConnection kaeru = await DatabaseConnection.Instance.KaeruConnectAsync();
 
-        using NpgsqlCommand preparedQuery = new ("UPDATE client SET nom = @nom, prenom = @prenom, adresse = @adresse, contact = @contact WHERE id_client = @idClient;", kaeru);
-        preparedQuery.Parameters.AddWithValue("nom", nom);
-        preparedQuery.Parameters.AddWithValue("prenom", prenom ?? (object)DBNull.Value);
-        preparedQuery.Parameters.AddWithValue("adresse", adresse);
-        preparedQuery.Parameters.AddWithValue("contact", contact);
-        preparedQuery.Parameters.AddWithValue("idClient", idClient);
-
         try 
         {
-            if(await preparedQuery.ExecuteNonQueryAsync() == 0) return "L'identifiant du client est incorrect"; 
-            return "SUCCESS";
+            using NpgsqlCommand preparedQuery = new ("UPDATE client SET nom = @nom, prenom = @prenom, adresse = @adresse, contact = @contact WHERE id_client = @idClient;", kaeru);
+            preparedQuery.Parameters.AddWithValue("nom", nom);
+            preparedQuery.Parameters.AddWithValue("prenom", prenom ?? (object)DBNull.Value);
+            preparedQuery.Parameters.AddWithValue("adresse", adresse);
+            preparedQuery.Parameters.AddWithValue("contact", contact);
+            preparedQuery.Parameters.AddWithValue("idClient", idClient);
+
+            if(await preparedQuery.ExecuteNonQueryAsync() == 0) return "L'identifiant du client est incorrect."; 
+            return "Les informations du client mis à jour avec succès.";
         } 
         catch (NpgsqlException ex) 
         {
-            throw new NpgsqlException(ex.Message); 
+            Debug.WriteLine($"Error : {ex.Message}"); 
+            return "Le mis à jour des informations a echoué.";
+        }
+        catch (Exception ex) 
+        {
+            Debug.WriteLine($"Error : {ex.Message}"); 
+            return "Le mis à jour des informations a echoué.";
         }
     }
 
@@ -53,47 +66,47 @@ public static class ServiceClient
         using NpgsqlConnection kaeru = await DatabaseConnection.Instance.KaeruConnectAsync();
         using NpgsqlTransaction kaeruTransac = await kaeru.BeginTransactionAsync();
 
-        using NpgsqlCommand preparedQuery = new ("UPDATE client SET bloque = @bloque WHERE id_client = @idClient;", kaeru, kaeruTransac);
-        preparedQuery.Parameters.AddWithValue("bloque", bloque);
-        preparedQuery.Parameters.AddWithValue("idClient", idClient);
-
         try 
         {
+            using NpgsqlCommand preparedQuery = new ("UPDATE client SET bloque = @bloque WHERE id_client = @idClient;", kaeru, kaeruTransac);
+            preparedQuery.Parameters.AddWithValue("bloque", bloque);
+            preparedQuery.Parameters.AddWithValue("idClient", idClient);
+
             if (await preparedQuery.ExecuteNonQueryAsync() == 0)
             {
                 await kaeruTransac.RollbackAsync();
-                return "L'identifiant du client est incorrect";
+                return "L'identifiant du client est incorrect.";
             }
 
             await ServiceCarte.LockAsync(true, idClient);
             await kaeruTransac.CommitAsync();
-            return "SUCCESS";
+            return "Le client a été bloqué avec succès";
         } 
         catch (NpgsqlException ex)
         {
             await kaeruTransac.RollbackAsync();
-            throw new NpgsqlException(ex.Message);
+            Debug.WriteLine($"Error : {ex.Message}");
+            return "La requête pour bloquer le client a échoué.";
+        }
+        catch (Exception ex)
+        {
+            await kaeruTransac.RollbackAsync();
+            Debug.WriteLine($"Error : {ex.Message}");
+            return "La requête pour bloquer le client a échoué.";
         }
     }
 
     public static async Task<string> IsLockedAsync (int idClient, NpgsqlConnection kaeru, NpgsqlTransaction? kaeruTransac = null)
     {
-        try 
-        {
-            using NpgsqlCommand preparedQuery = new ("SELECT bloque FROM client WHERE id_client = @idClient;", kaeru, kaeruTransac);
-            preparedQuery.Parameters.AddWithValue("idClient", idClient);
+        using NpgsqlCommand preparedQuery = new ("SELECT bloque FROM client WHERE id_client = @idClient;", kaeru, kaeruTransac);
+        preparedQuery.Parameters.AddWithValue("idClient", idClient);
 
-            object? status = await preparedQuery.ExecuteScalarAsync();
-            bool bloquer = Convert.ToBoolean(status);
+        object? status = await preparedQuery.ExecuteScalarAsync();
+        bool bloquer = Convert.ToBoolean(status);
 
-            if (status == null) return "L'identifiant du client est incorrect";
-            else if (bloquer) return "Le client est bloqué";
-            return "NO";
-        }
-        catch (NpgsqlException ex)
-        {
-            throw new Exception (ex.Message);
-        }
+        if (status == null) return "L'identifiant du client est incorrect.";
+        else if (bloquer) return "Le client est bloqué.";
+        return "NO";
     }
 
     public static async Task<decimal?> ConsulterSoldeAsync (string numero, string pin)
@@ -103,9 +116,9 @@ public static class ServiceClient
 
         try
         {
-            int refClient = await ServiceCarte.GetIdAsync(numero, kaeru, kaeruTransac, pin);
+            int? refClient = await ServiceCarte.GetIdAsync(numero, kaeru, kaeruTransac, pin);
 
-            if (refClient == 0) 
+            if (refClient == null) 
             {
                 await kaeruTransac.RollbackAsync();
                 return null;
@@ -122,8 +135,14 @@ public static class ServiceClient
         catch (NpgsqlException ex)
         {
             await kaeruTransac.RollbackAsync();
-            Debug.WriteLine(ex.Message);
-            throw;
+            Debug.WriteLine($"Error : {ex.Message}");
+            return null;
+        }
+        catch (Exception ex)
+        {
+            await kaeruTransac.RollbackAsync();
+            Debug.WriteLine($"Error : {ex.Message}");
+            return null;
         }
     }
     
@@ -131,18 +150,12 @@ public static class ServiceClient
     {
         using NpgsqlCommand preparedQuery = new ("SELECT * FROM client WHERE id_client = @idClient;", kaeru, kaeruTransac);
         preparedQuery.Parameters.AddWithValue("idClient", idClient);
-        try
+
+        if (await preparedQuery.ExecuteNonQueryAsync() == 0)
         {
-            if (await preparedQuery.ExecuteNonQueryAsync() == 0)
-            {
-                return "L'identifiant du client est incorrect";
-            }
-            return "VERIFIED";
+            return "L'identifiant du client est incorrect.";
         }
-        catch(NpgsqlException ex)
-        {
-            throw new NpgsqlException(ex.Message);
-        }
+        return "VERIFIED";
     }
 
 }
