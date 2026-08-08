@@ -27,21 +27,21 @@ public partial class ConnexionViewModel : ViewModelBase
     [RelayCommand]
     private async Task Login()
     {
-        await Mock.CallMeToMockTest();
-        // if (string.IsNullOrWhiteSpace(Username) || string.IsNullOrWhiteSpace(Password))
-        // {
-        //     StatusMessage = "Veuillez remplir tous les champs.";
-        //     return;
-        // }
+        if (string.IsNullOrWhiteSpace(Username) || string.IsNullOrWhiteSpace(Password))
+        {
+            StatusMessage = "Veuillez remplir tous les champs.";
+            return;
+        }
+        bool text = await GestionAgence.LogInAsync(Username, Password);
 
-        // if (Username.Equals("admin", System.StringComparison.OrdinalIgnoreCase) && Password == "1234")
-        // {
-        //     StatusMessage = "Connexion réussie !";
+        if (text)
+        {
+            StatusMessage = "Connexion réussie !";
             _mainViewModel.OuvrirApplication();
-        // }
-        // else
-        // {
-        //     StatusMessage = "Identifiants invalides";
-        // }
+        }
+        else
+        {
+            StatusMessage = "Identifiants invalides";
+        }
     }
 }

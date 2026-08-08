@@ -1,22 +1,22 @@
 using Npgsql;
 using System;
-using System.Diagnostics;
 using System.Threading.Tasks;
 
 namespace Bankmanaging.Models;
 
 public static class GestionAgence
 {
-    public static async Task<string> AddAsync (string adresse, decimal solde)
+    public static async Task<string> AddAsync (string adresse, decimal solde, string pin)
     {
         DateTime now = DateTime.Now;
         string code = now.ToString("ffff");
         
         using NpgsqlConnection kaeru = await DatabaseConnection.Instance.KaeruConnectAsync();
-        using NpgsqlCommand preparedQuery = new ("INSERT INTO agence (code_agence, adresse_agence, solde) VALUES (@code, @adresse, @solde);", kaeru);
+        using NpgsqlCommand preparedQuery = new ("INSERT INTO agence (code_agence, adresse_agence, solde, pin) VALUES (@code, @adresse, @solde, @pin);", kaeru);
         preparedQuery.Parameters.AddWithValue("code", code);
         preparedQuery.Parameters.AddWithValue("adresse", adresse);
         preparedQuery.Parameters.AddWithValue("solde", solde);
+        preparedQuery.Parameters.AddWithValue("pin", pin);
 
         try
         {
@@ -25,14 +25,29 @@ public static class GestionAgence
         }
         catch (NpgsqlException ex)
         {
-            Debug.WriteLine($"Error : {ex.Message}");
+            Console.WriteLine($"Error : {ex.Message}");
             return "L'ajout du nouvel agence a échoué.";
         }
         catch (Exception ex)
         {
-            Debug.WriteLine($"Error : {ex.Message}");
+            Console.WriteLine($"Error : {ex.Message}");
             return "L'ajout du nouvel agence a échoué.";
         }
+    }
+
+    public static async Task<bool> LogInAsync (string code, string pin)
+    {
+        using NpgsqlConnection kaeru = await DatabaseConnection.Instance.KaeruConnectAsync();
+        using NpgsqlCommand preparedQuery = new ("SELECT * FROM agence WHERE code_agence = @code AND pin = @pin;", kaeru);
+        preparedQuery.Parameters.AddWithValue("code", code);
+        preparedQuery.Parameters.AddWithValue("pin", pin);
+
+        object? logged = await preparedQuery.ExecuteScalarAsync();
+        if (logged == null)
+        {
+            return false;
+        }
+        return true;
     }
 
     public static async Task<string> UpdateAsync (string code, string adresse)
@@ -60,13 +75,13 @@ public static class GestionAgence
         catch (NpgsqlException ex)
         {
             await kaeruTransac.RollbackAsync();
-            Debug.WriteLine($"Error : {ex.Message}");
+            Console.WriteLine($"Error : {ex.Message}");
             return "Mis à jour des information de l'agence a échoué.";
         }
         catch (Exception ex)
         {
             await kaeruTransac.RollbackAsync();
-            Debug.WriteLine($"Error : {ex.Message}");
+            Console.WriteLine($"Error : {ex.Message}");
             return "Mis à jour des information de l'agence a échoué.";
         }
     }
@@ -78,21 +93,20 @@ public static class GestionAgence
 
         if (await preparedQuery.ExecuteNonQueryAsync() == 0)
         {
-            return "Le code agence n'existe pas";
+            return "Le code agence n'existe pas.";
         }
         return "VERIFIED";
     }
 
     public static async Task<string> DepositAsync (string code, decimal montant)
     {
-        using NpgsqlConnection kaeru = await DatabaseConnection.Instance.KaeruConnectAsync();
-        using NpgsqlTransaction kaeruTransac = await kaeru.BeginTransactionAsync();
-
         if (montant <= 0)
         {
-            await kaeruTransac.RollbackAsync();
             return "Le montant doit être positif.";
         }
+
+        using NpgsqlConnection kaeru = await DatabaseConnection.Instance.KaeruConnectAsync();
+        using NpgsqlTransaction kaeruTransac = await kaeru.BeginTransactionAsync();
 
         try
         {
@@ -113,7 +127,13 @@ public static class GestionAgence
         catch (NpgsqlException ex)
         {
             await kaeruTransac.RollbackAsync();
-            Debug.WriteLine($"Error : {ex.Message}");
+            Console.WriteLine($"Error : {ex.Message}");
+            return "Le dépôt a echoué.";
+        }
+        catch (Exception ex)
+        {
+            await kaeruTransac.RollbackAsync();
+            Console.WriteLine($"Error : {ex.Message}");
             return "Le dépôt a echoué.";
         }
     }

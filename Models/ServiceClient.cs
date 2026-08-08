@@ -9,10 +9,10 @@ public static class ServiceClient
     public static async Task<string> AddAsync (string nom, string adresse, string contact, string? prenom = null)
     {
         using NpgsqlConnection kaeru = await DatabaseConnection.Instance.KaeruConnectAsync();
-        using NpgsqlCommand preparedQuery = new ("INSERT INTO client (nom, prenom, adresse, contact) VALUES (@nom, @prenom, @adresse, @contact);", kaeru);
 
         try 
         {
+            using NpgsqlCommand preparedQuery = new ("INSERT INTO client (nom, prenom, adresse, contact) VALUES (@nom, @prenom, @adresse, @contact);", kaeru);
             preparedQuery.Parameters.AddWithValue("nom", nom);
             preparedQuery.Parameters.AddWithValue("prenom", prenom ?? (object)DBNull.Value);
             preparedQuery.Parameters.AddWithValue("adresse", adresse);
@@ -78,7 +78,7 @@ public static class ServiceClient
                 return "L'identifiant du client est incorrect.";
             }
 
-            await ServiceCarte.LockAsync(true, idClient);
+            await ServiceCompte.LockAsync(true, idClient);
             await kaeruTransac.CommitAsync();
             return "Le client a été bloqué avec succès";
         } 
@@ -96,56 +96,6 @@ public static class ServiceClient
         }
     }
 
-    public static async Task<string> IsLockedAsync (int idClient, NpgsqlConnection kaeru, NpgsqlTransaction? kaeruTransac = null)
-    {
-        using NpgsqlCommand preparedQuery = new ("SELECT bloque FROM client WHERE id_client = @idClient;", kaeru, kaeruTransac);
-        preparedQuery.Parameters.AddWithValue("idClient", idClient);
-
-        object? status = await preparedQuery.ExecuteScalarAsync();
-        bool bloquer = Convert.ToBoolean(status);
-
-        if (status == null) return "L'identifiant du client est incorrect.";
-        else if (bloquer) return "Le client est bloqué.";
-        return "NO";
-    }
-
-    public static async Task<decimal?> ConsulterSoldeAsync (string numero, string pin)
-    {
-        using NpgsqlConnection kaeru = await DatabaseConnection.Instance.KaeruConnectAsync();
-        using NpgsqlTransaction kaeruTransac = await kaeru.BeginTransactionAsync();
-
-        try
-        {
-            int? refClient = await ServiceCarte.GetIdAsync(numero, kaeru, kaeruTransac, pin);
-
-            if (refClient == null) 
-            {
-                await kaeruTransac.RollbackAsync();
-                return null;
-            }
-
-            using NpgsqlCommand preparedQuery = new ("SELECT solde FROM client WHERE id_client = @refClient;", kaeru, kaeruTransac);
-            preparedQuery.Parameters.AddWithValue("refClient", refClient);
-
-            object? answer = await preparedQuery.ExecuteScalarAsync();
-            decimal solde = Convert.ToDecimal(answer);
-            await kaeruTransac.CommitAsync();
-            return solde;
-        }
-        catch (NpgsqlException ex)
-        {
-            await kaeruTransac.RollbackAsync();
-            Debug.WriteLine($"Error : {ex.Message}");
-            return null;
-        }
-        catch (Exception ex)
-        {
-            await kaeruTransac.RollbackAsync();
-            Debug.WriteLine($"Error : {ex.Message}");
-            return null;
-        }
-    }
-    
     public static async Task<string> VerifyAsync (int idClient, NpgsqlConnection kaeru, NpgsqlTransaction? kaeruTransac = null)
     {
         using NpgsqlCommand preparedQuery = new ("SELECT * FROM client WHERE id_client = @idClient;", kaeru, kaeruTransac);

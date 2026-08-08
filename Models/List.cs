@@ -69,11 +69,11 @@ public static class ManageTransaction
                     Code = row.GetString(0),
                     Libelle = row.GetString(1),
                     Montant = row.GetDecimal(2),
-                    Status = row.GetString(3),
-                    Date = row.GetDateTime(4),
-                    Nom = await row.IsDBNullAsync(5) ? null : row.GetString(5),
-                    CodeAgence = await row.IsDBNullAsync(6) ? null : row.GetString(6),
-                    Numero = row.GetString(7)
+                    Date = row.GetDateTime(3),
+                    Nom = await row.IsDBNullAsync(4) ? null : row.GetString(4),
+                    CodeAgence = await row.IsDBNullAsync(5) ? null : row.GetString(5),
+                    Numero = row.GetString(6),
+                    Descritpion = await row.IsDBNullAsync(7) ? null : row.GetString(7)
                 };
                 listTransaction.Add(transaction);
             }
@@ -99,7 +99,7 @@ public static class ManageTransaction
         try
         {
 
-            using NpgsqlCommand preparedQuery = new ("SELECT nom, prenom, adresse, contact, credit, date FROM client WHERE credit > 0.00 AND (nom LIKE @nom OR prenom LIKE @nom OR @nom IS NULL);", kaeru);
+            using NpgsqlCommand preparedQuery = new ("SELECT * date FROM client WHERE credit > 0.00 AND (nom LIKE @nom OR prenom LIKE @nom OR @nom IS NULL);", kaeru);
             preparedQuery.Parameters.AddWithValue("nom", nom ?? (object)DBNull.Value);
             using NpgsqlDataReader row = await preparedQuery.ExecuteReaderAsync();
 
@@ -107,11 +107,12 @@ public static class ManageTransaction
             {
                 Client client = new()
                 {
-                    Nom = row.GetString(0),
-                    Prenom = await row.IsDBNullAsync(1) ? null : row.GetString(1),
-                    Adresse = row.GetString(2),
-                    Contact = row.GetString(3),
-                    Credit = row.GetDecimal(4)
+                    Id = row.GetInt32(0),
+                    Nom = row.GetString(1),
+                    Prenom = await row.IsDBNullAsync(2) ? null : row.GetString(2),
+                    Adresse = row.GetString(3),
+                    Contact = row.GetString(4),
+                    Bloque = row.GetBoolean(5)
                 };
                 listClient.Add(client);
             }
@@ -136,8 +137,7 @@ public static class ManageTransaction
 
         try
         {
-
-            using NpgsqlCommand preparedQuery = new ("SELECT num_compte, nom, prenom FROM carte_bancaire WHERE (num_compte = @numero OR @numero IS NULL) AND (nom LIKE @nom OR prenom LIKE @nom OR @nom IS NULL);", kaeru);
+            using NpgsqlCommand preparedQuery = new ("SELECT compte.numero, client.nom, client.prenom FROM compte JOIN client ON numero.refclient = client.id_client WHERE (num_compte = @numero OR @numero IS NULL) AND (nom LIKE @nom OR prenom LIKE @nom OR @nom IS NULL);", kaeru);
             preparedQuery.Parameters.AddWithValue("numero", numero ?? (object)DBNull.Value);
             preparedQuery.Parameters.AddWithValue("nom", nom ?? (object)DBNull.Value);
             using NpgsqlDataReader row = await preparedQuery.ExecuteReaderAsync();
@@ -153,6 +153,42 @@ public static class ManageTransaction
                 listCard.Add(card);
             }
             return listCard;
+        }
+        catch (NpgsqlException ex)
+        {
+            Debug.WriteLine(ex.Message);
+            return [];
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(ex.Message);
+            return [];
+        }
+    }
+
+    public static async Task<IEnumerable<Compte>> ListCompteAsync (string? numero = null, string? nom = null)
+    {
+        List<Compte> listCompte = [];
+        using NpgsqlConnection kaeru = await DatabaseConnection.Instance.KaeruConnectAsync();
+
+        try
+        {
+            using NpgsqlCommand preparedQuery = new ("SELECT numero, solde, credit, bloquer FROM compte WHERE numero = @numero OR @numero IS NULL;", kaeru);
+            preparedQuery.Parameters.AddWithValue("numero", numero ?? (object)DBNull.Value);
+            using NpgsqlDataReader row = await preparedQuery.ExecuteReaderAsync();
+
+            while (await row.ReadAsync())
+            {
+                Compte compte = new()
+                {
+                    Numero = row.GetString(0),
+                    Solde = row.GetDecimal(1),
+                    Credit = row.GetDecimal(2),
+                    Bloque = row.GetBoolean(3)
+                };
+                listCompte.Add(compte);
+            }
+            return listCompte;
         }
         catch (NpgsqlException ex)
         {
@@ -183,8 +219,7 @@ public static class ManageTransaction
                 {
                     CodeAgence = row.GetString(0),
                     Adresse = row.GetString(1),
-                    Solde = row.GetDecimal(2),
-                    Creation = row.GetDateTime(3)
+                    Solde = row.GetDecimal(2)
                 };
                 listAgence.Add(agence);
             }
