@@ -36,18 +36,8 @@ public partial class ConnexionViewModel : ViewModelBase
 
         if (random.Status)
         {
-<<<<<<< HEAD
-            StatusMessage = "Connexion réussie !";
-            _mainViewModel.OuvrirApplication("E");
-        }
-
-        if (Username.Equals("Laza", System.StringComparison.OrdinalIgnoreCase) && Password == "1111")
-        {
-            _mainViewModel.OuvrirApplication("C");
-=======
             StatusMessage = random.Message ?? "random not";
             _mainViewModel.OuvrirApplication();
->>>>>>> 1fc40be (...)
         }
         else
         {
