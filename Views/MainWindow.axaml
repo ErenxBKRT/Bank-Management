@@ -6,7 +6,7 @@
         mc:Ignorable="d" d:DesignWidth="200" d:DesignHeight="320"
         x:Class="Bankmanaging.Views.MainWindow"
         x:DataType="vm:MainViewModel"
-        Icon="/Assets/avalonia-logo.ico"
+        Icon="/Assets/icons8-banque-50.ico"
         Title="Bankmanaging">
 
 	<Design.DataContext>

@@ -1,3 +1,4 @@
+CREATE DATABASE Bank;
 DROP TABLE IF EXISTS transactions CASCADE;
 DROP TABLE IF EXISTS client CASCADE;
 DROP TABLE IF EXISTS agence CASCADE;
@@ -41,7 +42,6 @@ CREATE TABLE transaction
 CREATE TABLE carte_bancaire 
 (
     num_compte VARCHAR(10) NOT NULL,
-    date_creation TIMESTAMP(0) DEFAULT CURRENT_TIMESTAMP(0) NOT NULL,
     pin VARCHAR(4) NOT NULL,
     refclient INT NOT NULL,
     carte_bloquer BOOLEAN DEFAULT false NOT NULL,

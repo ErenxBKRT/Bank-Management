@@ -9,6 +9,7 @@ public class Transaction
     public decimal Montant { get; set; } = 0.00m;
     public DateTime Date { get; set; }
     public string? Nom { get; set; }
+    public string Numero { get; set; } = string.Empty;
     public string? CodeAgence { get; set; }
-    public string? RefClient { get; set; }
+    public string? Descritpion;
 }

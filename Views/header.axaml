@@ -8,12 +8,14 @@
     <DockPanel LastChildFill="True">
         <!-- Header sous forme de Grid pour occuper toute la largeur -->
         <Grid DockPanel.Dock="Top" 
-              ColumnDefinitions="*, Auto" 
+              ColumnDefinitions="Auto,*,Auto" 
               Margin="0"
               Background="#001199">
             
-            <TextBlock Grid.Column="0"
-                       Text="LOGO et BANKKUN" 
+            <Image Grid.Column="0" Source="/Assets/bank.png"
+                   Width="20" Height="20" Margin="20"/>
+            <TextBlock Grid.Column="1"
+                       Text="BANKKUN" 
                        Margin="5"
                        FontSize="24" 
                        FontWeight="ExtraBold"
@@ -21,13 +23,18 @@
                        VerticalAlignment="Center"
                        Foreground="#FFD700"/>
             
-            <Button Grid.Column="1"
-                    Content="deconnexion" 
+            <Button Grid.Column="2" 
                     Margin="5"
                     Command="{Binding DeconnexionCommand}" 
                     HorizontalAlignment="Right"
                     VerticalAlignment="Center"
-                    Foreground="#FFD700"/>
+                    Foreground="#FFD700">
+                <StackPanel Orientation="Horizontal">
+                    <Image Source="/Assets/icons8-upload-48.png" Width="18" Height="18"/>
+                    <TextBlock Text="Deconnexion"/>
+                </StackPanel>
+            
+            </Button>
         </Grid>
 
         <!-- Le contenu principal s'adapte en dessous -->
