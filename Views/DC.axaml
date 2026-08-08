@@ -1,0 +1,35 @@
+<UserControl
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:vm="using:Bankmanaging.ViewModels"
+    x:Class="Bankmanaging.Views.DCView"
+    x:DataType="vm:DCViewModel">
+
+    <Grid ColumnDefinitions="*,Auto">
+        <Grid Grid.Column="0" ColumnDefinitions="Auto,Auto" RowDefinitions="Auto,Auto,Auto,Auto" ColumnSpacing="20" RowSpacing="20" VerticalAlignment="Center" HorizontalAlignment="Center">
+                <TextBlock Text="Faire un retrait" Grid.Row="0"
+                        HorizontalAlignment="Center"/>
+                <TextBlock Text="Montant" Grid.Row="1"
+                        HorizontalAlignment="Center"/>
+                <TextBox Width="500" Grid.Row="2"
+                        Height="20"
+                        Margin="50"
+                        PlaceholderText="Entrer la somme"
+                        HorizontalAlignment="Center"
+                        VerticalAlignment="Center"
+                        Text="{Binding Somme, Mode=TwoWay}"/>
+
+                <Button Content="Confirmer" Grid.Row="3"
+                        HorizontalAlignment="Center"
+                        Command="{Binding RetraitCommand}" />
+            
+        </Grid>
+        <Grid Grid.Column="1" Margin="20" VerticalAlignment="Center" HorizontalAlignment="Right" RowDefinitions="Auto,Auto" ColumnDefinitions="Auto,Auto" RowSpacing="30">
+                <TextBlock Text="Solde :" Grid.Row="0" Grid.Column="0"/>
+                <TextBlock Text="{Binding Solde}" Grid.Row="0" Grid.Column="1"/>
+                <TextBlock Text="Solde :" Grid.Row="1" Grid.Column="0"/>
+                <TextBlock Text="{Binding Credit}" Grid.Row="1" Grid.Column="1"/>
+                
+         </Grid>
+    </Grid>
+</UserControl>

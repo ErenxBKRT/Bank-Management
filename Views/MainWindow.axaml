@@ -3,11 +3,17 @@
         xmlns:vm="using:Bankmanaging.ViewModels"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="450"
+        mc:Ignorable="d" d:DesignWidth="200" d:DesignHeight="320"
         x:Class="Bankmanaging.Views.MainWindow"
         x:DataType="vm:MainViewModel"
         Icon="/Assets/avalonia-logo.ico"
         Title="Bankmanaging">
 
-    <ContentControl Content="{Binding CurrentView}"/>
+	<Design.DataContext>
+		<vm:MainViewModel />
+	</Design.DataContext>
+
+		<ContentControl Content="{Binding CurrentView}"
+                                Margin="0"/>
+
 </Window>

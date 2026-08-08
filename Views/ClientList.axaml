@@ -2,27 +2,47 @@
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:vm="using:Bankmanaging.ViewModels"
-    x:Class="Bankmanaging.Views.ClientView"
-    x:DataType="vm:ClientViewModel">
+    x:Class="Bankmanaging.Views.ClientsView"
+    x:DataType="vm:ClientsViewModel">
 
-    <StackPanel>
-        <Grid>
-            <StackPanel Width="400">
-                <!--liste client-->
-                <TextBlock Text="Client"/>
-            </StackPanel>
-            <StackPanel HorizontalAlignment="Right" VerticalAlignment="Center" Width="200">
-                <Button Content="Connexion" 
-                        HorizontalAlignment="Center"
-                        Command="{Binding ConnecterCommand}"/>
-                <Button Content="Nouveau" 
-                        HorizontalAlignment="Center"
-                        Command ="{Binding NouveauCommand}"/>
-                <Button Content="Menu Principale" 
-                        HorizontalAlignment="Center"
-                        Command="{Binding MenuPCommand}"/>
-            </StackPanel>
+    <Grid ColumnDefinitions="*,Auto">
+        <Grid Grid.Column="0">
+                <ListBox ItemsSource="{Binding Clients}">
+                        <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                <Border Margin="5" Padding="10">
+                                        <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto,Auto,Auto,Auto">
+                                                <TextBlock Text="{Binding Nom}" Grid.Column="0" Grid.Row="0" FontSize="16" Margin="10"/>
+                                                <TextBlock Text="{Binding Prenom}" Grid.Column="0" Grid.Row="1" FontSize="16" Margin="10"/>
+                                                <TextBlock Text="{Binding Adresse}" Grid.Column="0" Grid.Row="2" FontSize="16" Margin="10"/>
+                                                <TextBlock Text="{Binding Contact}" Grid.Column="0" Grid.Row="3" FontSize="16" Margin="10"/>
+                                                <TextBlock Text="{Binding Bloque}" Grid.Column="0" Grid.Row="4" FontSize="16" Margin="10"/>
+                                                <StackPanel Grid.Column="1" Grid.Row="0" Grid.RowSpan="5" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                                        <Button Content="Accéder" HorizontalAlignment="Right"
+                                                                Command="{Binding $parent[UserControl].DataContext.AccederCommand}"
+                                                                CommandParameter="{Binding}" />
+                                                        <Button Content="Modifier"/>
+                                                        <Button Content="Bloquer"/>
+                                                </StackPanel>
+                                        </Grid>
+                                </Border>
+                                </DataTemplate>
+                        </ListBox.ItemTemplate>
+                </ListBox>
         </Grid>
-    </StackPanel>
+        <Grid Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center" Width="200" RowDefinitions="Auto, Auto" RowSpacing="20" Margin="20">
+                
+                <Button Content="Nouveau" 
+                        Grid.Row="0"
+                        Width="150" Height="50"
+                        HorizontalAlignment="Center"
+                        Command ="{Binding CreationCCommand}"/>
+                <Button Content="Menu Principale" 
+                        Grid.Row="1"
+                        Width="150" Height="50"
+                        HorizontalAlignment="Center"
+                        Command="{Binding MenuPCommand}"/> 
+        </Grid>
+    </Grid>
 
 </UserControl>

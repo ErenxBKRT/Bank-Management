@@ -19,20 +19,23 @@ public partial class DashViewModel : ViewModelBase
     {
         _headerViewModel.MenuClient();
     }
-    [RelayCommand]
-    private void ActionEmployer()
-    {
-        _headerViewModel.MenuEmploye();
-    }
-    [RelayCommand]
-    private void ActionAgence()
-    {
-        _headerViewModel.MenuAgence();
-    }
+
     [RelayCommand]
     private void ActionHistorique()
     {
         _headerViewModel.MenuHistorique();
+    }
+
+    [RelayCommand]
+    private void Transaction()
+    {
+        _headerViewModel.Transaction();
+    }
+
+    [RelayCommand]
+    private void ActionAgence()
+    {
+        _headerViewModel.MenuAgence();
     }
 
 }

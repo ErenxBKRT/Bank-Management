@@ -1,4 +1,7 @@
-# Dossiers de compilation (exclut bin/ et obj/ partout dans le projet)
+bin/
+obj/
+*.user
+*.pdb
 [Bb]in/
 [Oo]bj/
 
@@ -6,4 +9,3 @@
 .vs/
 .idea/
 *.user
-*.userossc

@@ -1,0 +1,41 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:Bankmanaging.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="450"
+        x:Class="Bankmanaging.Views.TransactionView"
+        x:DataType="vm:TransactionViewModel">
+
+    <Grid ColumnDefinitions="Auto,Auto,Auto,Auto,Auto" HorizontalAlignment="Center" ColumnSpacing="20">
+        <Button Content="depot"
+                Width="200" Height="400"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Background="#001199" Foreground="#FFD700"
+                Grid.Column="0"
+                Command="{Binding DepotCommand}"/>
+
+        <Button Content="Virement" 
+                Width="200" Height="400"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Background="#001199" Foreground="#FFD700"
+                Grid.Column="1"
+                Command="{Binding VirementCommand}"/>
+        <Button Content="Credit" 
+                Width="200" Height="400"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Background="#001199" Foreground="#FFD700"
+                Grid.Column="2"
+                Command="{Binding CreditCommand}"/>
+        <Button Content="Retour" 
+                Width="200" Height="400"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Background="#001199" Foreground="#FFD700"
+                Grid.Column="4"
+                Command="{Binding RetourCommand}"/>
+    </Grid>
+</UserControl>

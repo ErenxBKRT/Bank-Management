@@ -34,7 +34,12 @@ public partial class ConnexionViewModel : ViewModelBase
         if (Username.Equals("admin", System.StringComparison.OrdinalIgnoreCase) && Password == "1234")
         {
             StatusMessage = "Connexion réussie !";
-            _mainViewModel.OuvrirApplication();
+            _mainViewModel.OuvrirApplication("E");
+        }
+
+        if (Username.Equals("Laza", System.StringComparison.OrdinalIgnoreCase) && Password == "1111")
+        {
+            _mainViewModel.OuvrirApplication("C");
         }
         else
         {

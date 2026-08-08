@@ -1,0 +1,37 @@
+<UserControl
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:vm="using:Bankmanaging.ViewModels"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="450"
+    x:Class="Bankmanaging.Views.CreationAView"
+    x:DataType="vm:CreationAViewModel">
+
+    <Grid ColumnDefinitions="*,Auto">
+        
+        <Grid Grid.Column="0" ColumnDefinitions="Auto,Auto" RowDefinitions="Auto,Auto,Auto,Auto" ColumnSpacing="20" RowSpacing="20" Margin="20" VerticalAlignment="Center" HorizontalAlignment="Center">
+                <TextBlock Text="Adresse" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center"/>
+                <TextBlock Text="Solde" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center"/>
+                <TextBlock Text="PIN" Grid.Column="0" Grid.Row="2" VerticalAlignment="Center"/>
+                <TextBlock Text="Confirmation PIN" Grid.Column="0" Grid.Row="3" VerticalAlignment="Center"/>
+        
+                <TextBox Grid.Column="1" Grid.Row="0" Width="500"/>
+                <TextBox Grid.Column="1" Grid.Row="1" Width="500"/>
+                <TextBox Grid.Column="1" Grid.Row="2" Width="500"/>
+                <TextBox Grid.Column="1" Grid.Row="3" Width="500"/>
+                
+        </Grid>
+        <Grid Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" RowDefinitions="Auto,Auto" RowSpacing="20" Margin="20">
+            <Button Content="Enregistrer"
+                    Width="150" Height="50"
+                    Grid.Row="0"
+                    Command="{Binding CreationACommand}"/>
+            <Button Content="Annuler"
+                    Width="150" Height="50"
+                    Grid.Row="1"
+                    Command="{Binding AnnulerCommand}"/>
+        </Grid>
+        </Grid>
+
+</UserControl>

@@ -5,25 +5,33 @@
     x:Class="Bankmanaging.Views.HeaderView"
     x:DataType="vm:HeaderViewModel">
 
-    <StackPanel HorizontalAlignment="Center">
-        <ScrollViewer>
-        <StackPanel Orientation="Horizontal"
-                    HorizontalAlignment="Stretch"
-                    VerticalAlignment="Top"
-                    Margin="10">
-            <TextBlock Text="LOGO et BANKKUN" 
+    <DockPanel LastChildFill="True">
+        <!-- Header sous forme de Grid pour occuper toute la largeur -->
+        <Grid DockPanel.Dock="Top" 
+              ColumnDefinitions="*, Auto" 
+              Margin="0"
+              Background="#001199">
+            
+            <TextBlock Grid.Column="0"
+                       Text="LOGO et BANKKUN" 
+                       Margin="5"
                        FontSize="24" 
                        FontWeight="ExtraBold"
-                       Margin="10,10,300,10"
-                       HorizontalAlignment="Left"/>
-            <Button Content="deconnexion" 
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Center"
+                       Foreground="#FFD700"/>
+            
+            <Button Grid.Column="1"
+                    Content="deconnexion" 
+                    Margin="5"
                     Command="{Binding DeconnexionCommand}" 
                     HorizontalAlignment="Right"
-                    Margin="300,10,10,10"/>
-        </StackPanel>
-        </ScrollViewer>
-        <ContentControl Content="{Binding ControlView}"/>
-    </StackPanel>
+                    VerticalAlignment="Center"
+                    Foreground="#FFD700"/>
+        </Grid>
 
+        <!-- Le contenu principal s'adapte en dessous -->
+        <ContentControl Content="{Binding ControlView}"/>
+    </DockPanel>
 </UserControl>
 

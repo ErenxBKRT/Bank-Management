@@ -13,18 +13,20 @@
                    Margin="0,0,0,20"
                    HorizontalAlignment="Center" />
 
-        <TextBlock Text="Nom d'utilisateur"
+        <TextBlock Text="ID Utilisateur"
                    HorizontalAlignment="Center" />
         <TextBox Width="280"
                  Text="{Binding Username, Mode=TwoWay}"
-                 PlaceholderText="Entrez votre nom d'utilisateur" />
+                 PlaceholderText="Entrez votre ID utilisateur"
+                 HorizontalAlignment="Center" TextAlignment="Center"/>
 
         <TextBlock Text="Mot de passe"
                    HorizontalAlignment="Center" />
         <TextBox Width="280"
                  Text="{Binding Password, Mode=TwoWay}"
                  PlaceholderText="Entrez votre mot de passe"
-                 PasswordChar="*" />
+                 PasswordChar="*"
+                 HorizontalAlignment="Center" TextAlignment="Center"/>
 
         <Button Content="Se connecter"
                 Command="{Binding LoginCommand}"

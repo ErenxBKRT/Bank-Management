@@ -1,20 +1,27 @@
 <UserControl
     xmlns="https://github.com/avaloniaui"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    x:Class="Bankmanaging.Views.VirementView">
+    xmlns:vm="using:Bankmanaging.ViewModels"
+    x:Class="Bankmanaging.Views.VirementView"
+    x:DataType="vm:VirementViewModel">
 
-    <Grid RowSpacing="30" ColumnSpacing="20" RowDefinitions="Auto,Auto,Auto" ColumnDefinitions="Auto,*">
-
-        <TextBlock Text="Virement" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"/>
-        <StackPanel Grid.Row="1" Grid.Column="0">
-            <TextBlock Text="Compte"/>
-            <TextBlock Text="Somme"/>
-            <TextBlock Text="Expediteur"/>
-        </StackPanel>
-        <StackPanel Grid.Row="1" Grid.Column="1">
-            <TextBlock />
-            <TextBlock />
-            <TextBlock />
+    <Grid RowSpacing="30" ColumnSpacing="20" ColumnDefinitions="*,Auto" Margin="20">
+        <Grid Grid.Column="0" ColumnDefinitions="Auto,*" RowDefinitions="Auto,Auto,Auto,Auto" RowSpacing="10" ColumnSpacing="10" VerticalAlignment="Center">
+            <TextBlock Text="Virement" FontSize="20" FontWeight="DemiBold" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center"/>
+            <TextBlock Text="Numero de Compte"
+                        Grid.Column="0" Grid.Row="1"/>
+            <TextBlock Text="Somme"
+                       Grid.Column="0" Grid.Row="2"/>
+            <TextBlock Text="Description"
+                       Grid.Column="0" Grid.Row="3"/>
+            <TextBox Grid.Column="1" Grid.Row="1" Width="500" HorizontalAlignment="Center" TextAlignment="Center"/>
+            <TextBox Grid.Column="1" Grid.Row="2" Width="500" HorizontalAlignment="Center" TextAlignment="Center"/>
+            <TextBox Grid.Column="1" Grid.Row="3" Width="500" HorizontalAlignment="Center"/>
+        </Grid>
+        <StackPanel Grid.Column="1" VerticalAlignment="Center" Width="200">
+            <Button Content="Confirmer"/>
+            <Button Content="Annuler"
+                    Command="{Binding annulerCommand}"/>
         </StackPanel>
 
     </Grid>
