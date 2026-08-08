@@ -27,7 +27,7 @@ public static class ManageTransaction
                 {
                     Id = row.GetInt32(0),
                     Nom = row.GetString(1),
-                    Prenom = row.IsDBNull(2) ? null : row.GetString(2),
+                    Prenom = row.GetString(2),
                     Adresse = row.GetString(3),
                     Contact = row.GetString(4),
                     Bloque = row.GetBoolean(6)
@@ -71,7 +71,7 @@ public static class ManageTransaction
                     Montant = row.GetDecimal(2),
                     Date = row.GetDateTime(3),
                     Nom = await row.IsDBNullAsync(4) ? null : row.GetString(4),
-                    CodeAgence = await row.IsDBNullAsync(5) ? null : row.GetString(5),
+                    CodeAgence =  row.GetString(5),
                     Numero = row.GetString(6),
                     Descritpion = await row.IsDBNullAsync(7) ? null : row.GetString(7)
                 };
@@ -109,7 +109,7 @@ public static class ManageTransaction
                 {
                     Id = row.GetInt32(0),
                     Nom = row.GetString(1),
-                    Prenom = await row.IsDBNullAsync(2) ? null : row.GetString(2),
+                    Prenom = row.GetString(2),
                     Adresse = row.GetString(3),
                     Contact = row.GetString(4),
                     Bloque = row.GetBoolean(5)
@@ -148,7 +148,7 @@ public static class ManageTransaction
                 {
                     Numero = row.GetString(0),
                     Nom = row.GetString(1),
-                    Prenom = await row.IsDBNullAsync(2) ? null : row.GetString(2)
+                    Prenom = row.GetString(2)
                 };
                 listCard.Add(card);
             }
@@ -235,6 +235,42 @@ public static class ManageTransaction
             Debug.WriteLine(ex.Message);
             return [];
         }
+    }
+
+    public static async Task<IEnumerable<Carte>> ListCarteAsync (string numero)
+    {
+        List<Carte> listCarte = [];
+        using NpgsqlConnection kaeru = await DatabaseConnection.Instance.KaeruConnectAsync();
+
+        try
+        {
+            using NpgsqlCommand preparedQuery = new ("SELECT client.nom, client.prenom, compte.numero FROM compte JOIN client ON compte.refclient = client.id_client WHERE numero = @numero;", kaeru);
+            preparedQuery.Parameters.AddWithValue("numero", numero);
+            using NpgsqlDataReader row = await preparedQuery.ExecuteReaderAsync();
+
+            while (await row.ReadAsync())
+            {
+                Carte carte = new()
+                {
+                    Nom = row.GetString(0),
+                    Prenom = row.GetString(1),
+                    Numero = row.GetString(2)
+                };
+                listCarte.Add(carte);
+            }
+            return listCarte;
+        }
+        catch (NpgsqlException ex)
+        {
+            Debug.WriteLine(ex.Message);
+            return [];
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(ex.Message);
+            return [];
+        }
+        
     }
 
 }

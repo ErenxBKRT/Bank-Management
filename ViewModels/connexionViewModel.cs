@@ -32,10 +32,11 @@ public partial class ConnexionViewModel : ViewModelBase
             StatusMessage = "Veuillez remplir tous les champs.";
             return;
         }
-        bool text = await GestionAgence.LogInAsync(Username, Password);
+        Result random = await GestionAgence.LogInAsync(Username, Password);
 
-        if (text)
+        if (random.Status)
         {
+<<<<<<< HEAD
             StatusMessage = "Connexion réussie !";
             _mainViewModel.OuvrirApplication("E");
         }
@@ -43,10 +44,14 @@ public partial class ConnexionViewModel : ViewModelBase
         if (Username.Equals("Laza", System.StringComparison.OrdinalIgnoreCase) && Password == "1111")
         {
             _mainViewModel.OuvrirApplication("C");
+=======
+            StatusMessage = random.Message ?? "random not";
+            _mainViewModel.OuvrirApplication();
+>>>>>>> 1fc40be (...)
         }
         else
         {
-            StatusMessage = "Identifiants invalides";
+            StatusMessage = random.Message ?? "random";
         }
     }
 }

@@ -8,24 +8,27 @@ namespace Bankmanaging.Models;
 
 public static class CreditVirement
 {
-    public static async Task<string> CreditAsync (string numero, string codeAgence, decimal montant)
+    public static async Task<Result> CreditAsync (string numero, string codeAgence, decimal montant)
     {
-        if (montant <= 0) return "Le montant doit être positif.";
+        if (montant <= 0) 
+        {
+            return new (false, "Le montant doit être positif.");
+        }
 
         using NpgsqlConnection kaeru = await DatabaseConnection.Instance.KaeruConnectAsync();
         await using NpgsqlTransaction kaeruTransac = await kaeru.BeginTransactionAsync();
 
         try
         {
-            string verifyCompte = await ServiceCompte.VerifyAsync(numero, kaeru, kaeruTransac);
-            if (verifyCompte != "VERIFIED")
+            Result verifyCompte = await ServiceCompte.VerifyAsync(numero, kaeru, kaeruTransac);
+            if (!verifyCompte.Status)
             {
                 await kaeruTransac.RollbackAsync();
                 return verifyCompte;
             }
             
-            string verifyAgence = await GestionAgence.VerifyCodeAsync(codeAgence, kaeru, kaeruTransac);
-            if (verifyAgence != "VERIFIED")
+            Result verifyAgence = await GestionAgence.VerifyCodeAsync(codeAgence, kaeru, kaeruTransac);
+            if (!verifyAgence.Status)
             {
                 await kaeruTransac.RollbackAsync();
                 return verifyAgence;
@@ -36,13 +39,13 @@ public static class CreditVirement
             int randomNumber = RandomNumberGenerator.GetInt32(0, 100);
             string code = microSecond + "-" + randomNumber.ToString("D2");
 
-            NpgsqlCommand compareSolde = new ("SELECT solde FROM agence WHERE code_agence = @codeAgence FOR UPDATE;", kaeru, kaeruTransac);
+            NpgsqlCommand compareSolde = new ("SELECT solde FROM agence WHERE code_agence = @codeAgence;", kaeru, kaeruTransac);
             compareSolde.Parameters.AddWithValue("codeAgence", codeAgence);
             decimal solde = (decimal?)await compareSolde.ExecuteScalarAsync() ?? 0.00m;
             if (solde < montant)
             {
                 await kaeruTransac.RollbackAsync();
-                return "Le solde de l'agence est insufisant.";
+                return new (false, "solde insuffisant");
             }
 
             using NpgsqlCommand deposit = new ("UPDATE compte SET solde = solde + @montant WHERE numero = @numero FOR UPDATE;", kaeru, kaeruTransac);
@@ -55,7 +58,7 @@ public static class CreditVirement
             getCreditFromAgence.Parameters.AddWithValue("montant", montant);
             await getCreditFromAgence.ExecuteNonQueryAsync();
 
-            using NpgsqlCommand preparedQuery = new ("INSERT INTO transaction (code, libelle, montant, numero, code_agence) VALUES (@code, 'Credit', @montant, @numero, @codeAgence);", kaeru, kaeruTransac);
+            using NpgsqlCommand preparedQuery = new ("INSERT INTO transaction (code, libelle, montant, numero, code_agence) VALUES (@code, 'Credit', @montant, @numero, @codeAgence) FOR UPDATE;", kaeru, kaeruTransac);
             preparedQuery.Parameters.AddWithValue("code", code);
             preparedQuery.Parameters.AddWithValue("montant", montant);
             preparedQuery.Parameters.AddWithValue("numero", numero);
@@ -63,40 +66,40 @@ public static class CreditVirement
             await preparedQuery.ExecuteNonQueryAsync();
 
             await kaeruTransac.CommitAsync();
-            return "Credit envoyé avec succès.";
+            return new (true, "Credit envoyé avec succès.");
         }
         catch (NpgsqlException ex)
         {
             await kaeruTransac.RollbackAsync();
             Debug.WriteLine(ex.Message);
-            return "Le credit a echoué.";
+            return new (false, "Le credit a echoué.");
         }
         catch (Exception ex)
         {
             await kaeruTransac.RollbackAsync();
             Debug.WriteLine(ex.Message);
-            return "Le credit a echoué.";
+            return new (false, "Le credit a echoué.");
         }
     }
 
-    public static async Task<string> VirementBancaireAsync (decimal montant, string numero,string codeAgence, string nom, string? description = null)
+    public static async Task<Result> VirementBancaireAsync (decimal montant, string numero,string codeAgence, string nom, string? description = null)
     {
-        if (montant <= 0) return "Le montant doit être positif.";
+        if (montant <= 0) return new (false, "Le montant doit être positif.");
         
         using NpgsqlConnection kaeru = await DatabaseConnection.Instance.KaeruConnectAsync();
         await using NpgsqlTransaction kaeruTransac = await kaeru.BeginTransactionAsync();
 
         try 
         {
-            string verifyCompte = await ServiceCompte.VerifyAsync(numero, kaeru, kaeruTransac);
-            if (verifyCompte != "VERIFIED")
+            Result verifyCompte = await ServiceCompte.VerifyAsync(numero, kaeru, kaeruTransac);
+            if (!verifyCompte.Status)
             {
                 await kaeruTransac.RollbackAsync();
                 return verifyCompte;
             }
             
-            string isCardLocked = await ServiceCompte.IsLockedAsync(numero, kaeru, kaeruTransac);
-            if (isCardLocked != "NO")
+            Result isCardLocked = await ServiceCompte.IsLockedAsync(numero, kaeru, kaeruTransac);
+            if (!isCardLocked.Status)
             {
                 await kaeruTransac.RollbackAsync();
                 return isCardLocked;
@@ -119,22 +122,22 @@ public static class CreditVirement
             preparedQuery.Parameters.AddWithValue("numero", numero);
             preparedQuery.Parameters.AddWithValue("codeAgence", codeAgence);
             preparedQuery.Parameters.AddWithValue("description", description ?? (object)DBNull.Value);
-            
             await preparedQuery.ExecuteNonQueryAsync();
+            
             await kaeruTransac.CommitAsync();
-            return "Virement bancaire effectué avec succès.";
+            return new (true, "Virement bancaire effectué avec succès.");
         }
         catch (NpgsqlException ex)
         {
             await kaeruTransac.RollbackAsync();
             Debug.WriteLine(ex.Message);
-            return "Le virement a echoué.";
+            return new (false, "Le virement a echoué.");
         }
         catch (Exception ex)
         {
             await kaeruTransac.RollbackAsync();
             Debug.WriteLine(ex.Message);
-            return "Le virement a echoué.";
+            return new (false, "Le virement a echoué.");
         }
     }
 

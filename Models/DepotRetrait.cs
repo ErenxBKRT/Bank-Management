@@ -8,30 +8,30 @@ namespace Bankmanaging.Models;
 
 public static class DepotRetrait
 {
-    public static async Task<string> DepositAsync (string numero, decimal montant, string codeAgence)
+    public static async Task<Result> DepositAsync (string numero, decimal montant, string codeAgence)
     {
-        if (montant <= 0) return "Le montant doit être positif";
+        if (montant <= 0) return new (false, "Le montant doit être positif");
 
         using NpgsqlConnection kaeru = await DatabaseConnection.Instance.KaeruConnectAsync();
         await using NpgsqlTransaction kaeruTransac = await kaeru.BeginTransactionAsync();
 
         try
         {
-            string verifyAccount = await ServiceCompte.VerifyAsync(numero, kaeru, kaeruTransac);
-            if (verifyAccount != "VERIFIED")
+            Result verifyAccount = await ServiceCompte.VerifyAsync(numero, kaeru, kaeruTransac);
+            if (!verifyAccount.Status)
             {
                 await kaeruTransac.RollbackAsync();
                 return verifyAccount;
             }
-            string isAccountLocked = await ServiceCompte.IsLockedAsync(numero, kaeru, kaeruTransac);
-            if (isAccountLocked != "NO")
+            Result isAccountLocked = await ServiceCompte.IsLockedAsync(numero, kaeru, kaeruTransac);
+            if (!isAccountLocked.Status)
             {
                 await kaeruTransac.RollbackAsync();
                 return isAccountLocked;
             }
 
-            string verifyCode = await GestionAgence.VerifyCodeAsync(codeAgence, kaeru, kaeruTransac);
-            if (verifyCode != "VERIFIED")
+            Result verifyCode = await GestionAgence.VerifyCodeAsync(codeAgence, kaeru, kaeruTransac);
+            if (!verifyCode.Status)
             {
                 await kaeruTransac.RollbackAsync();
                 return verifyCode;
@@ -55,47 +55,47 @@ public static class DepotRetrait
 
             await preparedQuery.ExecuteNonQueryAsync();
             await kaeruTransac.CommitAsync();
-            return "Dépot réussie";
+            return new (true, "Dépot réussie");
         }
         catch (NpgsqlException ex)
         {
             await kaeruTransac.RollbackAsync();
             Debug.WriteLine($"Error : {ex.Message}");
-            return "Le dépôt a échoué.";
+            return new (false, "Le dépôt a échoué.");
         }
         catch (Exception ex)
         {
             await kaeruTransac.RollbackAsync();
             Debug.WriteLine($"Error : {ex.Message}");
-            return "Le dépôt a échoué.";
+            return new (false, "Le dépôt a échoué.");
         }
     }
 
-    public static async Task<string> WithdrawAsync (string numero, string pin, decimal montant, string codeAgence)
+    public static async Task<Result> WithdrawAsync (string numero, string pin, decimal montant, string codeAgence)
     {
-        if (montant <= 0) return "Le montant doit être positif";
+        if (montant <= 0) return new (false, "Le montant doit être positif");
 
         using NpgsqlConnection kaeru = await DatabaseConnection.Instance.KaeruConnectAsync();
         await using NpgsqlTransaction kaeruTransac = await kaeru.BeginTransactionAsync();
 
         try
         {
-            string verifyAccount = await ServiceCompte.VerifyAsync(numero, kaeru, kaeruTransac);
-            if (verifyAccount != "VERIFIED")
+            Result verifyAccount = await ServiceCompte.VerifyAsync(numero, kaeru, kaeruTransac);
+            if (!verifyAccount.Status)
             {
                 await kaeruTransac.RollbackAsync();
                 return verifyAccount;
             }
 
-            string isCardLocked = await ServiceCompte.IsLockedAsync(numero, kaeru, kaeruTransac);
-            if (isCardLocked != "NO")
+            Result isCardLocked = await ServiceCompte.IsLockedAsync(numero, kaeru, kaeruTransac);
+            if (!isCardLocked.Status)
             {
                 await kaeruTransac.RollbackAsync();
                 return isCardLocked;
             }
 
-            string verifyAgence = await GestionAgence.VerifyCodeAsync(codeAgence, kaeru, kaeruTransac);
-            if (verifyAgence != "VERIFIED")
+            Result verifyAgence = await GestionAgence.VerifyCodeAsync(codeAgence, kaeru, kaeruTransac);
+            if (!verifyAgence.Status)
             {
                 await kaeruTransac.RollbackAsync();
                 return verifyAgence;
@@ -108,7 +108,7 @@ public static class DepotRetrait
             if (await withdraw.ExecuteNonQueryAsync() == 0)
             {
                 await kaeruTransac.RollbackAsync();
-                return "Solde insuffisant.";
+                return new (false, "Solde insuffisant.");
             }
 
             DateTime now = DateTime.Now;
@@ -124,19 +124,19 @@ public static class DepotRetrait
 
             await preparedQuery.ExecuteNonQueryAsync();
             await kaeruTransac.CommitAsync();
-            return "Retrait terminé avec succès.";
+            return new (true, "Retrait terminé avec succès.");
         }
         catch (NpgsqlException ex)
         {
             await kaeruTransac.RollbackAsync();
             Debug.WriteLine($"Error : {ex.Message}");
-            return "Le retrait a échoué.";
+            return new (false, "Le retrait a échoué.");
         }
         catch (Exception ex)
         {
             await kaeruTransac.RollbackAsync();
             Debug.WriteLine($"Error : {ex.Message}");
-            return "Le retrait a échoué.";
+            return new (false, "Le retrait a échoué.");
         }
     }
 

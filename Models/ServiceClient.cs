@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 namespace Bankmanaging.Models;
 public static class ServiceClient
 {
-    public static async Task<string> AddAsync (string nom, string adresse, string contact, string? prenom = null)
+    public static async Task<Result> AddAsync (string nom, string adresse, string contact, string? prenom = null)
     {
         using NpgsqlConnection kaeru = await DatabaseConnection.Instance.KaeruConnectAsync();
 
@@ -17,23 +17,23 @@ public static class ServiceClient
             preparedQuery.Parameters.AddWithValue("prenom", prenom ?? (object)DBNull.Value);
             preparedQuery.Parameters.AddWithValue("adresse", adresse);
             preparedQuery.Parameters.AddWithValue("contact", contact);
-
             await preparedQuery.ExecuteNonQueryAsync();
-            return "Ajout du nouveau client terminé avec succès.";
+
+            return new (true, "Ajout du nouveau client terminé avec succès.");
         } 
         catch (NpgsqlException ex) 
         {
             Debug.WriteLine($"Error : {ex.Message}"); 
-            return "L'ajout du nouveau client a échoué.";
+            return new (false, "L'ajout du nouveau client a échoué.");
         }
-        catch (Exception ex) 
+        catch (Exception ex)
         {
             Debug.WriteLine($"Error : {ex.Message}"); 
-            return "L'ajout du nouveau client a échoué.";
+            return new (false, "L'ajout du nouveau client a échoué.");
         }
     }
 
-    public static async Task<string> UpdateAsync (int idClient, string nom, string adresse, string contact, string? prenom = null)
+    public static async Task<Result> UpdateAsync (int idClient, string nom, string adresse, string contact, string? prenom = null)
     {
         using NpgsqlConnection kaeru = await DatabaseConnection.Instance.KaeruConnectAsync();
 
@@ -46,22 +46,25 @@ public static class ServiceClient
             preparedQuery.Parameters.AddWithValue("contact", contact);
             preparedQuery.Parameters.AddWithValue("idClient", idClient);
 
-            if(await preparedQuery.ExecuteNonQueryAsync() == 0) return "L'identifiant du client est incorrect."; 
-            return "Les informations du client mis à jour avec succès.";
+            if(await preparedQuery.ExecuteNonQueryAsync() == 0)
+            {
+                return new (false, "L'identifiant du client est incorrect.");
+            }
+            return new (true, "Les informations du client mis à jour avec succès.");
         } 
         catch (NpgsqlException ex) 
         {
             Debug.WriteLine($"Error : {ex.Message}"); 
-            return "Le mis à jour des informations a echoué.";
+            return new (false, "Le mis à jour des informations a echoué.");
         }
         catch (Exception ex) 
         {
             Debug.WriteLine($"Error : {ex.Message}"); 
-            return "Le mis à jour des informations a echoué.";
+            return new (false, "Le mis à jour des informations a echoué.");
         }
     }
 
-    public static async Task<string> LockAsync (bool bloque, int idClient)
+    public static async Task<Result> LockAsync (bool bloque, int idClient)
     {
         using NpgsqlConnection kaeru = await DatabaseConnection.Instance.KaeruConnectAsync();
         using NpgsqlTransaction kaeruTransac = await kaeru.BeginTransactionAsync();
@@ -75,37 +78,37 @@ public static class ServiceClient
             if (await preparedQuery.ExecuteNonQueryAsync() == 0)
             {
                 await kaeruTransac.RollbackAsync();
-                return "L'identifiant du client est incorrect.";
+                return new (false, "L'identifiant du client est incorrect.");
             }
 
             await ServiceCompte.LockAsync(true, idClient);
             await kaeruTransac.CommitAsync();
-            return "Le client a été bloqué avec succès";
+            return new (true, "Le client a été bloqué avec succès");
         } 
         catch (NpgsqlException ex)
         {
             await kaeruTransac.RollbackAsync();
             Debug.WriteLine($"Error : {ex.Message}");
-            return "La requête pour bloquer le client a échoué.";
+            return new (false, "La requête pour bloquer le client a échoué.");
         }
         catch (Exception ex)
         {
             await kaeruTransac.RollbackAsync();
             Debug.WriteLine($"Error : {ex.Message}");
-            return "La requête pour bloquer le client a échoué.";
+            return new (false, "La requête pour bloquer le client a échoué.");
         }
     }
 
-    public static async Task<string> VerifyAsync (int idClient, NpgsqlConnection kaeru, NpgsqlTransaction? kaeruTransac = null)
+    public static async Task<Result> VerifyAsync (int idClient, NpgsqlConnection kaeru, NpgsqlTransaction? kaeruTransac = null)
     {
         using NpgsqlCommand preparedQuery = new ("SELECT * FROM client WHERE id_client = @idClient;", kaeru, kaeruTransac);
         preparedQuery.Parameters.AddWithValue("idClient", idClient);
 
-        if (await preparedQuery.ExecuteNonQueryAsync() == 0)
+        if (await preparedQuery.ExecuteScalarAsync() == null)
         {
-            return "L'identifiant du client est incorrect.";
+            return new (false, "L'identifiant du client est incorrect.");
         }
-        return "VERIFIED";
+        return new (true, "Connection réussie");
     }
 
 }
