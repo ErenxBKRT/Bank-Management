@@ -32,16 +32,16 @@ public partial class ConnexionViewModel : ViewModelBase
             StatusMessage = "Veuillez remplir tous les champs.";
             return;
         }
-        bool text = await GestionAgence.LogInAsync(Username, Password);
+        Result random = await GestionAgence.LogInAsync(Username, Password);
 
-        if (text)
+        if (random.Status)
         {
-            StatusMessage = "Connexion réussie !";
+            StatusMessage = random.Message ?? "random not";
             _mainViewModel.OuvrirApplication();
         }
         else
         {
-            StatusMessage = "Identifiants invalides";
+            StatusMessage = random.Message ?? "random";
         }
     }
 }

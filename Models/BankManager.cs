@@ -4,6 +4,8 @@ using System.Threading.Tasks;
 
 namespace Bankmanaging.Models;
 
+public record Result (bool Status, string Message);
+
 public interface IDatabaseConnection
 {
     Task<NpgsqlConnection> KaeruConnectAsync();
