@@ -7,13 +7,12 @@
 
     <Grid ColumnDefinitions="*,Auto">
         <Grid Grid.Column="0" ColumnDefinitions="Auto,Auto" RowDefinitions="Auto,Auto,Auto,Auto" ColumnSpacing="20" RowSpacing="20" VerticalAlignment="Center" HorizontalAlignment="Center">
-                <TextBlock Text="Faire un retrait" Grid.Row="0"
+                <TextBlock Text="Faire un retrait" FontSize="20" Margin="30" FontWeight="DemiBold" Grid.Row="0"
                         HorizontalAlignment="Center"/>
                 <TextBlock Text="Montant" Grid.Row="1"
                         HorizontalAlignment="Center"/>
                 <TextBox Width="500" Grid.Row="2"
                         Height="20"
-                        Margin="50"
                         PlaceholderText="Entrer la somme"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
@@ -24,10 +23,10 @@
                         Command="{Binding RetraitCommand}" />
             
         </Grid>
-        <Grid Grid.Column="1" Margin="20" VerticalAlignment="Center" HorizontalAlignment="Right" RowDefinitions="Auto,Auto" ColumnDefinitions="Auto,Auto" RowSpacing="30">
+        <Grid Grid.Column="1" Margin="20" Width="300" VerticalAlignment="Center" HorizontalAlignment="Right" RowDefinitions="Auto,Auto" ColumnDefinitions="Auto,Auto" RowSpacing="30">
                 <TextBlock Text="Solde :" Grid.Row="0" Grid.Column="0"/>
                 <TextBlock Text="{Binding Solde}" Grid.Row="0" Grid.Column="1"/>
-                <TextBlock Text="Solde :" Grid.Row="1" Grid.Column="0"/>
+                <TextBlock Text="Credit :" Grid.Row="1" Grid.Column="0"/>
                 <TextBlock Text="{Binding Credit}" Grid.Row="1" Grid.Column="1"/>
                 
          </Grid>
