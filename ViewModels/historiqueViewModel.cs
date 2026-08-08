@@ -18,18 +18,18 @@ public partial class HistoriqueViewModel : ViewModelBase
         _headerViewModel = headerViewModel;
         _historiqueL = new HistoriqueAViewModel();
         Transactions.Add(new Transaction{
-            IdTransaction = "T0124",
-            Type = "Depot",
+            Code = "T0124",
+            Libelle = "Depot",
             CodeAgence = "Q1200"
         });
         Transactions.Add(new Transaction{
-            IdTransaction = "T0123",
-            Type = "Credit",
+            Code = "T0123",
+            Libelle = "Credit",
             CodeAgence = "Q1200"
         });
         Transactions.Add(new Transaction{
-            IdTransaction = "T1234",
-            Type = "Virement",
+            Code = "T1234",
+            Libelle = "Virement",
             CodeAgence = "Q1201"
         });
     }

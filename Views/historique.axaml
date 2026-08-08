@@ -12,8 +12,8 @@
                                 <DataTemplate>
                                 <Border Margin="5" Padding="10">
                                         <StackPanel>
-                                                <TextBlock Text="{Binding IdTransaction}"/>
-                                                <TextBlock Text="{Binding Type}"/>
+                                                <TextBlock Text="{Binding Code}"/>
+                                                <TextBlock Text="{Binding Libelle}"/>
                                                 <TextBlock Text="{Binding CodeAgence}"/>
                                         </StackPanel>
                                 </Border>
