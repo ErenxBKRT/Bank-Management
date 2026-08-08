@@ -2,9 +2,9 @@ using Avalonia.Controls;
 
 namespace Bankmanaging.Views;
 
-public partial class ClientsView : UserControl
+public partial class CreationAView : UserControl
 {
-    public ClientsView()
+    public CreationAView()
     {
         InitializeComponent();
     }

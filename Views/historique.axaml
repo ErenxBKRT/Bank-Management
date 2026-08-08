@@ -1,0 +1,33 @@
+<UserControl
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:vm="using:Bankmanaging.ViewModels"
+    x:Class="Bankmanaging.Views.HistoriqueView"
+    x:DataType="vm:HistoriqueViewModel">
+
+    <Grid ColumnDefinitions="*,Auto">
+        <Grid Grid.Column="0">
+            <ListBox ItemsSource="{Binding Transactions}">
+                        <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                <Border Margin="5" Padding="10">
+                                        <StackPanel>
+                                                <TextBlock Text="{Binding IdTransaction}"/>
+                                                <TextBlock Text="{Binding Type}"/>
+                                                <TextBlock Text="{Binding CodeAgence}"/>
+                                        </StackPanel>
+                                </Border>
+                                </DataTemplate>
+                        </ListBox.ItemTemplate>
+                </ListBox>
+        </Grid>
+
+        <Grid Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center" Width="200">
+            <Button Content="Menu Principale"
+                    HorizontalAlignment="Center"
+                    Width="150" Height="50"
+                    Command="{Binding MenuCommand}"/>
+        </Grid>
+    </Grid>
+
+</UserControl>

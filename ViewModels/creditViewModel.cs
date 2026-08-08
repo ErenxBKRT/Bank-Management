@@ -5,19 +5,18 @@ using CommunityToolkit.Mvvm.Input;
 
 namespace Bankmanaging.ViewModels;
 
-public partial class DRSCViewModel : ViewModelBase
+public partial class CreditViewModel : ViewModelBase
 {
     private readonly HeaderViewModel _headerViewModel;
 
-    public DRSCViewModel (HeaderViewModel headerViewModel)
+    public CreditViewModel(HeaderViewModel headerViewModel)
     {
         _headerViewModel= headerViewModel;
     }
 
     [RelayCommand]
-    private void RetourClient()
+    private void annuler()
     {
-        _headerViewModel.RevenirClient();
+        _headerViewModel.Transaction();
     }
-
 }
