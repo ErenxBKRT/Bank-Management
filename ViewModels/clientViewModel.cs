@@ -17,51 +17,51 @@ public partial class ClientsViewModel : ViewModelBase
         Clients.Add(new Client{
             Nom = "RAKOTO",
             Prenom = "Nirina",
-            IdClient = "C1234",
+            Id = 12,
             Contact = "034222485",
             Adresse = "Lot djflkdsfjlkd"
         });
         Clients.Add(new Client{
             Nom= "RABE",
             Prenom = "Zafy",
-            IdClient = "C4321",
+            Id = 3,
             Adresse = "Lot djflkdsfjlkd",
             Contact = "034222535"
         });
         Clients.Add(new Client{
             Nom= "RAZAFY",
             Prenom = "Koto",
-            IdClient = "C4321",
+            Id = 321,
             Adresse = "Lot djflkdsfjlkd"
         });
         Clients.Add(new Client{
             Nom= "RAZAFY",
             Prenom = "Koto",
-            IdClient = "C4321",
+            Id = 32,
             Contact = "0342225245"
         });
         Clients.Add(new Client{
             Nom= "RAZAFY",
             Prenom = "Koto",
-            IdClient = "C4321",
+            Id = 432,
             Contact = "0342225245"
         });
         Clients.Add(new Client{
             Nom= "RAZAFY",
             Prenom = "Koto",
-            IdClient = "C4321",
+            Id = 321,
             Contact = "0342225245"
         });
         Clients.Add(new Client{
             Nom= "RAZAFY",
             Prenom = "Koto",
-            IdClient = "C4321",
+            Id = 321,
             Contact = "0342225135"
         });
         Clients.Add(new Client{
             Nom= "RAZAFY",
             Prenom = "Koto",
-            IdClient = "C4321"
+            Id = 432
         });
     }
 

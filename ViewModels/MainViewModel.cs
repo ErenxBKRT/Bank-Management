@@ -14,13 +14,14 @@ public partial class MainViewModel : ViewModelBase
         CurrentView = new ConnexionViewModel(this);
     }
 
-    public void OuvrirApplication()
+    public void OuvrirApplication(string mode)
     {
-        CurrentView = new HeaderViewModel(this);
+        CurrentView = new HeaderViewModel(this,mode);
     }
 
     public void Deco()
     {
         CurrentView = new ConnexionViewModel(this);
     }
+
 }

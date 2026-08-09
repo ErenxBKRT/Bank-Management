@@ -18,11 +18,26 @@
                                                 <TextBlock Text="{Binding Contact}" Grid.Column="0" Grid.Row="3" FontSize="16" Margin="10"/>
                                                 <TextBlock Text="{Binding Bloque}" Grid.Column="0" Grid.Row="4" FontSize="16" Margin="10"/>
                                                 <StackPanel Grid.Column="1" Grid.Row="0" Grid.RowSpan="5" HorizontalAlignment="Center" VerticalAlignment="Center">
-                                                        <Button Content="Accéder" HorizontalAlignment="Right"
+                                                        <Button HorizontalAlignment="Right" Width="200"
                                                                 Command="{Binding $parent[UserControl].DataContext.AccederCommand}"
-                                                                CommandParameter="{Binding}" />
-                                                        <Button Content="Modifier"/>
-                                                        <Button Content="Bloquer"/>
+                                                                CommandParameter="{Binding}">
+                                                                <StackPanel Orientation="Horizontal">
+                                                                        <Image Source="/Assets/icons8-connexion-50.png" Width="20" Height="20" Margin="3"/>
+                                                                        <TextBlock Text="Acceder" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                                </StackPanel>
+                                                        </Button>
+                                                        <Button Width="200">
+                                                                <StackPanel Orientation="Horizontal">
+                                                                        <Image Source="/Assets/icons8-modifier-50.png" Width="20" Height="20" Margin="3"/>
+                                                                        <TextBlock Text="Modifier" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                                </StackPanel>
+                                                        </Button>
+                                                        <Button Width="200">
+                                                                <StackPanel Orientation="Horizontal">
+                                                                        <Image Source="/Assets/icons8-interdit-50.png" Width="20" Height="20" Margin="3"/>
+                                                                        <TextBlock Text="Bloquer" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                                </StackPanel>
+                                                        </Button>
                                                 </StackPanel>
                                         </Grid>
                                 </Border>
@@ -32,16 +47,25 @@
         </Grid>
         <Grid Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center" Width="200" RowDefinitions="Auto, Auto" RowSpacing="20" Margin="20">
                 
-                <Button Content="Nouveau" 
-                        Grid.Row="0"
-                        Width="150" Height="50"
+                <Button Grid.Row="0"
+                        Width="180" Height="50"
                         HorizontalAlignment="Center"
-                        Command ="{Binding CreationCCommand}"/>
-                <Button Content="Menu Principale" 
-                        Grid.Row="1"
-                        Width="150" Height="50"
+                        Command ="{Binding CreationCCommand}">
+                        <StackPanel Orientation="Horizontal">
+                                <Image Source="/Assets/icons8-plus-50.png" Width="30" Height="30" Margin="5"/>
+                                <TextBlock Text="Nouveau" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </StackPanel>
+        </Button>
+                
+                <Button Grid.Row="1"
+                        Width="180" Height="50"
                         HorizontalAlignment="Center"
-                        Command="{Binding MenuPCommand}"/> 
+                        Command="{Binding MenuPCommand}">
+                        <StackPanel Orientation="Horizontal">
+                                <Image Source="/Assets/icons8-menu-50.png" Width="30" Height="30" Margin="5"/>
+                                <TextBlock Text="Menu Principale" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </StackPanel>
+        </Button> 
         </Grid>
     </Grid>
 
