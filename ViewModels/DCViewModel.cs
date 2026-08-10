@@ -29,4 +29,10 @@ public partial class DCViewModel : ViewModelBase
         
     }
 
+    [RelayCommand]
+    private void ModifierP()
+    {
+        _headerViewModel.ModifierP();
+    }
+
 }

@@ -14,13 +14,18 @@
                 <TextBlock Text="PIN" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center"/>
                 <TextBlock Text="Confirmation PIN" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center"/>
         
-                <TextBox Grid.Column="1" Grid.Row="0" Width="500"/>
-                <TextBox Grid.Column="1" Grid.Row="1" Width="500"/>
+                <TextBox Grid.Column="1" Grid.Row="0" 
+                         Width="500"
+                         Text="{Binding PIN, Mode=TwoWay}"/>
+                <TextBox Grid.Column="1" Grid.Row="1" 
+                         Width="500" 
+                         Text="{Binding ConfirmationPIN, Mode=TwoWay}"/>
                 
         </Grid>
         <Grid Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" RowDefinitions="Auto,Auto" RowSpacing="20" Margin="20">
             <Button Width="180" Height="50"
                     HorizontalAlignment="Center"
+                    Background="#001199" Foreground="#FFD700"
                     Grid.Row="0"
                     Command="{Binding CCompteCommand}">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
@@ -30,24 +35,7 @@
             </Button>
             <Button Width="180" Height="50"
                     HorizontalAlignment="Center"
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+                    Background="#001199" Foreground="#FFD700"
                     Grid.Row="1"
                     Command="{Binding AnnulerCommand}">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">

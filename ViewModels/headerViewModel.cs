@@ -53,6 +53,16 @@ public partial class HeaderViewModel : ViewModelBase
         ControlView = new DashViewModel(this);
     }
 
+    public void Retrait()
+    {
+        ControlView = new DCViewModel(this);
+    }
+
+    public void ModifierP()
+    {
+        ControlView = new ModifierPViewModel(this);
+    }
+
     public void NouveauC()
     {
         ControlView = new CreationCViewModel(this);

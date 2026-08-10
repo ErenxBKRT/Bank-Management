@@ -9,6 +9,12 @@ public partial class DepotViewModel : ViewModelBase
 {
     private readonly HeaderViewModel _headerViewModel;
 
+    [ObservableProperty]
+    private string numeroCompte = "";
+
+    [ObservableProperty]
+    private decimal somme = 0;
+
     public DepotViewModel(HeaderViewModel headerViewModel)
     {
         _headerViewModel= headerViewModel;

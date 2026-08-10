@@ -5,36 +5,41 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="450"
-    x:Class="Bankmanaging.Views.CreationCView"
-    x:DataType="vm:CreationCViewModel">
+    x:Class="Bankmanaging.Views.ModifierPView"
+    x:DataType="vm:ModifierPViewModel">
 
     <Grid ColumnDefinitions="*,Auto">
         
-        <Grid Grid.Column="0" ColumnDefinitions="Auto,Auto" RowDefinitions="Auto,Auto,Auto,Auto" ColumnSpacing="20" RowSpacing="20" Margin="20" VerticalAlignment="Center" HorizontalAlignment="Center">
-                <TextBlock Text="Nom" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center"/>
-                <TextBlock Text="Prenom" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center"/>
-                <TextBlock Text="Adresse" Grid.Column="0" Grid.Row="2" VerticalAlignment="Center"/>
-                <TextBlock Text="Contact" Grid.Column="0" Grid.Row="3" VerticalAlignment="Center"/>
+        <Grid Grid.Column="0" ColumnDefinitions="Auto,Auto" RowDefinitions="Auto,Auto,Auto" ColumnSpacing="20" RowSpacing="20" Margin="20" VerticalAlignment="Center" HorizontalAlignment="Center">
+                <TextBlock Text="Ancien PIN" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center"/>
+                <TextBlock Text="Nouveau PIN" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center"/>
+                <TextBlock Text="Confirmation" Grid.Column="0" Grid.Row="2" VerticalAlignment="Center"/>
             
                 <TextBox Grid.Column="1" Grid.Row="0" 
-                         Width="500"
-                         Text="{Binding Nom, Mode=TwoWay}"/>
+                         Width="100"
+                         HorizontalAlignment="Center"
+                         MaxLength="4"
+                         PasswordChar="o"
+                         Text="{Binding AncienPin, Mode=TwoWay}"/>
                 <TextBox Grid.Column="1" Grid.Row="1" 
-                         Width="500"
-                         Text="{Binding Prenom, Mode=TwoWay}"/>
+                         Width="100"
+                         HorizontalAlignment="Center"
+                         MaxLength="4"
+                         PasswordChar="o"
+                         Text="{Binding NouveauPin, Mode=TwoWay}"/>
                 <TextBox Grid.Column="1" Grid.Row="2" 
-                         Width="500"
-                         Text="{Binding Adresse, Mode=TwoWay}"/>
-                <TextBox Grid.Column="1" Grid.Row="3" 
-                         Width="500"
-                         Text="{Binding Contact, Mode=TwoWay}"/>
+                         Width="100"
+                         HorizontalAlignment="Center"
+                         MaxLength="4"
+                         PasswordChar="o"
+                         Text="{Binding ConfirmationPin, Mode=TwoWay}"/>
         </Grid>
         <Grid Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" RowDefinitions="Auto,Auto" RowSpacing="20" Margin="20">
             <Button Width="180" Height="50"
                     HorizontalAlignment="Center"
                     Background="#001199" Foreground="#FFD700"
-                    Grid.Row="0"
-                    Command="{Binding CreationCCommand}">
+                    Grid.Row="0" 
+                    Command="{Binding ModifierCommand}">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                             <Image Source="/Assets/icons8-confirmer-50.png" Width="30" Height="30" Margin="5"/>
                             <TextBlock Text="Enregistrer" HorizontalAlignment="Center" VerticalAlignment="Center"/>

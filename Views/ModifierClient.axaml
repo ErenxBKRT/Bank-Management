@@ -16,15 +16,24 @@
                 <TextBlock Text="{Binding Client.Adresse}" Grid.Column="0" Grid.Row="2" VerticalAlignment="Center"/>
                 <TextBlock Text="{Binding Client.Contact}" Grid.Column="0" Grid.Row="3" VerticalAlignment="Center"/>
             
-                <TextBox Grid.Column="1" Grid.Row="0" Width="500"/>
-                <TextBox Grid.Column="1" Grid.Row="1" Width="500"/>
-                <TextBox Grid.Column="1" Grid.Row="2" Width="500"/>
-                <TextBox Grid.Column="1" Grid.Row="3" Width="500"/>
+                <TextBox Grid.Column="1" Grid.Row="0" 
+                         Width="500"
+                         Text="{Binding NouveauNom, Mode=TwoWay}"/>
+                <TextBox Grid.Column="1" Grid.Row="1" 
+                         Width="500"
+                         Text="{Binding NouveauPrenom, Mode=TwoWay}"/>
+                <TextBox Grid.Column="1" Grid.Row="2" 
+                         Width="500"
+                         Text="{Binding NouvelleAdresse, Mode=TwoWay}"/>
+                <TextBox Grid.Column="1" Grid.Row="3" 
+                         Width="500"
+                         Text="{Binding NouveauContact, Mode=TwoWay}"/>
         </Grid>
         <Grid Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" RowDefinitions="Auto,Auto" RowSpacing="20" Margin="20">
             <Button Width="180" Height="50"
                     HorizontalAlignment="Center"
-                    Grid.Row="0"
+                    Background="#001199" Foreground="#FFD700"
+                    Grid.Row="0" 
                     Command="{Binding ModifierCCommand}">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                             <Image Source="/Assets/icons8-confirmer-50.png" Width="30" Height="30" Margin="5"/>
@@ -33,6 +42,7 @@
             </Button>
             <Button Width="180" Height="50"
                     HorizontalAlignment="Center"
+                    Background="#001199" Foreground="#FFD700"
                     Grid.Row="1"
                     Command="{Binding AnnulerCommand}">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">

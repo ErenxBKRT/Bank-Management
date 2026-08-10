@@ -33,6 +33,7 @@
         <Grid Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center" Width="200">
             <Button HorizontalAlignment="Center"
                     Width="180" Height="50"
+                    Background="#001199" Foreground="#FFD700"
                     Command="{Binding MenuCommand}">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                             <Image Source="/Assets/icons8-menu-50.png" Width="30" Height="30" Margin="5"/>

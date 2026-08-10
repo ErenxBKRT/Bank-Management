@@ -11,14 +11,21 @@
                 <TextBlock Text="Somme" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center"/>
                 <TextBlock Text="Description" Grid.Column="0" Grid.Row="2" VerticalAlignment="Center"/>
         
-                <TextBox Grid.Column="1" Grid.Row="0" Width="500"/>
-                <TextBox Grid.Column="1" Grid.Row="1" Width="500"/>
-                <TextBox Grid.Column="1" Grid.Row="2" Width="500"/>
+                <TextBox Grid.Column="1" Grid.Row="0" 
+                         Width="500"
+                         Text="{Binding NumeroCompte, Mode=TwoWay}"/>
+                <TextBox Grid.Column="1" Grid.Row="1" 
+                         Width="500"
+                         Text="{Binding Montant, Mode=TwoWay}"/>
+                <TextBox Grid.Column="1" Grid.Row="2" 
+                         Width="500"
+                         Text="{Binding Description, Mode=TwoWay}"/>
                 
         </Grid>
         <StackPanel Grid.Column="1" VerticalAlignment="Center" Width="200">
             <Button Width="180" Height="50"
-                    HorizontalAlignment="Center">
+                    HorizontalAlignment="Center"
+                    Background="#001199" Foreground="#FFD700">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                         <Image Source="/Assets/icons8-confirmer-50.png" Width="30" Height="30" Margin="5"/>
                         <TextBlock Text="Confirmer" HorizontalAlignment="Center" VerticalAlignment="Center"/>
@@ -26,6 +33,7 @@
             </Button>
             <Button Width="180" Height="50"
                     HorizontalAlignment="Center"
+                    Background="#001199" Foreground="#FFD700"
                     Command="{Binding annulerCommand}">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                             <Image Source="/Assets/icons8-annuler-50.png" Width="30" Height="30" Margin="5"/>

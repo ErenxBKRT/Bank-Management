@@ -9,6 +9,15 @@ public partial class VirementViewModel : ViewModelBase
 {
     private readonly HeaderViewModel _headerViewModel;
 
+    [ObservableProperty]
+    private string numeroCompte = "";
+
+    [ObservableProperty]
+    private decimal montant = 0;
+    
+    [ObservableProperty]
+    private string description = "";
+
     public VirementViewModel(HeaderViewModel headerViewModel)
     {
         _headerViewModel= headerViewModel;

@@ -9,6 +9,12 @@ public partial class RembourserViewModel : ViewModelBase
 {
     private readonly HeaderViewModel _headerViewModel;
 
+    [ObservableProperty]
+    private decimal montant = 0;
+
+    [ObservableProperty]
+    private string numeroCompte = "";
+
     public RembourserViewModel(HeaderViewModel headerViewModel)
     {
         _headerViewModel= headerViewModel;
