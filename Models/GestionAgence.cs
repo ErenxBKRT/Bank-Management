@@ -4,8 +4,6 @@ using System.Threading.Tasks;
 
 namespace Bankmanaging.Models;
 
-public record Result(bool Status, string? Message = null);
-
 public static class GestionAgence
 {
     public static async Task<Result> AddAsync (string adresse, decimal solde, string pin)
