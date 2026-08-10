@@ -55,7 +55,7 @@ public static class Listing
         try
         {
 
-            using NpgsqlCommand preparedQuery = new ("SELECT * FROM transaction WHERE (numero = @numero OR @numero IS NULL) AND (libelle = @libelle OR @libelle IS NULL) AND (code_agence = @codeAgence OR @codeAgence is NULL)) ORDER BY date DESC;", kaeru);
+            using NpgsqlCommand preparedQuery = new ("SELECT * FROM transaction WHERE (numero = @numero OR @numero IS NULL) AND (libelle = @libelle OR @libelle IS NULL) AND (code_agence = @codeAgence OR @codeAgence is NULL) ORDER BY date DESC;", kaeru);
             preparedQuery.Parameters.AddWithValue("codeAgence", codeAgence ?? (object)DBNull.Value);
             preparedQuery.Parameters.AddWithValue("numero", numero ?? (object)DBNull.Value);
             preparedQuery.Parameters.AddWithValue("libelle", libelle ?? (object)DBNull.Value);
@@ -72,7 +72,7 @@ public static class Listing
                     Nom = await row.IsDBNullAsync(4) ? null : row.GetString(4),
                     CodeAgence =  row.GetString(5),
                     Numero = row.GetString(6),
-                    Descritpion = await row.IsDBNullAsync(7) ? null : row.GetString(7)
+                    Description = await row.IsDBNullAsync(7) ? null : row.GetString(7)
                 };
                 listTransaction.Add(transaction);
             }
