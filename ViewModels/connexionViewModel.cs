@@ -29,36 +29,31 @@ public partial class ConnexionViewModel : ViewModelBase
     {
         if (string.IsNullOrWhiteSpace(Username) || string.IsNullOrWhiteSpace(Password))
         {
-            Result task = await ServiceClient.AddAsync("Doe", "VOID", "0328091283", "Jane");
+            Result task = await ServiceCompte.ChangePinAsync("0000000000", "1234");
             StatusMessage = task.Message;
-        }
-
-        try
-        {
-            Result logged = await GestionAgence.LogInAsync(Username, Password);
-            if (!logged.Status)
-            {
-                StatusMessage = logged.Message;
-                return;
-            }
-            _mainViewModel.OuvrirApplication("E");
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Error: {ex.Message}");
-            StatusMessage = "Please report to dev for this error!";
             return;
         }
-        
-        try 
+        try
         {
-            Result logged = await ServiceCompte.LogInAsync(Username, Password);
-            if (!logged.Status)
+            Result logAsEmploye = await GestionAgence.LogInAsync(Username, Password);
+            Result logAsClient = await ServiceCompte.LogInAsync(Username, Password);
+
+            if (!logAsEmploye.Status)
             {
-                StatusMessage = logged.Message;
-                return;                
+                if (!logAsClient.Status)
+                {
+                    if(logAsClient.Message == "Le compte est bloqué")
+                    {
+                        StatusMessage = logAsClient.Message;
+                    }
+                    else StatusMessage = logAsEmploye.Message;
+                }
+                else if (logAsClient.Status) _mainViewModel.OuvrirApplication("C");
             }
-            _mainViewModel.OuvrirApplication("C");
+            else if (logAsEmploye.Status)
+            {
+                _mainViewModel.OuvrirApplication("E");
+            }
         }
         catch (Exception ex)
         {

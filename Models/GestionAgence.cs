@@ -87,7 +87,7 @@ public static class GestionAgence
 
     public static async Task<Result> VerifyCodeAsync (string codeAgence, NpgsqlConnection kaeru, NpgsqlTransaction? kaeruTransac = null)
     {
-        using NpgsqlCommand preparedQuery = new ("SELECT * FROM agence WHERE code_agence = @codeAgence;", kaeru, kaeruTransac);
+        using NpgsqlCommand preparedQuery = new ("SELECT * FROM agence WHERE code_agence = @codeAgence FOR UPDATE;", kaeru, kaeruTransac);
         preparedQuery.Parameters.AddWithValue("codeAgence", codeAgence);
 
         if (await preparedQuery.ExecuteScalarAsync() == null)

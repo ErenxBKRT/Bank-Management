@@ -38,7 +38,7 @@ public static class CreditVirement
             int randomNumber = RandomNumberGenerator.GetInt32(0, 100);
             string code = microSecond + "-" + randomNumber.ToString("D2");
 
-            NpgsqlCommand compareSolde = new ("SELECT solde FROM agence WHERE code_agence = @codeAgence;", kaeru, kaeruTransac);
+            NpgsqlCommand compareSolde = new ("SELECT solde FROM agence WHERE code_agence = @codeAgence FOR UPDATE;", kaeru, kaeruTransac);
             compareSolde.Parameters.AddWithValue("codeAgence", codeAgence);
             decimal solde = (decimal?)await compareSolde.ExecuteScalarAsync() ?? 0.00m;
             if (solde < montant)
@@ -47,17 +47,17 @@ public static class CreditVirement
                 return new (false, "solde insuffisant");
             }
 
-            using NpgsqlCommand deposit = new ("UPDATE compte SET solde = solde + @montant WHERE numero = @numero FOR UPDATE;", kaeru, kaeruTransac);
+            using NpgsqlCommand deposit = new ("UPDATE compte SET solde = solde + @montant WHERE numero = @numero;", kaeru, kaeruTransac);
             deposit.Parameters.AddWithValue("montant", montant);
             deposit.Parameters.AddWithValue("numero", numero);
             await deposit.ExecuteNonQueryAsync();
 
-            using NpgsqlCommand getCreditFromAgence = new ("UPDATE agence SET solde = solde - @montant WHERE code_agence = @codeAgence FOR UPDATE;", kaeru, kaeruTransac);
+            using NpgsqlCommand getCreditFromAgence = new ("UPDATE agence SET solde = solde - @montant WHERE code_agence = @codeAgence;", kaeru, kaeruTransac);
             getCreditFromAgence.Parameters.AddWithValue("codeAgence", codeAgence);
             getCreditFromAgence.Parameters.AddWithValue("montant", montant);
             await getCreditFromAgence.ExecuteNonQueryAsync();
 
-            using NpgsqlCommand preparedQuery = new ("INSERT INTO transaction (code, libelle, montant, numero, code_agence) VALUES (@code, 'Credit', @montant, @numero, @codeAgence) FOR UPDATE;", kaeru, kaeruTransac);
+            using NpgsqlCommand preparedQuery = new ("INSERT INTO transaction (code, libelle, montant, numero, code_agence) VALUES (@code, 'Credit', @montant, @numero, @codeAgence);", kaeru, kaeruTransac);
             preparedQuery.Parameters.AddWithValue("code", code);
             preparedQuery.Parameters.AddWithValue("montant", montant);
             preparedQuery.Parameters.AddWithValue("numero", numero);
@@ -109,7 +109,7 @@ public static class CreditVirement
             int randomNumber = RandomNumberGenerator.GetInt32(0, 100);
             string code = microSecond + "-" + randomNumber.ToString("D2");
 
-            using NpgsqlCommand deposit = new ("UPDATE compte SET solde = solde + @montant WHERE numero = @numero FOR UPDATE;", kaeru, kaeruTransac);
+            using NpgsqlCommand deposit = new ("UPDATE compte SET solde = solde + @montant WHERE numero = @numero;", kaeru, kaeruTransac);
             deposit.Parameters.AddWithValue("montant", montant);
             deposit.Parameters.AddWithValue("numero", numero);
             await deposit.ExecuteNonQueryAsync();

@@ -36,7 +36,7 @@ public static class DepotRetrait
                 return verifyCode;
             }
         
-            using NpgsqlCommand deposit = new ("UPDATE compte SET solde = solde + @montant WHERE numero = @numero FOR UPDATE;", kaeru, kaeruTransac);
+            using NpgsqlCommand deposit = new ("UPDATE compte SET solde = solde + @montant WHERE numero = @numero;", kaeru, kaeruTransac);
             deposit.Parameters.AddWithValue("montant", montant);
             deposit.Parameters.AddWithValue("numero", numero);
             await deposit.ExecuteNonQueryAsync();
@@ -46,7 +46,7 @@ public static class DepotRetrait
             int randomNumber = RandomNumberGenerator.GetInt32(0, 100);
             string code = microSecond + "-" + randomNumber.ToString("D2");
             
-            using NpgsqlCommand preparedQuery = new ("INSERT INTO transaction (code, libelle, montant, numero, code_agence) VALUES (@code, 'Depot', @montant, @numero, @codeAgence) FOR UPDATE;", kaeru, kaeruTransac);
+            using NpgsqlCommand preparedQuery = new ("INSERT INTO transaction (code, libelle, montant, numero, code_agence) VALUES (@code, 'Depot', @montant, @numero, @codeAgence);", kaeru, kaeruTransac);
             preparedQuery.Parameters.AddWithValue("code", code);
             preparedQuery.Parameters.AddWithValue("montant", montant);
             preparedQuery.Parameters.AddWithValue("numero", numero);
@@ -100,7 +100,7 @@ public static class DepotRetrait
                 return verifyAgence;
             }
 
-            using NpgsqlCommand withdraw = new ("UPDATE compte SET solde = solde - @montant WHERE numero = @numero AND solde >= @montant AND pin = @pin FOR UPDATE;", kaeru, kaeruTransac);
+            using NpgsqlCommand withdraw = new ("UPDATE compte SET solde = solde - @montant WHERE numero = @numero AND solde >= @montant AND pin = @pin;", kaeru, kaeruTransac);
             withdraw.Parameters.AddWithValue("montant", montant);
             withdraw.Parameters.AddWithValue("numero", numero);
             withdraw.Parameters.AddWithValue("pin", pin);
