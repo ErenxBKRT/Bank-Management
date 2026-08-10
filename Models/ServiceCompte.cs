@@ -160,34 +160,6 @@ public static class ServiceCompte
         finally { if (disposeAtFinal && kaeru != null) await kaeru.DisposeAsync(); }
     }
 
-    public static async Task<Argent> ConsulterSoldeAsync (string numero)
-    {
-        using NpgsqlConnection kaeru = await DatabaseConnection.Instance.KaeruConnectAsync();
-        using NpgsqlTransaction kaeruTransac = await kaeru.BeginTransactionAsync();
-
-        try
-        {
-            using NpgsqlCommand preparedQuery = new ("SELECT solde, credit FROM compte WHERE numero = @numero;", kaeru, kaeruTransac);
-            preparedQuery.Parameters.AddWithValue("numero", numero);
-
-            NpgsqlDataReader money = await preparedQuery.ExecuteReaderAsync();
-            await money.ReadAsync();
-            return new (money.GetDecimal(0), money.GetDecimal(1));
-        }
-        catch (NpgsqlException ex)
-        {
-            await kaeruTransac.RollbackAsync();
-            Debug.WriteLine($"Error : {ex.Message}");
-            return new (0.00m, 0.00m);
-        }
-        catch (Exception ex)
-        {
-            await kaeruTransac.RollbackAsync();
-            Debug.WriteLine($"Error : {ex.Message}");
-            return new (0.00m, 0.00m);
-        }
-    }
-
     public static async Task<Result> IsLockedAsync (string numero, NpgsqlConnection kaeru, NpgsqlTransaction? transaction = null)
     {
             using NpgsqlCommand preparedQuery = new ("SELECT carte_bloquer FROM carte_bancaire WHERE num_compte = @numero;", kaeru, transaction);

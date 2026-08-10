@@ -13,9 +13,15 @@ public partial class ConnexionViewModel : ViewModelBase
 
     [ObservableProperty]
     private string password = string.Empty;
-
-    [ObservableProperty]
     private string statusMessage = "Entrez vos identifiants pour continuer.";
+
+    public string GetStatusMessage()
+    {
+    }
+
+    public void SetStatusMessage(string value)
+    {
+    }
 
     public ConnexionViewModel(MainViewModel mainViewModel)
     {
@@ -27,24 +33,24 @@ public partial class ConnexionViewModel : ViewModelBase
     {
         if (string.IsNullOrWhiteSpace(Username) || string.IsNullOrWhiteSpace(Password))
         {
-            StatusMessage = "Veuillez remplir tous les champs.";
+            SetStatusMessage("Veuillez remplir tous les champs.");
             return;
         }
 
         if (Username.Equals("admin", System.StringComparison.OrdinalIgnoreCase) && Password == "1234")
         {
-            StatusMessage = "Connexion réussie !";
+            SetStatusMessage("Connexion réussie !");
             _mainViewModel.OuvrirApplication("E");
         }
 
         if (Username.Equals("admin", System.StringComparison.OrdinalIgnoreCase) && Password == "1234")
         {
-            StatusMessage = "";
-            _mainViewModel.OuvrirApplication();
+            SetStatusMessage("");
+            _mainViewModel.OuvrirApplication("C");
         }
         else
         {
-            StatusMessage = "";
+            SetStatusMessage("");
         }
     }
 }
