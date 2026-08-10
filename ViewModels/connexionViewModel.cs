@@ -36,6 +36,17 @@ public partial class ConnexionViewModel : ViewModelBase
             SetStatusMessage("Veuillez remplir tous les champs.");
             return;
         }
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+        Result random = await GestionAgence.LogInAsync(Username, Password);
+
+        if (random.Status)
+        {
+            StatusMessage = random.Message ?? "random not";
+            _mainViewModel.OuvrirApplication();
+=======
+>>>>>>> Kaeru
 
         if (Username.Equals("admin", System.StringComparison.OrdinalIgnoreCase) && Password == "1234")
         {
@@ -47,6 +58,10 @@ public partial class ConnexionViewModel : ViewModelBase
         {
             SetStatusMessage("");
             _mainViewModel.OuvrirApplication("C");
+<<<<<<< HEAD
+=======
+>>>>>>> origin/Front
+>>>>>>> Kaeru
         }
         else
         {
