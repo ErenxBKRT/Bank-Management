@@ -15,7 +15,7 @@ public partial class ConnexionViewModel : ViewModelBase
     private string password = string.Empty;
 
     [ObservableProperty]
-    public partial string StatusMessage { get; set; } = "Entrez vos identifiants pour continuer.";
+    private string statusMessage = "Entrez vos identifiants pour continuer.";
 
     public ConnexionViewModel(MainViewModel mainViewModel)
     {
@@ -37,14 +37,13 @@ public partial class ConnexionViewModel : ViewModelBase
             _mainViewModel.OuvrirApplication("E");
         }
 
-        if (Username.Equals("admin", System.StringComparison.OrdinalIgnoreCase) && Password == "1234")
+        if (Username.Equals("Laza", System.StringComparison.OrdinalIgnoreCase) && Password == "1111")
         {
-            StatusMessage = "";
             _mainViewModel.OuvrirApplication("C");
         }
         else
         {
-            StatusMessage = "";
+            StatusMessage = "Identifiants invalides";
         }
     }
 }
