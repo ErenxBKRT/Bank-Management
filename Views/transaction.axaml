@@ -1,0 +1,69 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:Bankmanaging.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="450"
+        x:Class="Bankmanaging.Views.TransactionView"
+        x:DataType="vm:TransactionViewModel">
+
+    <Grid ColumnDefinitions="Auto,Auto,Auto,Auto" RowDefinitions="*,Auto" HorizontalAlignment="Center" ColumnSpacing="20">
+        <Button Width="200" Height="400"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Background="#001199" Foreground="#FFD700"
+                Grid.Column="0" Grid.Row="0"
+                Command="{Binding DepotCommand}">
+                <StackPanel>
+                        <Image Source="/Assets/icons8-mettre-64.png" Width="60" Height="60" Margin="20"/>
+                        <TextBlock Text="Depot" FontSize="20" HorizontalAlignment="Center"/>
+                </StackPanel>
+        </Button>
+
+        <Button Width="200" Height="400"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Background="#001199" Foreground="#FFD700"
+                Grid.Column="1" Grid.Row="0"
+                Command="{Binding VirementCommand}">
+                <StackPanel>
+                        <Image Source="/Assets/icons8-virement-bancaire-49.png" Width="60" Height="60" Margin="20"/>
+                        <TextBlock Text="Virement" FontSize="20" HorizontalAlignment="Center"/>
+                </StackPanel>
+        </Button>
+        <Button Width="200" Height="400"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Background="#001199" Foreground="#FFD700"
+                Grid.Column="2" Grid.Row="0"
+                Command="{Binding CreditCommand}">
+                <StackPanel>
+                        <Image Source="/Assets/icons8-argent-50.png" Width="60" Height="60" Margin="20"/>
+                        <TextBlock Text="Credit" FontSize="20" HorizontalAlignment="Center"/>
+                </StackPanel>
+        </Button>
+        <Button Width="200" Height="400"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Background="#001199" Foreground="#FFD700"
+                Grid.Column="3" Grid.Row="0"
+                Command="{Binding RetourCommand}">
+                <StackPanel>
+                        <Image Source="/Assets/icons8-transaction-50.png" Width="60" Height="60" Margin="20"/>
+                        <TextBlock Text="Rembourser" FontSize="20" HorizontalAlignment="Center"/>
+                </StackPanel>
+        </Button>
+        <Button Grid.Column="0" Grid.Row="1"
+                Grid.ColumnSpan="4" 
+                Height="50"
+                Margin="50"
+                VerticalAlignment="Top" HorizontalAlignment="Stretch"
+                Background="#001199" Foreground="#FFD700"
+                Command="{Binding RetourCommand}">
+                <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                        <Image Source="/Assets/icons8-retour-30.png" Height="20" Width="20" Margin="20"/>
+                        <TextBlock Text="Retour" VerticalAlignment="Center"/>
+                </StackPanel>
+        </Button>
+    </Grid>
+</UserControl>

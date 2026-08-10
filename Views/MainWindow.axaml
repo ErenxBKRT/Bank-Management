@@ -6,21 +6,14 @@
         mc:Ignorable="d" d:DesignWidth="200" d:DesignHeight="320"
         x:Class="Bankmanaging.Views.MainWindow"
         x:DataType="vm:MainViewModel"
-        Icon="/Assets/avalonia-logo.ico"
+        Icon="/Assets/icons8-banque-50.ico"
         Title="Bankmanaging">
 
 	<Design.DataContext>
 		<vm:MainViewModel />
 	</Design.DataContext>
 
-	<StackPanel>
-		<!-- <StackPanel Margin="0,0,0,10">
-			<Button Content="Trying connecting if work" Click="Connecting" HorizontalAlignment="Center"/>
-			<TextBlock Name="Status" Text="Not Connected" TextAlignment="Center"/>
-		</StackPanel> -->
-
-
-		<ContentControl Content="{Binding CurrentView}"/>
-	</StackPanel>
+		<ContentControl Content="{Binding CurrentView}"
+                                Margin="0"/>
 
 </Window>

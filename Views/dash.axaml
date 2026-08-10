@@ -5,26 +5,62 @@
     x:Class="Bankmanaging.Views.DashView"
     x:DataType="vm:DashViewModel">
 
-    <StackPanel>
-        <Grid RowSpacing="30" ColumnSpacing="20" ColumnDefinitions="Auto,Auto,Auto,Auto" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20">
-            <Button Content="Client" 
-                    Grid.Column="0"
-                    Command="{Binding ActionClientCommand}" 
-                    CommandParameter="Client"/>
-            <Button Content="Employe" 
-                    Grid.Column="1"
-                    Command="{Binding ActionEmployerCommand}" 
-                    CommandParameter="Employe"/>
-            <Button Content="Historique" 
-                    Grid.Column="2"    
-                    Command="{Binding ActionAgenceCommand}" 
-                    CommandParameter="Historique"/>
-            <Button Content="Agence" 
-                    Grid.Column="3"
-                    Command="{Binding ActionHistoriqueCommand}" 
-                    CommandParameter="Agence"/>
-        </Grid>
-    </StackPanel>
+    <Grid RowSpacing="30" 
+          ColumnSpacing="20" 
+          ColumnDefinitions="*,*,*,*" 
+          RowDefinitions="*" 
+          HorizontalAlignment="Center" 
+          VerticalAlignment="Center" 
+          Margin="20">
 
+        <Button Grid.Column="0" Grid.Row="0"
+                Width="200" Height="400"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Background="#001199" Foreground="#FFD700"
+                Command="{Binding ActionClientCommand}">
+                <StackPanel>
+                        <Image Source="/Assets/icons8-employé-50.png" Width="60" Height="60" Margin="20"/>
+                        <TextBlock Text="Client" FontSize="20" HorizontalAlignment="Center"/>
+                </StackPanel>
+        </Button>
+
+        <Button Grid.Column="1" Grid.Row="0"
+                Width="200" Height="400"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Background="#001199" Foreground="#FFD700"
+                Command="{Binding TransactionCommand}">
+                <StackPanel>
+                        <Image Source="/Assets/icons8-transaction-48.png" Width="60" Height="60" Margin="20"/>
+                        <TextBlock Text="Transaction" FontSize="20" HorizontalAlignment="Center"/>
+                </StackPanel>
+        </Button>
+     
+        <Button Grid.Column="2" Grid.Row="0"
+                Width="200" Height="400"
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Background="#001199" Foreground="#FFD700"
+                Command="{Binding ActionAgenceCommand}"
+                CommandParameter="Agence">
+                <StackPanel>
+                        <Image Source="/Assets/icons8-agence-96.png" Width="60" Height="60" Margin="20"/>
+                        <TextBlock Text="Agence" FontSize="20" HorizontalAlignment="Center"/>
+                </StackPanel>
+        </Button>
+                
+        <Button Grid.Column="3" Grid.Row="0"
+                Width="200" Height="400"  
+                HorizontalContentAlignment="Center"
+                VerticalContentAlignment="Center"
+                Background="#001199" Foreground="#FFD700"
+                Command="{Binding ActionHistoriqueCommand}">
+                <StackPanel>
+                        <Image Source="/Assets/icons8-historique-50.png" Width="60" Height="60" Margin="20"/>
+                        <TextBlock Text="Historique" FontSize="20" HorizontalAlignment="Center"/>
+                </StackPanel>
+        </Button>
+        </Grid>
 
 </UserControl>

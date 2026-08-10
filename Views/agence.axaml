@@ -1,0 +1,39 @@
+<UserControl
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:vm="using:Bankmanaging.ViewModels"
+    x:Class="Bankmanaging.Views.AgenceView"
+    x:DataType="vm:AgenceViewModel">
+
+    <Grid ColumnDefinitions="*,Auto">
+        <Grid Grid.Column="0">
+            <ListBox ItemsSource="{Binding Agences}">
+                        <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                <Border Margin="5" Padding="10">
+                                        <StackPanel>
+                                                <TextBlock Text="{Binding CodeAgence}"/>
+                                                <TextBlock Text="{Binding Adresse}"/>
+                                                <TextBlock Text="{Binding Solde}"/>
+                                        </StackPanel>
+                                </Border>
+                                </DataTemplate>
+                        </ListBox.ItemTemplate>
+                </ListBox>
+        </Grid>
+        <Grid Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center" Width="200" RowDefinitions="Auto, Auto" RowSpacing="20" Margin="20">
+                
+                <Button Content="Nouveau" 
+                        Grid.Row="0"
+                        Width="150" Height="50"
+                        HorizontalAlignment="Center"
+                        Command ="{Binding CreationACommand}"/>
+                <Button Content="Menu Principale" 
+                        Grid.Row="1"
+                        Width="150" Height="50"
+                        HorizontalAlignment="Center"
+                        Command="{Binding MenuCommand}"/> 
+        </Grid>
+    </Grid>
+
+</UserControl>

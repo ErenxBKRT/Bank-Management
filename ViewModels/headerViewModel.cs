@@ -1,3 +1,5 @@
+using Avalonia.Controls;
+using Bankmanaging.Models;
 using Bankmanaging.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -11,27 +13,79 @@ public partial class HeaderViewModel : ViewModelBase
     [ObservableProperty]
     private ViewModelBase _controlView;
 
-    public HeaderViewModel(MainViewModel mainViewModel)
+    [ObservableProperty]
+    private string _ce;
+
+    public HeaderViewModel(MainViewModel mainViewModel,string mode)
     {
         _mainViewModel = mainViewModel;
-        ControlView = new DashViewModel(this);
+        Ce = mode;
+        if (mode == "E")
+        {
+            ControlView = new DashViewModel(this);
+        }
+        if (mode == "C")
+        {
+            ControlView = new DCViewModel(this);
+        }
     }
-    
-    public void ConnecterClient()
+    public void MenuClient()
     {
-        ControlView= new ClientLogViewModel(this);
+        ControlView= new ClientsViewModel(this);
     }
-    public void RevenirClient()
+    public void EntrerClient()
     {
-        ControlView= new ClientViewModel(this);
+        ControlView = new DCViewModel(this);
     }
-    public void ActionClient()
+
+    public void OuvrirClient(Client client)
     {
-        ControlView = new DRSCViewModel(this);
+        ControlView = new ClientDetailViewModel(this, client);
+    }
+    public void ActionClient(string action)
+    {
+        ControlView = new ActionViewModel(this,action);
     }
     public void MainMenu()
     {
         ControlView = new DashViewModel(this);
+    }
+
+    public void NouveauC()
+    {
+        ControlView = new CreationCViewModel(this);
+    }
+    public void MenuHistorique()
+    {
+        ControlView = new HistoriqueViewModel(this);
+    }
+    public void MenuAgence()
+    {
+        ControlView = new AgenceViewModel(this);
+    }
+    public void NouveauA()
+    {
+        ControlView = new CreationAViewModel(this);
+    }
+
+    public void Transaction()
+    {
+        ControlView = new TransactionViewModel(this);
+    }
+
+    public void Virement()
+    {
+        ControlView = new VirementViewModel(this);
+    }
+
+    public void Depot()
+    {
+        ControlView = new DepotViewModel(this);
+    }
+
+    public void Credit()
+    {
+        ControlView = new CreditViewModel(this);
     }
     
     [RelayCommand]

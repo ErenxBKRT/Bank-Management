@@ -1,8 +1,6 @@
-using Bankmanaging.Models;
 using Bankmanaging.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System.Threading.Tasks;
 
 namespace Bankmanaging.ViewModels;
 
@@ -25,19 +23,32 @@ public partial class ConnexionViewModel : ViewModelBase
     }
 
     [RelayCommand]
-    private async Task Login()
+    private void Login()
     {
         if (string.IsNullOrWhiteSpace(Username) || string.IsNullOrWhiteSpace(Password))
         {
             StatusMessage = "Veuillez remplir tous les champs.";
             return;
         }
+<<<<<<< HEAD
         Result random = await GestionAgence.LogInAsync(Username, Password);
 
         if (random.Status)
         {
             StatusMessage = random.Message ?? "random not";
             _mainViewModel.OuvrirApplication();
+=======
+
+        if (Username.Equals("admin", System.StringComparison.OrdinalIgnoreCase) && Password == "1234")
+        {
+            StatusMessage = "Connexion réussie !";
+            _mainViewModel.OuvrirApplication("E");
+        }
+
+        if (Username.Equals("Laza", System.StringComparison.OrdinalIgnoreCase) && Password == "1111")
+        {
+            _mainViewModel.OuvrirApplication("C");
+>>>>>>> origin/Front
         }
         else
         {

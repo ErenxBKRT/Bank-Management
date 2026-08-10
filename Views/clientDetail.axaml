@@ -1,0 +1,38 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:Bankmanaging.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="450"
+        x:Class="Bankmanaging.Views.ClientDetailView"
+        x:DataType="vm:ClientDetailViewModel">
+
+    <Grid ColumnDefinitions="*,Auto">
+
+
+        <Grid Grid.Column="0" RowDefinitions="Auto,Auto">
+             <StackPanel Grid.Row="0">
+                <TextBlock Text="list carte"/>
+             </StackPanel>
+        </Grid>
+
+    <Grid Grid.Column="1" RowDefinitions="Auto,Auto,Auto" HorizontalAlignment="Right" Width="200" Margin="10" VerticalAlignment="Center">
+        <StackPanel Grid.Row="0" HorizontalAlignment="Center">
+            <TextBlock Text="{Binding Client.Nom}" FontSize="16" Margin="10"/>
+            <TextBlock Text="{Binding Client.Prenom}" FontSize="16" Margin="10"/>
+        </StackPanel>
+        
+        <Button Grid.Row="2" Content="Retour" 
+                Width="100" Height="30"
+                HorizontalAlignment="Center"
+                Command="{Binding RetourCommand}"/>
+        <Button Grid.Row="1" Content="Nouveau"
+                Width="100" Height="30"
+                HorizontalAlignment="Center"
+                />
+
+    </Grid>
+    
+    </Grid>
+
+</UserControl>
