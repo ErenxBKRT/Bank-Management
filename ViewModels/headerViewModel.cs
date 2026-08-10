@@ -55,6 +55,11 @@ public partial class HeaderViewModel : ViewModelBase
     {
         ControlView = new CreationCViewModel(this);
     }
+
+    public void CCompte()
+    {
+        ControlView = new CCompteViewModel(this);
+    }
     public void MenuHistorique()
     {
         ControlView = new HistoriqueViewModel(this);
@@ -86,6 +91,11 @@ public partial class HeaderViewModel : ViewModelBase
     public void Credit()
     {
         ControlView = new CreditViewModel(this);
+    }
+
+    public void Rembourser()
+    {
+        ControlView = new RembourserViewModel(this);
     }
     
     [RelayCommand]

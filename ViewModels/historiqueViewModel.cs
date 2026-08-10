@@ -10,13 +10,11 @@ public partial class HistoriqueViewModel : ViewModelBase
     private readonly HeaderViewModel _headerViewModel;
     public ObservableCollection<Transaction> Transactions {get; } = new();
 
-    [ObservableProperty]
-    private ViewModelBase _historiqueL;
+    
 
     public HistoriqueViewModel (HeaderViewModel headerViewModel)
     {
         _headerViewModel = headerViewModel;
-        _historiqueL = new HistoriqueAViewModel();
         Transactions.Add(new Transaction{
             Code = "T0124",
             Libelle = "Depot",

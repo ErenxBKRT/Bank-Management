@@ -18,9 +18,15 @@
                         VerticalAlignment="Center"
                         Text="{Binding Somme, Mode=TwoWay}"/>
 
-                <Button Content="Confirmer" Grid.Row="3"
+                <Button Grid.Row="3"
                         HorizontalAlignment="Center"
-                        Command="{Binding RetraitCommand}" />
+                        Width="180" Height="50"
+                        Command="{Binding RetraitCommand}">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                <Image Source="/Assets/icons8-confirmer-50.png" Width="30" Height="30" Margin="5"/>
+                                <TextBlock Text="Confirmer" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                        </StackPanel>
+                </Button>
             
         </Grid>
         <Grid Grid.Column="1" Margin="20" Width="300" VerticalAlignment="Center" HorizontalAlignment="Right" RowDefinitions="Auto,Auto" ColumnDefinitions="Auto,Auto" RowSpacing="30">

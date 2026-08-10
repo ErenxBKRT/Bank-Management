@@ -22,14 +22,24 @@
                 <TextBox Grid.Column="1" Grid.Row="3" Width="500"/>
         </Grid>
         <Grid Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" RowDefinitions="Auto,Auto" RowSpacing="20" Margin="20">
-            <Button Content="Enregistrer"
-                    Width="150" Height="50"
+            <Button Width="180" Height="50"
+                    HorizontalAlignment="Center"
                     Grid.Row="0"
-                    Command="{Binding CreationCCommand}"/>
-            <Button Content="Annuler"
-                    Width="150" Height="50"
+                    Command="{Binding CreationCCommand}">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <Image Source="/Assets/icons8-confirmer-50.png" Width="30" Height="30" Margin="5"/>
+                            <TextBlock Text="Enregistrer" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </StackPanel>
+            </Button>
+            <Button Width="180" Height="50"
+                    HorizontalAlignment="Center"
                     Grid.Row="1"
-                    Command="{Binding AnnulerCommand}"/>
+                    Command="{Binding AnnulerCommand}">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <Image Source="/Assets/icons8-annuler-50.png" Width="30" Height="30" Margin="5"/>
+                            <TextBlock Text="Annuler" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </StackPanel>
+            </Button>
         </Grid>
         </Grid>
 

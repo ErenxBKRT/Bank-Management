@@ -10,10 +10,35 @@
     <Grid ColumnDefinitions="*,Auto">
 
 
-        <Grid Grid.Column="0" RowDefinitions="Auto,Auto">
-             <StackPanel Grid.Row="0">
-                <TextBlock Text="list carte"/>
-             </StackPanel>
+        <Grid Grid.Column="0">
+             <ListBox ItemsSource="{Binding Cartes}">
+                <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                <Border Margin="5" Padding="10">
+                                        <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto,Auto,Auto,Auto">
+                                                <TextBlock Text="{Binding Nom}" Grid.Column="0" Grid.Row="0" FontSize="16" Margin="10"/>
+                                                <TextBlock Text="{Binding Prenom}" Grid.Column="0" Grid.Row="1" FontSize="16" Margin="10"/>
+                                                <TextBlock Text="{Binding solde}" Grid.Column="0" Grid.Row="2" FontSize="16" Margin="10"/>
+                                                <TextBlock Text="{Binding Numero}" Grid.Column="0" Grid.Row="3" FontSize="16" Margin="10"/>
+                                                <StackPanel Grid.Column="1" Grid.Row="0" Grid.RowSpan="5" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                                        <Button Width="200">
+                                                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                                                        <Image Source="/Assets/icons8-modifier-50.png" Width="20" Height="20" Margin="3"/>
+                                                                        <TextBlock Text="Modifier" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                                </StackPanel>
+                                                        </Button>
+                                                        <Button Width="200">
+                                                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                                                        <Image Source="/Assets/icons8-interdit-50.png" Width="20" Height="20" Margin="3"/>
+                                                                        <TextBlock Text="Bloquer" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                                </StackPanel>
+                                                        </Button>
+                                                </StackPanel>
+                                        </Grid>
+                                </Border>
+                                </DataTemplate>
+                        </ListBox.ItemTemplate>
+             </ListBox>
         </Grid>
 
     <Grid Grid.Column="1" RowDefinitions="Auto,Auto,Auto" HorizontalAlignment="Right" Width="200" Margin="10" VerticalAlignment="Center">
@@ -22,15 +47,23 @@
             <TextBlock Text="{Binding Client.Prenom}" FontSize="16" Margin="10"/>
         </StackPanel>
         
-        <Button Grid.Row="2" Content="Retour" 
-                Width="100" Height="30"
+        <Button Grid.Row="1" Width="180" Height="50"
                 HorizontalAlignment="Center"
-                Command="{Binding RetourCommand}"/>
-        <Button Grid.Row="1" Content="Nouveau"
-                Width="100" Height="30"
-                HorizontalAlignment="Center"
-                />
+                Command="{Binding CCompteCommand}">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <Image Source="/Assets/icons8-plus-50.png" Width="30" Height="30" Margin="5"/>
+                        <TextBlock Text="Nouveau" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </StackPanel>
+        </Button>
 
+        <Button Grid.Row="2" Width="180" Height="50"
+                HorizontalAlignment="Center"
+                Command="{Binding RetourCommand}">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <Image Source="/Assets/icons8-retour-30.png" Width="30" Height="30" Margin="5"/>
+                        <TextBlock Text="Retour" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </StackPanel>
+        </Button>
     </Grid>
     
     </Grid>
