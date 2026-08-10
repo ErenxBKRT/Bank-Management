@@ -4,7 +4,6 @@ obj/
 *.pdb
 [Bb]in/
 [Oo]bj/
-bin/Debug/net10.0
 
 # Dossiers spécifiques aux IDE (optionnel mais recommandé)
 .vs/

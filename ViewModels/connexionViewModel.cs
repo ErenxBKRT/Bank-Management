@@ -13,15 +13,9 @@ public partial class ConnexionViewModel : ViewModelBase
 
     [ObservableProperty]
     private string password = string.Empty;
-    private string statusMessage = "Entrez vos identifiants pour continuer.";
 
-    public string GetStatusMessage()
-    {
-    }
-
-    public void SetStatusMessage(string value)
-    {
-    }
+    [ObservableProperty]
+    public partial string StatusMessage { get; set; } = "Entrez vos identifiants pour continuer.";
 
     public ConnexionViewModel(MainViewModel mainViewModel)
     {
@@ -33,39 +27,24 @@ public partial class ConnexionViewModel : ViewModelBase
     {
         if (string.IsNullOrWhiteSpace(Username) || string.IsNullOrWhiteSpace(Password))
         {
-            SetStatusMessage("Veuillez remplir tous les champs.");
+            StatusMessage = "Veuillez remplir tous les champs.";
             return;
         }
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-        Result random = await GestionAgence.LogInAsync(Username, Password);
-
-        if (random.Status)
-        {
-            StatusMessage = random.Message ?? "random not";
-            _mainViewModel.OuvrirApplication();
-=======
->>>>>>> Kaeru
 
         if (Username.Equals("admin", System.StringComparison.OrdinalIgnoreCase) && Password == "1234")
         {
-            SetStatusMessage("Connexion réussie !");
+            StatusMessage = "Connexion réussie !";
             _mainViewModel.OuvrirApplication("E");
         }
 
         if (Username.Equals("admin", System.StringComparison.OrdinalIgnoreCase) && Password == "1234")
         {
-            SetStatusMessage("");
+            StatusMessage = "";
             _mainViewModel.OuvrirApplication("C");
-<<<<<<< HEAD
-=======
->>>>>>> origin/Front
->>>>>>> Kaeru
         }
         else
         {
-            SetStatusMessage("");
+            StatusMessage = "";
         }
     }
 }

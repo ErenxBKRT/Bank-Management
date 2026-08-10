@@ -35,8 +35,8 @@ CREATE TABLE transaction
     code_agence VARCHAR(4),
     refclient INT NOT NULL,
 
-    CONSTRAINT fk_transaction_refclient FOREIGN KEY (refclient) REFERENCES client(id_client),
     CONSTRAINT fk_trasactions_agence FOREIGN KEY (code_agence) REFERENCES agence(code_agence)
+    CONSTRAINT fk_transaction_refclient FOREIGN KEY (refclient) REFERENCES client(id_client) ON UPDATE CASCADE,
 );
 
 CREATE TABLE carte_bancaire 
@@ -47,5 +47,5 @@ CREATE TABLE carte_bancaire
     carte_bloquer BOOLEAN DEFAULT false NOT NULL,
 
     CONSTRAINT pk_carte_numero PRIMARY KEY (num_compte),
-    CONSTRAINT fk_carte_client FOREIGN KEY (refclient) REFERENCES client(id_client)
+    CONSTRAINT fk_carte_client FOREIGN KEY (refclient) REFERENCES client(id_client) ON UPDATE CASCADE
 );
