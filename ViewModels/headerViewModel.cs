@@ -42,10 +42,12 @@ public partial class HeaderViewModel : ViewModelBase
     {
         ControlView = new ClientDetailViewModel(this, client);
     }
-    public void ActionClient(string action)
+  
+  public void ModifierClient(Client client)
     {
-        ControlView = new ActionViewModel(this,action);
+        ControlView = new ModifierClientViewModel(this, client);
     }
+
     public void MainMenu()
     {
         ControlView = new DashViewModel(this);

@@ -3,6 +3,7 @@ using Bankmanaging.Models;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using System.Collections.Generic;
 
 namespace Bankmanaging.ViewModels;
 
@@ -29,36 +30,36 @@ public partial class ConnexionViewModel : ViewModelBase
     {
         if (string.IsNullOrWhiteSpace(Username) || string.IsNullOrWhiteSpace(Password))
         {
-            Result task = await ServiceClient.AddAsync("Doe", "STREET", "0328091283", "Jane");
-            StatusMessage = task.Message;
-        }
-
-        try
-        {
-            Result logged = await GestionAgence.LogInAsync(Username, Password);
-            if (!logged.Status)
+            IEnumerable<Client> clients = await Listing.ListClientAsync();
+            foreach (Client client in clients)
             {
-                StatusMessage = logged.Message;
-                return;
+                Console.WriteLine($"{client.Id}, {client.Nom}, {client.Prenom}, {client.Adresse}, {client.Contact}, {client.Bloque}");
             }
-            _mainViewModel.OuvrirApplication("E");
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Error: {ex.Message}");
-            StatusMessage = "Please report to dev for this error!";
+
+            StatusMessage = "Veuillez remplir tous les champs";
             return;
         }
-        
-        try 
+        try
         {
-            Result logged = await ServiceCompte.LogInAsync(Username, Password);
-            if (!logged.Status)
+            Result logAsEmploye = await GestionAgence.LogInAsync(Username, Password);
+            Result logAsClient = await ServiceCompte.LogInAsync(Username, Password);
+
+            if (!logAsEmploye.Status)
             {
-                StatusMessage = logged.Message;
-                return;                
+                if (!logAsClient.Status)
+                {
+                    if(logAsClient.Message == "Le compte est bloqué")
+                    {
+                        StatusMessage = logAsClient.Message;
+                    }
+                    else StatusMessage = logAsEmploye.Message;
+                }
+                else if (logAsClient.Status) _mainViewModel.OuvrirApplication("C");
             }
-            _mainViewModel.OuvrirApplication("C");
+            else if (logAsEmploye.Status)
+            {
+                _mainViewModel.OuvrirApplication("E");
+            }
         }
         catch (Exception ex)
         {

@@ -70,7 +70,7 @@ public static class ServiceClient
 
         try 
         {
-            using NpgsqlCommand preparedQuery = new ("UPDATE client SET bloque = @bloque WHERE id_client = @idClient;", kaeru, kaeruTransac);
+            using NpgsqlCommand preparedQuery = new ("UPDATE client SET bloquer = @bloque WHERE id_client = @idClient;", kaeru, kaeruTransac);
             preparedQuery.Parameters.AddWithValue("bloque", bloque);
             preparedQuery.Parameters.AddWithValue("idClient", idClient);
 
@@ -79,9 +79,16 @@ public static class ServiceClient
                 await kaeruTransac.RollbackAsync();
                 return new (false, "L'identifiant du client est incorrect.");
             }
-
-            await ServiceCompte.LockAsync(true, idClient);
+            if (bloque == true)
+            {
+                await ServiceCompte.LockAsync(true, idClient);
+            }
+            
             await kaeruTransac.CommitAsync();
+            if (bloque == false)
+            {
+                return new (true, "Le client a été debloqué avec succès");
+            }
             return new (true, "Le client a été bloqué avec succès");
         } 
         catch (NpgsqlException ex)
@@ -100,7 +107,7 @@ public static class ServiceClient
 
     public static async Task<Result> VerifyAsync (int idClient, NpgsqlConnection kaeru, NpgsqlTransaction? kaeruTransac = null)
     {
-        using NpgsqlCommand preparedQuery = new ("SELECT * FROM client WHERE id_client = @idClient;", kaeru, kaeruTransac);
+        using NpgsqlCommand preparedQuery = new ("SELECT * FROM client WHERE id_client = @idClient FOR UPDATE;", kaeru, kaeruTransac);
         preparedQuery.Parameters.AddWithValue("idClient", idClient);
 
         if (await preparedQuery.ExecuteScalarAsync() == null)

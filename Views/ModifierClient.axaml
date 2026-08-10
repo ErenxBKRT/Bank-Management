@@ -1,0 +1,46 @@
+<UserControl
+    xmlns="https://github.com/avaloniaui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:vm="using:Bankmanaging.ViewModels"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="450"
+    x:Class="Bankmanaging.Views.ModifierClientView"
+    x:DataType="vm:ModifierClientViewModel">
+
+    <Grid ColumnDefinitions="*,Auto">
+        
+        <Grid Grid.Column="0" ColumnDefinitions="Auto,Auto" RowDefinitions="Auto,Auto,Auto,Auto" ColumnSpacing="20" RowSpacing="20" Margin="20" VerticalAlignment="Center" HorizontalAlignment="Center">
+                <TextBlock Text="{Binding Client.Nom}" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center"/>
+                <TextBlock Text="{Binding Client.Prenom}" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center"/>
+                <TextBlock Text="{Binding Client.Adresse}" Grid.Column="0" Grid.Row="2" VerticalAlignment="Center"/>
+                <TextBlock Text="{Binding Client.Contact}" Grid.Column="0" Grid.Row="3" VerticalAlignment="Center"/>
+            
+                <TextBox Grid.Column="1" Grid.Row="0" Width="500"/>
+                <TextBox Grid.Column="1" Grid.Row="1" Width="500"/>
+                <TextBox Grid.Column="1" Grid.Row="2" Width="500"/>
+                <TextBox Grid.Column="1" Grid.Row="3" Width="500"/>
+        </Grid>
+        <Grid Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" RowDefinitions="Auto,Auto" RowSpacing="20" Margin="20">
+            <Button Width="180" Height="50"
+                    HorizontalAlignment="Center"
+                    Grid.Row="0"
+                    Command="{Binding ModifierCCommand}">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <Image Source="/Assets/icons8-confirmer-50.png" Width="30" Height="30" Margin="5"/>
+                            <TextBlock Text="Enregistrer" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </StackPanel>
+            </Button>
+            <Button Width="180" Height="50"
+                    HorizontalAlignment="Center"
+                    Grid.Row="1"
+                    Command="{Binding AnnulerCommand}">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <Image Source="/Assets/icons8-annuler-50.png" Width="30" Height="30" Margin="5"/>
+                            <TextBlock Text="Annuler" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </StackPanel>
+            </Button>
+        </Grid>
+        </Grid>
+
+</UserControl>
