@@ -76,4 +76,10 @@ public partial class ClientDetailViewModel : ViewModelBase
     {
         
     }
+    
+    [RelayCommand]
+    private void CCompte()
+    {
+        _headerViewModel.CCompte();
+    }
 }
