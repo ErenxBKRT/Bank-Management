@@ -1,6 +1,5 @@
 using Npgsql;
 using System;
-using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Security.Cryptography;
 
@@ -48,13 +47,13 @@ public static class ServiceCompte
         catch (NpgsqlException ex)
         {
             await kaeruTransac.RollbackAsync();
-            Debug.WriteLine(ex.Message);
+            Console.WriteLine(ex.Message);
             return new (false, "Creation de la carte a échoué.");
         }
         catch (Exception ex)
         {
             await kaeruTransac.RollbackAsync();
-            Debug.WriteLine(ex.Message);
+            Console.WriteLine(ex.Message);
             return new (false, "Creation de la carte a échoué.");
         }
     }
@@ -78,13 +77,13 @@ public static class ServiceCompte
         }
         catch (NpgsqlException ex) 
         {
-            Debug.WriteLine(ex.Message);
-            return new (false, "Connection échoué");
+            Console.WriteLine(ex.Message);
+            throw;
         }
         catch (Exception ex) 
         {
-            Debug.WriteLine(ex.Message);
-            return new (false, "Connection échoué");
+            Console.WriteLine(ex.Message);
+            throw;
         }
         finally { if (disposeAtFinal && kaeru != null) await kaeru.DisposeAsync(); }
     }
@@ -120,13 +119,13 @@ public static class ServiceCompte
         catch (NpgsqlException ex)
         {
             await kaeruTransac.RollbackAsync();
-            Debug.WriteLine(ex.Message);
+            Console.WriteLine(ex.Message);
             return new (false, "L'opération a échoué.");
         }
         catch (Exception ex)
         {
             await kaeruTransac.RollbackAsync();
-            Debug.WriteLine(ex.Message);
+            Console.WriteLine(ex.Message);
             return new (false, "L'opération a échoué.");
         }
     }
@@ -149,12 +148,12 @@ public static class ServiceCompte
         } 
         catch (NpgsqlException ex) 
         {
-            Debug.WriteLine(ex.Message);
+            Console.WriteLine(ex.Message);
             return new (false, "Opération échoué.");
         }
         catch (Exception ex) 
         {
-            Debug.WriteLine(ex.Message);
+            Console.WriteLine(ex.Message);
             return new (false, "Opération échoué.");
         }
         finally { if (disposeAtFinal && kaeru != null) await kaeru.DisposeAsync(); }

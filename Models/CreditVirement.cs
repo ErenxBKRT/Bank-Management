@@ -1,6 +1,5 @@
 using Npgsql;
 using System;
-using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Security.Cryptography;
 
@@ -71,13 +70,13 @@ public static class CreditVirement
         catch (NpgsqlException ex)
         {
             await kaeruTransac.RollbackAsync();
-            Debug.WriteLine(ex.Message);
+            Console.WriteLine(ex.Message);
             return new (false, "Le credit a echoué.");
         }
         catch (Exception ex)
         {
             await kaeruTransac.RollbackAsync();
-            Debug.WriteLine(ex.Message);
+            Console.WriteLine(ex.Message);
             return new (false, "Le credit a echoué.");
         }
     }
@@ -130,13 +129,13 @@ public static class CreditVirement
         catch (NpgsqlException ex)
         {
             await kaeruTransac.RollbackAsync();
-            Debug.WriteLine(ex.Message);
+            Console.WriteLine(ex.Message);
             return new (false, "Le virement a echoué.");
         }
         catch (Exception ex)
         {
             await kaeruTransac.RollbackAsync();
-            Debug.WriteLine(ex.Message);
+            Console.WriteLine(ex.Message);
             return new (false, "Le virement a echoué.");
         }
     }

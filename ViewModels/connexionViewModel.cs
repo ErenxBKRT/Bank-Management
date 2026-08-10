@@ -1,4 +1,6 @@
-using Bankmanaging.Views;
+using System;
+using Bankmanaging.Models;
+using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
@@ -9,13 +11,13 @@ public partial class ConnexionViewModel : ViewModelBase
     private readonly MainViewModel _mainViewModel;
 
     [ObservableProperty]
-    private string username = string.Empty;
+    private string _username = string.Empty;
 
     [ObservableProperty]
-    private string password = string.Empty;
+    private string _password = string.Empty;
 
     [ObservableProperty]
-    private string statusMessage = "Entrez vos identifiants pour continuer.";
+    private string _statusMessage = "Entrez vos identifiants pour continuer.";
 
     public ConnexionViewModel(MainViewModel mainViewModel)
     {
@@ -23,27 +25,46 @@ public partial class ConnexionViewModel : ViewModelBase
     }
 
     [RelayCommand]
-    private void Login()
+    private async Task Login()
     {
         if (string.IsNullOrWhiteSpace(Username) || string.IsNullOrWhiteSpace(Password))
         {
-            StatusMessage = "Veuillez remplir tous les champs.";
-            return;
+            Result task = await ServiceClient.AddAsync("Doe", "STREET", "0328091283", "Jane");
+            StatusMessage = task.Message;
         }
 
-        if (Username.Equals("admin", System.StringComparison.OrdinalIgnoreCase) && Password == "1234")
+        try
         {
-            StatusMessage = "Connexion réussie !";
+            Result logged = await GestionAgence.LogInAsync(Username, Password);
+            if (!logged.Status)
+            {
+                StatusMessage = logged.Message;
+                return;
+            }
             _mainViewModel.OuvrirApplication("E");
         }
-
-        if (Username.Equals("Laza", System.StringComparison.OrdinalIgnoreCase) && Password == "1111")
+        catch (Exception ex)
         {
+            Console.WriteLine($"Error: {ex.Message}");
+            StatusMessage = "Please report to dev for this error!";
+            return;
+        }
+        
+        try 
+        {
+            Result logged = await ServiceCompte.LogInAsync(Username, Password);
+            if (!logged.Status)
+            {
+                StatusMessage = logged.Message;
+                return;                
+            }
             _mainViewModel.OuvrirApplication("C");
         }
-        else
+        catch (Exception ex)
         {
-            StatusMessage = "Identifiants invalides";
+            Console.WriteLine($"Error: {ex.Message}");
+            StatusMessage = "Please report to dev for this error!";
+            return;
         }
     }
 }
