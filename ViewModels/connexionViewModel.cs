@@ -29,7 +29,7 @@ public partial class ConnexionViewModel : ViewModelBase
     {
         if (string.IsNullOrWhiteSpace(Username) || string.IsNullOrWhiteSpace(Password))
         {
-            Result task = await ServiceClient.AddAsync("Doe", "STREET", "0328091283", "Jane");
+            Result task = await ServiceClient.AddAsync("Doe", "VOID", "0328091283", "Jane");
             StatusMessage = task.Message;
         }
 
