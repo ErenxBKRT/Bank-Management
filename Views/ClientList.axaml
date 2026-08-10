@@ -21,19 +21,19 @@
                                                         <Button HorizontalAlignment="Right" Width="200"
                                                                 Command="{Binding $parent[UserControl].DataContext.AccederCommand}"
                                                                 CommandParameter="{Binding}">
-                                                                <StackPanel Orientation="Horizontal">
+                                                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                                                         <Image Source="/Assets/icons8-connexion-50.png" Width="20" Height="20" Margin="3"/>
                                                                         <TextBlock Text="Acceder" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                                                 </StackPanel>
                                                         </Button>
                                                         <Button Width="200">
-                                                                <StackPanel Orientation="Horizontal">
+                                                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                                                         <Image Source="/Assets/icons8-modifier-50.png" Width="20" Height="20" Margin="3"/>
                                                                         <TextBlock Text="Modifier" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                                                 </StackPanel>
                                                         </Button>
                                                         <Button Width="200">
-                                                                <StackPanel Orientation="Horizontal">
+                                                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                                                         <Image Source="/Assets/icons8-interdit-50.png" Width="20" Height="20" Margin="3"/>
                                                                         <TextBlock Text="Bloquer" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                                                 </StackPanel>
@@ -51,7 +51,7 @@
                         Width="180" Height="50"
                         HorizontalAlignment="Center"
                         Command ="{Binding CreationCCommand}">
-                        <StackPanel Orientation="Horizontal">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                 <Image Source="/Assets/icons8-plus-50.png" Width="30" Height="30" Margin="5"/>
                                 <TextBlock Text="Nouveau" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </StackPanel>
@@ -61,7 +61,7 @@
                         Width="180" Height="50"
                         HorizontalAlignment="Center"
                         Command="{Binding MenuPCommand}">
-                        <StackPanel Orientation="Horizontal">
+                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                 <Image Source="/Assets/icons8-menu-50.png" Width="30" Height="30" Margin="5"/>
                                 <TextBlock Text="Menu Principale" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                         </StackPanel>

@@ -1,6 +1,5 @@
 using Npgsql;
 using System;
-using System.Diagnostics;
 using System.Threading.Tasks;
 
 namespace Bankmanaging.Models;
@@ -23,12 +22,12 @@ public static class ServiceClient
         } 
         catch (NpgsqlException ex) 
         {
-            Debug.WriteLine($"Error : {ex.Message}"); 
+            Console.WriteLine($"Error : {ex.Message}"); 
             return new (false, "L'ajout du nouveau client a échoué.");
         }
         catch (Exception ex)
         {
-            Debug.WriteLine($"Error : {ex.Message}"); 
+            Console.WriteLine($"Error : {ex.Message}"); 
             return new (false, "L'ajout du nouveau client a échoué.");
         }
     }
@@ -54,12 +53,12 @@ public static class ServiceClient
         } 
         catch (NpgsqlException ex) 
         {
-            Debug.WriteLine($"Error : {ex.Message}"); 
+            Console.WriteLine($"Error : {ex.Message}"); 
             return new (false, "Le mis à jour des informations a echoué.");
         }
         catch (Exception ex) 
         {
-            Debug.WriteLine($"Error : {ex.Message}"); 
+            Console.WriteLine($"Error : {ex.Message}"); 
             return new (false, "Le mis à jour des informations a echoué.");
         }
     }
@@ -88,13 +87,13 @@ public static class ServiceClient
         catch (NpgsqlException ex)
         {
             await kaeruTransac.RollbackAsync();
-            Debug.WriteLine($"Error : {ex.Message}");
+            Console.WriteLine($"Error : {ex.Message}");
             return new (false, "La requête pour bloquer le client a échoué.");
         }
         catch (Exception ex)
         {
             await kaeruTransac.RollbackAsync();
-            Debug.WriteLine($"Error : {ex.Message}");
+            Console.WriteLine($"Error : {ex.Message}");
             return new (false, "La requête pour bloquer le client a échoué.");
         }
     }

@@ -1,6 +1,5 @@
 using Npgsql;
 using System;
-using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Security.Cryptography;
 
@@ -60,13 +59,13 @@ public static class DepotRetrait
         catch (NpgsqlException ex)
         {
             await kaeruTransac.RollbackAsync();
-            Debug.WriteLine($"Error : {ex.Message}");
+            Console.WriteLine($"Error : {ex.Message}");
             return new (false, "Le dépôt a échoué.");
         }
         catch (Exception ex)
         {
             await kaeruTransac.RollbackAsync();
-            Debug.WriteLine($"Error : {ex.Message}");
+            Console.WriteLine($"Error : {ex.Message}");
             return new (false, "Le dépôt a échoué.");
         }
     }
@@ -129,13 +128,13 @@ public static class DepotRetrait
         catch (NpgsqlException ex)
         {
             await kaeruTransac.RollbackAsync();
-            Debug.WriteLine($"Error : {ex.Message}");
+            Console.WriteLine($"Error : {ex.Message}");
             return new (false, "Le retrait a échoué.");
         }
         catch (Exception ex)
         {
             await kaeruTransac.RollbackAsync();
-            Debug.WriteLine($"Error : {ex.Message}");
+            Console.WriteLine($"Error : {ex.Message}");
             return new (false, "Le retrait a échoué.");
         }
     }

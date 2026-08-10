@@ -1,6 +1,5 @@
 using Npgsql;
 using System;
-using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 
@@ -38,12 +37,12 @@ public static class ManageTransaction
         }
         catch (NpgsqlException ex)
         {
-            Debug.WriteLine(ex.Message);
+            Console.WriteLine(ex.Message);
             return [];
         }
         catch (Exception ex)
         {
-            Debug.WriteLine(ex.Message);
+            Console.WriteLine(ex.Message);
             return [];
         }
     }
@@ -81,12 +80,12 @@ public static class ManageTransaction
         }
         catch (NpgsqlException ex)
         {
-            Debug.WriteLine(ex.Message);
+            Console.WriteLine(ex.Message);
             return [];
         }
         catch (Exception ex)
         {
-            Debug.WriteLine(ex.Message);
+            Console.WriteLine(ex.Message);
             return [];
         }
     }
@@ -120,48 +119,12 @@ public static class ManageTransaction
         }
         catch (NpgsqlException ex)
         {
-            Debug.WriteLine(ex.Message);
+            Console.WriteLine(ex.Message);
             return [];
         }
         catch (Exception ex)
         {
-            Debug.WriteLine(ex.Message);
-            return [];
-        }
-    }
-
-    public static async Task<IEnumerable<Carte>> ListCarteAsync (string? numero = null, string? nom = null)
-    {
-        List<Carte> listCard = [];
-        using NpgsqlConnection kaeru = await DatabaseConnection.Instance.KaeruConnectAsync();
-
-        try
-        {
-            using NpgsqlCommand preparedQuery = new ("SELECT compte.numero, client.nom, client.prenom FROM compte JOIN client ON numero.refclient = client.id_client WHERE (num_compte = @numero OR @numero IS NULL) AND (nom LIKE @nom OR prenom LIKE @nom OR @nom IS NULL);", kaeru);
-            preparedQuery.Parameters.AddWithValue("numero", numero ?? (object)DBNull.Value);
-            preparedQuery.Parameters.AddWithValue("nom", nom ?? (object)DBNull.Value);
-            using NpgsqlDataReader row = await preparedQuery.ExecuteReaderAsync();
-
-            while (await row.ReadAsync())
-            {
-                Carte card = new()
-                {
-                    Numero = row.GetString(0),
-                    Nom = row.GetString(1),
-                    Prenom = row.GetString(2)
-                };
-                listCard.Add(card);
-            }
-            return listCard;
-        }
-        catch (NpgsqlException ex)
-        {
-            Debug.WriteLine(ex.Message);
-            return [];
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine(ex.Message);
+            Console.WriteLine(ex.Message);
             return [];
         }
     }
@@ -192,12 +155,12 @@ public static class ManageTransaction
         }
         catch (NpgsqlException ex)
         {
-            Debug.WriteLine(ex.Message);
+            Console.WriteLine(ex.Message);
             return [];
         }
         catch (Exception ex)
         {
-            Debug.WriteLine(ex.Message);
+            Console.WriteLine(ex.Message);
             return [];
         }
     }
@@ -227,50 +190,14 @@ public static class ManageTransaction
         }
         catch (NpgsqlException ex)
         {
-            Debug.WriteLine(ex.Message);
+            Console.WriteLine(ex.Message);
             return [];
         }
         catch (Exception ex)
         {
-            Debug.WriteLine(ex.Message);
+            Console.WriteLine(ex.Message);
             return [];
         }
-    }
-
-    public static async Task<IEnumerable<Carte>> ListCarteAsync (string numero)
-    {
-        List<Carte> listCarte = [];
-        using NpgsqlConnection kaeru = await DatabaseConnection.Instance.KaeruConnectAsync();
-
-        try
-        {
-            using NpgsqlCommand preparedQuery = new ("SELECT client.nom, client.prenom, compte.numero FROM compte JOIN client ON compte.refclient = client.id_client WHERE numero = @numero;", kaeru);
-            preparedQuery.Parameters.AddWithValue("numero", numero);
-            using NpgsqlDataReader row = await preparedQuery.ExecuteReaderAsync();
-
-            while (await row.ReadAsync())
-            {
-                Carte carte = new()
-                {
-                    Nom = row.GetString(0),
-                    Prenom = row.GetString(1),
-                    Numero = row.GetString(2)
-                };
-                listCarte.Add(carte);
-            }
-            return listCarte;
-        }
-        catch (NpgsqlException ex)
-        {
-            Debug.WriteLine(ex.Message);
-            return [];
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine(ex.Message);
-            return [];
-        }
-        
     }
 
 }

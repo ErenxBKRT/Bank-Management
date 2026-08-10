@@ -1,6 +1,5 @@
 using Npgsql;
 using System;
-using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Security.Cryptography;
 
@@ -48,13 +47,13 @@ public static class ServiceCompte
         catch (NpgsqlException ex)
         {
             await kaeruTransac.RollbackAsync();
-            Debug.WriteLine(ex.Message);
+            Console.WriteLine(ex.Message);
             return new (false, "Creation de la carte a échoué.");
         }
         catch (Exception ex)
         {
             await kaeruTransac.RollbackAsync();
-            Debug.WriteLine(ex.Message);
+            Console.WriteLine(ex.Message);
             return new (false, "Creation de la carte a échoué.");
         }
     }
@@ -78,13 +77,13 @@ public static class ServiceCompte
         }
         catch (NpgsqlException ex) 
         {
-            Debug.WriteLine(ex.Message);
-            return new (false, "Connection échoué");
+            Console.WriteLine(ex.Message);
+            throw;
         }
         catch (Exception ex) 
         {
-            Debug.WriteLine(ex.Message);
-            return new (false, "Connection échoué");
+            Console.WriteLine(ex.Message);
+            throw;
         }
         finally { if (disposeAtFinal && kaeru != null) await kaeru.DisposeAsync(); }
     }
@@ -120,13 +119,13 @@ public static class ServiceCompte
         catch (NpgsqlException ex)
         {
             await kaeruTransac.RollbackAsync();
-            Debug.WriteLine(ex.Message);
+            Console.WriteLine(ex.Message);
             return new (false, "L'opération a échoué.");
         }
         catch (Exception ex)
         {
             await kaeruTransac.RollbackAsync();
-            Debug.WriteLine(ex.Message);
+            Console.WriteLine(ex.Message);
             return new (false, "L'opération a échoué.");
         }
     }
@@ -149,43 +148,15 @@ public static class ServiceCompte
         } 
         catch (NpgsqlException ex) 
         {
-            Debug.WriteLine(ex.Message);
+            Console.WriteLine(ex.Message);
             return new (false, "Opération échoué.");
         }
         catch (Exception ex) 
         {
-            Debug.WriteLine(ex.Message);
+            Console.WriteLine(ex.Message);
             return new (false, "Opération échoué.");
         }
         finally { if (disposeAtFinal && kaeru != null) await kaeru.DisposeAsync(); }
-    }
-
-    public static async Task<Argent> ConsulterSoldeAsync (string numero)
-    {
-        using NpgsqlConnection kaeru = await DatabaseConnection.Instance.KaeruConnectAsync();
-        using NpgsqlTransaction kaeruTransac = await kaeru.BeginTransactionAsync();
-
-        try
-        {
-            using NpgsqlCommand preparedQuery = new ("SELECT solde, credit FROM compte WHERE numero = @numero;", kaeru, kaeruTransac);
-            preparedQuery.Parameters.AddWithValue("numero", numero);
-
-            NpgsqlDataReader money = await preparedQuery.ExecuteReaderAsync();
-            await money.ReadAsync();
-            return new (money.GetDecimal(0), money.GetDecimal(1));
-        }
-        catch (NpgsqlException ex)
-        {
-            await kaeruTransac.RollbackAsync();
-            Debug.WriteLine($"Error : {ex.Message}");
-            return new (0.00m, 0.00m);
-        }
-        catch (Exception ex)
-        {
-            await kaeruTransac.RollbackAsync();
-            Debug.WriteLine($"Error : {ex.Message}");
-            return new (0.00m, 0.00m);
-        }
     }
 
     public static async Task<Result> IsLockedAsync (string numero, NpgsqlConnection kaeru, NpgsqlTransaction? transaction = null)

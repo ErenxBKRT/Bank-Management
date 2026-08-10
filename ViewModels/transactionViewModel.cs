@@ -35,5 +35,11 @@ public partial class TransactionViewModel : ViewModelBase
     {
         _headerViewModel.Credit();
     }
+
+    [RelayCommand]
+    private void Rembourser()
+    {
+        _headerViewModel.Rembourser();
+    }
 }
 
