@@ -88,5 +88,17 @@ public partial class ClientsViewModel : ViewModelBase
     {
         _headerViewModel.OuvrirClient(client);
     }
+
+    [RelayCommand]
+    private void Modifier(Client client)
+    {
+
+    }
+
+    [RelayCommand]
+    private void Bloquer(Client client)
+    {
+        
+    }
 }
 

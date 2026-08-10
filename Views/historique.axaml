@@ -11,11 +11,19 @@
                         <ListBox.ItemTemplate>
                                 <DataTemplate>
                                 <Border Margin="5" Padding="10">
-                                        <StackPanel>
-                                                <TextBlock Text="{Binding Code}"/>
-                                                <TextBlock Text="{Binding Libelle}"/>
-                                                <TextBlock Text="{Binding CodeAgence}"/>
-                                        </StackPanel>
+                                        <Grid ColumnDefinitions="*,Auto">
+                                               <StackPanel Grid.Column="0">
+                                                        <TextBlock Text="{Binding Code}"/>
+                                                        <TextBlock Text="{Binding Libelle}"/>
+                                                        <TextBlock Text="{Binding CodeAgence}"/>
+                                                </StackPanel>
+                                                <Button HorizontalAlignment="Right" Width="200">
+                                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                                                <Image Source="/Assets/icons8-télécharger-32.png" Width="20" Height="20" Margin="3"/>
+                                                                <TextBlock Text="Telecharger" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                        </StackPanel>
+                                                </Button>
+                                        </Grid>
                                 </Border>
                                 </DataTemplate>
                         </ListBox.ItemTemplate>
@@ -23,10 +31,14 @@
         </Grid>
 
         <Grid Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center" Width="200">
-            <Button Content="Menu Principale"
-                    HorizontalAlignment="Center"
-                    Width="150" Height="50"
-                    Command="{Binding MenuCommand}"/>
+            <Button HorizontalAlignment="Center"
+                    Width="180" Height="50"
+                    Command="{Binding MenuCommand}">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <Image Source="/Assets/icons8-menu-50.png" Width="30" Height="30" Margin="5"/>
+                            <TextBlock Text="Menu Principale" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </StackPanel>
+        </Button> 
         </Grid>
     </Grid>
 
