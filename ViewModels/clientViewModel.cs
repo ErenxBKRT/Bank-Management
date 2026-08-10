@@ -92,7 +92,7 @@ public partial class ClientsViewModel : ViewModelBase
     [RelayCommand]
     private void Modifier(Client client)
     {
-
+        _headerViewModel.ModifierClient(client);
     }
 
     [RelayCommand]
