@@ -140,8 +140,8 @@ public static class ServiceCompte
             preparedQuery.Parameters.AddWithValue("refClient", refClient ?? (object)DBNull.Value);
 
             if (await preparedQuery.ExecuteNonQueryAsync() == 0) return new (false, "Le numero de compte est incorrect");
-            if (bloquer) return new (true, "Le client a été bloqué avec succès.");
-            return new (true, "Le client a été débloqué avec succès.");
+            if (bloquer) return new (true, "Le compte a été bloqué avec succès.");
+            return new (true, "Le compte a été débloqué avec succès.");
         } 
         catch (NpgsqlException ex) 
         {

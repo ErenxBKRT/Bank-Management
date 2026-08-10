@@ -20,9 +20,7 @@ CREATE TABLE client
     prenom VARCHAR(50),
     adresse VARCHAR(30) NOT NULL,
     contact VARCHAR(10) NOT NULL,
-    solde DOUBLE PRECISION DEFAULT 0.00 NOT NULL,
-    bloque BOOLEAN DEFAULT false,
-    credit DOUBLE PRECISION DEFAULT 0.00 NOT NULL
+    bloque BOOLEAN DEFAULT false
 );
 
 CREATE TABLE transaction

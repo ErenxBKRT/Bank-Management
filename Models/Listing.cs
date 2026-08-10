@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace Bankmanaging.Models;
 
-public static class ManageTransaction
+public static class Listing
 {
     public static async Task<IEnumerable<Client>> ListClientAsync (int? idClient = null, bool? bloque = null, string? nom = null)
     {
@@ -14,7 +14,7 @@ public static class ManageTransaction
 
         try 
         {
-            using NpgsqlCommand preparedQuery = new ("SELECT * FROM client WHERE (id_client = @idClient OR @idClient IS NULL) AND (bloque = @bloque OR @bloque IS NULL) AND (nom LIKE @nom OR prenom LIKE @nom OR @nom IS NULL) ORDER BY id_client;", kaeru);
+            using NpgsqlCommand preparedQuery = new ("SELECT * FROM client WHERE (id_client = @idClient OR @idClient IS NULL) AND (bloquer = @bloque OR @bloque IS NULL) AND (nom LIKE @nom OR prenom LIKE @nom OR @nom IS NULL) ORDER BY id_client;", kaeru);
             preparedQuery.Parameters.AddWithValue("bloque", bloque ?? (object)DBNull.Value);
             preparedQuery.Parameters.AddWithValue("idClient", idClient ?? (object)DBNull.Value);
             preparedQuery.Parameters.AddWithValue("nom", nom ?? (object)DBNull.Value);
@@ -29,7 +29,7 @@ public static class ManageTransaction
                     Prenom = row.GetString(2),
                     Adresse = row.GetString(3),
                     Contact = row.GetString(4),
-                    Bloque = row.GetBoolean(6)
+                    Bloque = row.GetBoolean(5)
                 };
                 listClient.Add(client);
             }
@@ -90,7 +90,7 @@ public static class ManageTransaction
         }
     }
 
-    public static async Task<IEnumerable<Compte>> ListClientCreditAsync (string? numero = null)
+    public static async Task<IEnumerable<Compte>> ListCompteCreditAsync (string? numero = null)
     {
         List<Compte> listCompte = [];
         using NpgsqlConnection kaeru = await DatabaseConnection.Instance.KaeruConnectAsync();
@@ -134,7 +134,7 @@ public static class ManageTransaction
 
         try
         {
-            using NpgsqlCommand preparedQuery = new ("SELECT numero, solde, credit, bloquer FROM compte WHERE numero = @numero OR @numero IS NULL;", kaeru);
+            using NpgsqlCommand preparedQuery = new ("SELECT numero, solde, credit, bloquer FROM compte WHERE numero = @numero OR @numero IS NULL ORDER BY numero;", kaeru);
             preparedQuery.Parameters.AddWithValue("numero", numero ?? (object)DBNull.Value);
             using NpgsqlDataReader row = await preparedQuery.ExecuteReaderAsync();
 
@@ -163,7 +163,7 @@ public static class ManageTransaction
         }
     }
 
-    public static async Task<IEnumerable<Agence>> ListAgenceAsync (string? code)
+    public static async Task<IEnumerable<Agence>> ListAgenceAsync (string? code = null)
     {
         List<Agence> listAgence = [];
         using NpgsqlConnection kaeru = await DatabaseConnection.Instance.KaeruConnectAsync();

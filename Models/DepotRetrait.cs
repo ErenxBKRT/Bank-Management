@@ -23,7 +23,7 @@ public static class DepotRetrait
                 return verifyAccount;
             }
             Result isAccountLocked = await ServiceCompte.IsLockedAsync(numero, kaeru, kaeruTransac);
-            if (!isAccountLocked.Status)
+            if (isAccountLocked.Status)
             {
                 await kaeruTransac.RollbackAsync();
                 return isAccountLocked;
@@ -86,11 +86,11 @@ public static class DepotRetrait
                 return verifyAccount;
             }
 
-            Result isCardLocked = await ServiceCompte.IsLockedAsync(numero, kaeru, kaeruTransac);
-            if (!isCardLocked.Status)
+            Result isCompteLocked = await ServiceCompte.IsLockedAsync(numero, kaeru, kaeruTransac);
+            if (isCompteLocked.Status)
             {
                 await kaeruTransac.RollbackAsync();
-                return isCardLocked;
+                return isCompteLocked;
             }
 
             Result verifyAgence = await GestionAgence.VerifyCodeAsync(codeAgence, kaeru, kaeruTransac);
