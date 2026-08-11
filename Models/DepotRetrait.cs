@@ -70,7 +70,7 @@ public static class DepotRetrait
         }
     }
 
-    public static async Task<Result> WithdrawAsync (string numero, string pin, decimal montant, string codeAgence)
+    public static async Task<Result> WithdrawAsync (string numero, string pin, decimal montant)
     {
         if (montant <= 0) return new (false, "Le montant doit être positif");
 
@@ -93,13 +93,6 @@ public static class DepotRetrait
                 return isCompteLocked;
             }
 
-            Result verifyAgence = await GestionAgence.VerifyCodeAsync(codeAgence, kaeru, kaeruTransac);
-            if (!verifyAgence.Status)
-            {
-                await kaeruTransac.RollbackAsync();
-                return verifyAgence;
-            }
-
             using NpgsqlCommand withdraw = new ("UPDATE compte SET solde = solde - @montant WHERE numero = @numero AND solde >= @montant AND pin = @pin;", kaeru, kaeruTransac);
             withdraw.Parameters.AddWithValue("montant", montant);
             withdraw.Parameters.AddWithValue("numero", numero);
@@ -115,11 +108,10 @@ public static class DepotRetrait
             int randomNumber = RandomNumberGenerator.GetInt32(0, 100);
             string code = microSecond + "-" + randomNumber.ToString("D2");
 
-            using NpgsqlCommand preparedQuery = new ("INSERT INTO transaction (code, libelle, montant, numero, code_agence) VALUES (@code, 'Retrait', @montant, @numero, @codeAgence);", kaeru, kaeruTransac);
+            using NpgsqlCommand preparedQuery = new ("INSERT INTO transaction (code, libelle, montant, numero) VALUES (@code, 'Retrait', @montant, @numero);", kaeru, kaeruTransac);
             preparedQuery.Parameters.AddWithValue("code", code);
             preparedQuery.Parameters.AddWithValue("montant", montant);
             preparedQuery.Parameters.AddWithValue("numero", numero);
-            preparedQuery.Parameters.AddWithValue("codeAgence", codeAgence);
 
             await preparedQuery.ExecuteNonQueryAsync();
             await kaeruTransac.CommitAsync();

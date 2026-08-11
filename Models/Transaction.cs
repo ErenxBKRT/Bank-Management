@@ -11,5 +11,5 @@ public class Transaction
     public string? Nom { get; set; }
     public string Numero { get; set; } = string.Empty;
     public string CodeAgence { get; set; } = string.Empty;
-    public string? Descritpion;
+    public string? Description;
 }

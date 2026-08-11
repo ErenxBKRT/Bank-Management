@@ -1,49 +1,35 @@
-CREATE DATABASE Bank;
-DROP TABLE IF EXISTS transactions CASCADE;
-DROP TABLE IF EXISTS client CASCADE;
-DROP TABLE IF EXISTS agence CASCADE;
-DROP TABLE IF EXISTS compte CASCADE;
-
-CREATE TABLE agence
-(
-    code_agence VARCHAR(4) NOT NULL,
-    adresse_agence VARCHAR(30) UNIQUE NOT NULL,
-    solde DOUBLE PRECISION DEFAULT 0.00 NOT NULL,
-    
-    CONSTRAINT pk_agence_code_agence PRIMARY KEY (code_agence)
+CREATE TABLE agence (
+    code_agence VARCHAR(4) PRIMARY KEY,
+    adresse_agence VARCHAR(30) NOT NULL,
+    solde NUMERIC(18,2) DEFAULT 0.00 NOT NULL,
+    pin VARCHAR(4) NOT NULL
 );
 
-CREATE TABLE client
-(
+CREATE TABLE client (
     id_client INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     nom VARCHAR(20) NOT NULL,
-    prenom VARCHAR(50),
+    prenom VARCHAR(30),
     adresse VARCHAR(30) NOT NULL,
     contact VARCHAR(10) NOT NULL,
-    bloque BOOLEAN DEFAULT false
+    bloquer BOOLEAN DEFAULT false
 );
 
-CREATE TABLE transaction
-(
-    code VARCHAR(7) PRIMARY KEY NOT NULL,
-    libelle VARCHAR(10),
-    montant DOUBLE PRECISION NOT NULL,
-    date TIMESTAMP(0) DEFAULT CURRENT_TIMESTAMP(0) NOT NULL,
-    nom VARCHAR(80),
-    code_agence VARCHAR(4),
-    refclient INT NOT NULL,
-
-    CONSTRAINT fk_trasactions_agence FOREIGN KEY (code_agence) REFERENCES agence(code_agence)
-    CONSTRAINT fk_transaction_refclient FOREIGN KEY (refclient) REFERENCES client(id_client) ON UPDATE CASCADE,
-);
-
-CREATE TABLE carte_bancaire 
-(
-    num_compte VARCHAR(10) NOT NULL,
+CREATE TABLE compte (
+    numero VARCHAR(10) PRIMARY KEY,
     pin VARCHAR(4) NOT NULL,
-    refclient INT NOT NULL,
-    carte_bloquer BOOLEAN DEFAULT false NOT NULL,
+    solde NUMERIC(18,2) DEFAULT 0.00 NOT NULL,
+    credit NUMERIC(18,2) DEFAULT 0.00 NOT NULL,
+    bloquer BOOLEAN DEFAULT false NOT NULL,
+    refclient INT NOT NULL REFERENCES client(id_client) ON UPDATE CASCADE
+);
 
-    CONSTRAINT pk_carte_numero PRIMARY KEY (num_compte),
-    CONSTRAINT fk_carte_client FOREIGN KEY (refclient) REFERENCES client(id_client) ON UPDATE CASCADE
+CREATE TABLE transaction (
+    code VARCHAR(7) PRIMARY KEY,
+    libelle VARCHAR(10) NOT NULL,
+    montant NUMERIC(18,2) NOT NULL,
+    date timestamp(0) DEFAULT CURRENT_TIMESTAMP(0) NOT NULL,
+    nom VARCHAR(80),
+    code_agence VARCHAR(4) REFERENCES agence(code_agence),
+    numero VARCHAR(10) NOT NULL REFERENCES compte(numero) ON UPDATE CASCADE,
+    description VARCHAR(50)
 );

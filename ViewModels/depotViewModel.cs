@@ -1,7 +1,6 @@
-using System.Net.Http.Headers;
-using Bankmanaging.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using Bankmanaging.Models;
 
 namespace Bankmanaging.ViewModels;
 
@@ -9,9 +8,18 @@ public partial class DepotViewModel : ViewModelBase
 {
     private readonly HeaderViewModel _headerViewModel;
 
-    public DepotViewModel(HeaderViewModel headerViewModel)
+    public Agence Agence {get;}
+
+    [ObservableProperty]
+    private string numeroCompte = "";
+
+    [ObservableProperty]
+    private decimal somme = 0;
+
+    public DepotViewModel(HeaderViewModel headerViewModel,Agence agence)
     {
         _headerViewModel= headerViewModel;
+        Agence = agence;
     }
 
     [RelayCommand]

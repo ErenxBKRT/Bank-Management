@@ -47,11 +47,18 @@
                         </ListBox.ItemTemplate>
                 </ListBox>
         </Grid>
-        <Grid Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center" Width="200" RowDefinitions="Auto, Auto" RowSpacing="20" Margin="20">
+        <Grid Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center" Width="200" RowDefinitions="Auto, Auto, Auto" RowSpacing="20" Margin="20">
                 
-                <Button Grid.Row="0"
+                <TextBox Grid.Row="0"
+                           Text="{Binding Recherche}"
+                           HorizontalAlignment="Center"
+                           PlaceholderText="Rechercher"/>
+
+
+                <Button Grid.Row="1"
                         Width="180" Height="50"
                         HorizontalAlignment="Center"
+                        Background="#001199" Foreground="#FFD700"
                         Command ="{Binding CreationCCommand}">
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                 <Image Source="/Assets/icons8-plus-50.png" Width="30" Height="30" Margin="5"/>
@@ -59,9 +66,10 @@
                         </StackPanel>
         </Button>
                 
-                <Button Grid.Row="1"
+                <Button Grid.Row="2"
                         Width="180" Height="50"
                         HorizontalAlignment="Center"
+                        Background="#001199" Foreground="#FFD700"
                         Command="{Binding MenuPCommand}">
                         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                 <Image Source="/Assets/icons8-menu-50.png" Width="30" Height="30" Margin="5"/>

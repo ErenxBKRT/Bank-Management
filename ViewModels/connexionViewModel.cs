@@ -3,7 +3,6 @@ using Bankmanaging.Models;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System.Collections.Generic;
 
 namespace Bankmanaging.ViewModels;
 
@@ -30,12 +29,6 @@ public partial class ConnexionViewModel : ViewModelBase
     {
         if (string.IsNullOrWhiteSpace(Username) || string.IsNullOrWhiteSpace(Password))
         {
-            IEnumerable<Client> clients = await Listing.ListClientAsync();
-            foreach (Client client in clients)
-            {
-                Console.WriteLine($"{client.Id}, {client.Nom}, {client.Prenom}, {client.Adresse}, {client.Contact}, {client.Bloque}");
-            }
-
             StatusMessage = "Veuillez remplir tous les champs";
             return;
         }
