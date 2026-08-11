@@ -29,7 +29,7 @@ CREATE TABLE transaction (
     montant NUMERIC(18,2) NOT NULL,
     date timestamp(0) DEFAULT CURRENT_TIMESTAMP(0) NOT NULL,
     nom VARCHAR(80),
-    code_agence VARCHAR(4) NOT NULL REFERENCES agence(code_agence),
+    code_agence VARCHAR(4) REFERENCES agence(code_agence),
     numero VARCHAR(10) NOT NULL REFERENCES compte(numero) ON UPDATE CASCADE,
     description VARCHAR(50)
 );

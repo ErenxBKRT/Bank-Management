@@ -30,12 +30,6 @@ public partial class ConnexionViewModel : ViewModelBase
     {
         if (string.IsNullOrWhiteSpace(Username) || string.IsNullOrWhiteSpace(Password))
         {
-            IEnumerable<Compte> comptes = await Listing.ListCompteCreditAsync();
-            foreach (Compte compte in comptes)
-            {
-                Console.WriteLine($"{compte.Numero}, {compte.Solde}, {compte.Credit}, {compte.Bloque}");
-            }
-
             StatusMessage = "Veuillez remplir tous les champs";
             return;
         }
