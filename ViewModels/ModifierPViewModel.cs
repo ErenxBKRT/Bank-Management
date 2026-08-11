@@ -17,9 +17,12 @@ public partial class ModifierPViewModel : ViewModelBase
     [ObservableProperty]
     private string confirmationPin = "";
 
-    public ModifierPViewModel (HeaderViewModel headerViewModel)
+    public Compte Compte {get;}
+
+    public ModifierPViewModel (HeaderViewModel headerViewModel,Compte compte)
     {
         _headerViewModel= headerViewModel;
+        Compte=compte;
     }
 
     [RelayCommand]

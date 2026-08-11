@@ -1,4 +1,5 @@
 using System.Net.Http.Headers;
+using Bankmanaging.Models;
 using Bankmanaging.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -18,15 +19,18 @@ public partial class DCViewModel : ViewModelBase
     [ObservableProperty]
     private decimal credit=0;
 
-    public DCViewModel (HeaderViewModel headerViewModel)
+    public Compte Compte {get;}
+
+    public DCViewModel (HeaderViewModel headerViewModel,Compte compte)
     {
         _headerViewModel= headerViewModel;
+        Compte = compte;
     }
 
     [RelayCommand]
     private void Retrait()
     {
-        
+        //code qui fait le retrait
     }
 
     [RelayCommand]

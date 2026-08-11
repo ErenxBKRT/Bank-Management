@@ -1,5 +1,4 @@
-using System.Net.Http.Headers;
-using Bankmanaging.Views;
+using Bankmanaging.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
@@ -8,6 +7,8 @@ namespace Bankmanaging.ViewModels;
 public partial class VirementViewModel : ViewModelBase
 {
     private readonly HeaderViewModel _headerViewModel;
+
+    public Agence Agence {get;}
 
     [ObservableProperty]
     private string numeroCompte = "";
@@ -18,9 +19,10 @@ public partial class VirementViewModel : ViewModelBase
     [ObservableProperty]
     private string description = "";
 
-    public VirementViewModel(HeaderViewModel headerViewModel)
+    public VirementViewModel(HeaderViewModel headerViewModel, Agence agence)
     {
         _headerViewModel= headerViewModel;
+        Agence = agence;
     }
 
     [RelayCommand]
