@@ -6,6 +6,7 @@ namespace Bankmanaging.Models;
 
 public static class GestionAgence
 {
+    // ajouter un nouveau agence
     public static async Task<Result> AddAsync (string adresse, decimal solde, string pin)
     {
         DateTime now = DateTime.Now;
@@ -49,42 +50,7 @@ public static class GestionAgence
         return new Result(true, "Connection réussie");
     }
 
-    public static async Task<Result> UpdateAsync (string code, string adresse)
-    {
-        using NpgsqlConnection kaeru = await DatabaseConnection.Instance.KaeruConnectAsync();
-        using NpgsqlTransaction kaeruTransac = await kaeru.BeginTransactionAsync();
-
-        try
-        {
-            Result verify = await VerifyCodeAsync(code, kaeru, kaeruTransac);
-            if (!verify.Status)
-            {
-                await kaeruTransac.RollbackAsync();
-                return verify;
-            }
-
-            using NpgsqlCommand preparedQuery = new ("UPDATE agence SET adresse = @adresse WHERE code_agence = @code;", kaeru, kaeruTransac);
-            preparedQuery.Parameters.AddWithValue("code", code);
-            preparedQuery.Parameters.AddWithValue("adresse", adresse);
-
-            await preparedQuery.ExecuteNonQueryAsync();
-            await kaeruTransac.CommitAsync();
-            return new (true, "Mis à jour des informations terminé avec succès.");
-        }
-        catch (NpgsqlException ex)
-        {
-            await kaeruTransac.RollbackAsync();
-            Console.WriteLine($"Error : {ex.Message}");
-            return new (false, "Mis à jour des information de l'agence a échoué.");
-        }
-        catch (Exception ex)
-        {
-            await kaeruTransac.RollbackAsync();
-            Console.WriteLine($"Error : {ex.Message}");
-            return new (false, "Mis à jour des information de l'agence a échoué.");
-        }
-    }
-
+    //sert a verifier si le code de l'agence est exact, uiliser par les autres services
     public static async Task<Result> VerifyCodeAsync (string codeAgence, NpgsqlConnection kaeru, NpgsqlTransaction? kaeruTransac = null)
     {
         using NpgsqlCommand preparedQuery = new ("SELECT * FROM agence WHERE code_agence = @codeAgence FOR UPDATE;", kaeru, kaeruTransac);
@@ -97,6 +63,7 @@ public static class GestionAgence
         return new (true, "Code vérifié");
     }
 
+    // deposé ou plutot ajouter de l'argent dans l'agence
     public static async Task<Result> DepositAsync (string code, decimal montant)
     {
         if (montant <= 0)
@@ -109,6 +76,7 @@ public static class GestionAgence
 
         try
         {
+            // verifie le code de l'agence si elle exist
             Result verify = await VerifyCodeAsync (code, kaeru, kaeruTransac);
             if (!verify.Status)
             {

@@ -7,6 +7,8 @@ namespace Bankmanaging.Models;
 
 public static class Listing
 {
+    /* donne la liste des client en totalité; les parametre sont optionelle, 
+    elle serve à lister selon la recherche effectuer par l'utilisateur; */
     public static async Task<IEnumerable<Client>> ListClientAsync (int? idClient = null, bool? bloque = null, string? nom = null)
     {
         List<Client> listClient = [];
@@ -33,7 +35,7 @@ public static class Listing
                 };
                 listClient.Add(client);
             }
-            return listClient;
+            return listClient; // retourne la liste complet de client en collection d'object client
         }
         catch (NpgsqlException ex)
         {
@@ -47,6 +49,8 @@ public static class Listing
         }
     }
 
+    /* donne la liste des transaction en totalité; les parametre sont optionelle, 
+    elle serve à lister selon la recherche effectuer par l'utilisateur; */
     public static async Task<IEnumerable<Transaction>> HistoriqueTransactionAsync(string? numero = null, string? libelle = null, string? codeAgence = null)
     {
         List<Transaction> listTransaction = [];
@@ -76,7 +80,7 @@ public static class Listing
                 };
                 listTransaction.Add(transaction);
             }
-            return listTransaction;
+            return listTransaction; // retourne la liste complet de transaction en collection d'object transaction
         }
         catch (NpgsqlException ex)
         {
@@ -90,6 +94,8 @@ public static class Listing
         }
     }
 
+    /* donne la liste de tous comptes qui ont des credit non payé ; le parametre est optionelle, 
+    elle sert à rechercher le numero specifique du client; */
     public static async Task<IEnumerable<Compte>> ListCompteCreditAsync (string? numero = null)
     {
         List<Compte> listCompte = [];
@@ -113,7 +119,7 @@ public static class Listing
                 };
                 listCompte.Add(compte);
             }
-            return listCompte;
+            return listCompte; // retourne la liste complet de compte avec credit en collection d'object compte
         }
         catch (NpgsqlException ex)
         {
@@ -127,7 +133,9 @@ public static class Listing
         }
     }
 
-    public static async Task<IEnumerable<Compte>> ListCompteAsync (string? numero = null, string? nom = null)
+    /* donne la liste de tous comptes ; les parametres sont optionelle, 
+    elle serve à rechercher le numero ou nom  specifique du compte; */
+    public static async Task<IEnumerable<Compte>> ListCompteAsync (string? numero = null)
     {
         List<Compte> listCompte = [];
         using NpgsqlConnection kaeru = await DatabaseConnection.Instance.KaeruConnectAsync();
@@ -149,7 +157,7 @@ public static class Listing
                 };
                 listCompte.Add(compte);
             }
-            return listCompte;
+            return listCompte; // retourne la liste complet de compte avec credit en collection d'object compte
         }
         catch (NpgsqlException ex)
         {
@@ -163,6 +171,8 @@ public static class Listing
         }
     }
 
+    /* donne la liste de tous Agence ; les parametres sont optionelle, 
+    elle serve à rechercher le code specifique de l'agence; */
     public static async Task<IEnumerable<Agence>> ListAgenceAsync (string? code = null)
     {
         List<Agence> listAgence = [];
@@ -184,7 +194,7 @@ public static class Listing
                 };
                 listAgence.Add(agence);
             }
-            return listAgence;
+            return listAgence; // retourne la liste complet de compte avec credit en collection d'object agence
         }
         catch (NpgsqlException ex)
         {
