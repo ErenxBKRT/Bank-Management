@@ -1,12 +1,16 @@
 using System.Collections.ObjectModel;
 using CommunityToolkit.Mvvm.Input;
 using Bankmanaging.Models;
+using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace Bankmanaging.ViewModels;
 
 public partial class ClientsViewModel : ViewModelBase
 {
     private readonly HeaderViewModel _headerViewModel;
+
+    [ObservableProperty]
+    private string recherche="";
 
     public ObservableCollection<Client> Clients {get; } = new(); 
 
