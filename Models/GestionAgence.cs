@@ -36,18 +36,40 @@ public static class GestionAgence
         }
     }
 
-    public static async Task<Result> LogInAsync (string code, string pin)
+    public static async Task<LoginAccountAgence> LogInAsync (string code, string pin)
     {
         using NpgsqlConnection kaeru = await DatabaseConnection.Instance.KaeruConnectAsync();
         using NpgsqlCommand preparedQuery = new ("SELECT * FROM agence WHERE code_agence = @code AND pin = @pin;", kaeru);
-        preparedQuery.Parameters.AddWithValue("code", code);
-        preparedQuery.Parameters.AddWithValue("pin", pin);
 
-        if (await preparedQuery.ExecuteScalarAsync() == null)
+        try
         {
-            return new (false, "Identifiant ou Pin incorrect");
+            preparedQuery.Parameters.AddWithValue("code", code);
+            preparedQuery.Parameters.AddWithValue("pin", pin);
+            
+            using NpgsqlDataReader row = await preparedQuery.ExecuteReaderAsync();
+            if (!row.HasRows)
+            {
+                return new (false, "Identifiant ou Pin incorrect");
+            }
+            await row.ReadAsync();
+            Agence agence = new()
+            {
+                CodeAgence = row.GetString(0),
+                Adresse = row.GetString(1),
+                Solde = row.GetDecimal(2)
+            };
+            return new (true, "Connection avec succès", agence);
         }
-        return new Result(true, "Connection réussie");
+        catch (NpgsqlException ex) 
+        {
+            Console.WriteLine(ex.Message);
+            throw;
+        }
+        catch (Exception ex) 
+        {
+            Console.WriteLine(ex.Message);
+            throw;
+        }
     }
 
     //sert a verifier si le code de l'agence est exact, uiliser par les autres services

@@ -62,7 +62,7 @@ public static class ServiceCompte
         }
     }
 
-    public static async Task<Result> LogInAsync (string numero, string pin)
+    public static async Task<LoginAccountClient> LogInAsync (string numero, string pin)
     {
         using NpgsqlConnection kaeru = await DatabaseConnection.Instance.KaeruConnectAsync();
         
@@ -78,12 +78,21 @@ public static class ServiceCompte
             using NpgsqlCommand preparedQuery = new ("SELECT * FROM compte WHERE numero = @numero AND pin = @pin;", kaeru);
             preparedQuery.Parameters.AddWithValue("numero", numero);
             preparedQuery.Parameters.AddWithValue("pin", pin);
-
-            if (await preparedQuery.ExecuteScalarAsync() == null)
+            
+            using NpgsqlDataReader row = await preparedQuery.ExecuteReaderAsync();
+            if (!row.HasRows)
             {
                 return new (false, "Identifiant ou Pin incorrect");
             }
-            return new (true, "Connection réussie");
+            await row.ReadAsync();
+            Compte compte = new()
+            {
+                Numero = row.GetString(0),
+                Solde = row.GetDecimal(1),
+                Credit = row.GetDecimal(2),
+                Bloque = row.GetBoolean(3)
+            };
+            return new (true, "Connection réussie", compte);
         }
         catch (NpgsqlException ex) 
         {

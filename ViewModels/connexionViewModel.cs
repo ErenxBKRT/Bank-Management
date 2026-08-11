@@ -34,8 +34,8 @@ public partial class ConnexionViewModel : ViewModelBase
         }
         try
         {
-            Result logAsEmploye = await GestionAgence.LogInAsync(Username, Password);
-            Result logAsClient = await ServiceCompte.LogInAsync(Username, Password);
+            LoginAccountAgence logAsEmploye = await GestionAgence.LogInAsync(Username, Password);
+            LoginAccountClient logAsClient = await ServiceCompte.LogInAsync(Username, Password);
 
             if (!logAsEmploye.Status)
             {
