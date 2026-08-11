@@ -15,7 +15,7 @@ CREATE TABLE client (
 );
 
 CREATE TABLE compte (
-    numero VARCHAR(10) NOT NULL,
+    numero VARCHAR(10) PRIMARY KEY,
     pin VARCHAR(4) NOT NULL,
     solde NUMERIC(18,2) DEFAULT 0.00 NOT NULL,
     credit NUMERIC(18,2) DEFAULT 0.00 NOT NULL,
@@ -24,7 +24,7 @@ CREATE TABLE compte (
 );
 
 CREATE TABLE transaction (
-    code VARCHAR(7) NOT NULL,
+    code VARCHAR(7) PRIMARY KEY,
     libelle VARCHAR(10) NOT NULL,
     montant NUMERIC(18,2) NOT NULL,
     date timestamp(0) DEFAULT CURRENT_TIMESTAMP(0) NOT NULL,
