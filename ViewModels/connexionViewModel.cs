@@ -47,11 +47,11 @@ public partial class ConnexionViewModel : ViewModelBase
                     }
                     else StatusMessage = logAsEmploye.Message;
                 }
-                else if (logAsClient.Status) _mainViewModel.OuvrirApplication("C");
+                else if (logAsClient.Status) _mainViewModel.OuvrirApplication("C", compte: logAsClient.CompteClient);
             }
             else if (logAsEmploye.Status)
             {
-                _mainViewModel.OuvrirApplication("E");
+                _mainViewModel.OuvrirApplication("E", agence: logAsEmploye.CompteAgence);
             }
         }
         catch (Exception ex)

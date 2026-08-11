@@ -8,7 +8,7 @@ public partial class VirementViewModel : ViewModelBase
 {
     private readonly HeaderViewModel _headerViewModel;
 
-    public Agence Agence {get;}
+    public Agence? Agence {get;}
 
     [ObservableProperty]
     private string numeroCompte = "";
@@ -19,7 +19,7 @@ public partial class VirementViewModel : ViewModelBase
     [ObservableProperty]
     private string description = "";
 
-    public VirementViewModel(HeaderViewModel headerViewModel, Agence agence)
+    public VirementViewModel(HeaderViewModel headerViewModel, Agence? agence)
     {
         _headerViewModel= headerViewModel;
         Agence = agence;

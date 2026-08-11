@@ -8,7 +8,7 @@ public partial class DCViewModel : ViewModelBase
 {
     private readonly HeaderViewModel _headerViewModel;
 
-    public Compte Compte {get;}
+    public Compte? Compte {get;}
 
     [ObservableProperty]
     private decimal somme=0;
@@ -19,7 +19,7 @@ public partial class DCViewModel : ViewModelBase
     [ObservableProperty]
     private decimal credit=0;
 
-    public DCViewModel (HeaderViewModel headerViewModel,Compte compte)
+    public DCViewModel (HeaderViewModel headerViewModel,Compte? compte)
     {
         _headerViewModel= headerViewModel;
         Compte = compte;

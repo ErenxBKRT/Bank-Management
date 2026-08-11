@@ -8,7 +8,7 @@ public partial class DepotViewModel : ViewModelBase
 {
     private readonly HeaderViewModel _headerViewModel;
 
-    public Agence Agence {get;}
+    public Agence? Agence {get;}
 
     [ObservableProperty]
     private string numeroCompte = "";
@@ -16,7 +16,7 @@ public partial class DepotViewModel : ViewModelBase
     [ObservableProperty]
     private decimal somme = 0;
 
-    public DepotViewModel(HeaderViewModel headerViewModel,Agence agence)
+    public DepotViewModel(HeaderViewModel headerViewModel,Agence? agence)
     {
         _headerViewModel= headerViewModel;
         Agence = agence;
