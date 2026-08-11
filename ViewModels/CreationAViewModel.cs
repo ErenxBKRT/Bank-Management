@@ -7,6 +7,18 @@ public partial class CreationAViewModel : ViewModelBase
 {
      private readonly HeaderViewModel _headerViewModel;
 
+     [ObservableProperty]
+     private string adresse = "";
+
+     [ObservableProperty]
+     private decimal solde = 0;
+
+     [ObservableProperty]
+     private string pIN = "";
+
+     [ObservableProperty]
+     private string confirmationPIN = "";
+
     public CreationAViewModel (HeaderViewModel headerViewModel)
     {
         _headerViewModel= headerViewModel;

@@ -1,6 +1,4 @@
-using System.Net.Http.Headers;
-using Bankmanaging.Views;
-using CommunityToolkit.Mvvm.ComponentModel;
+using Bankmanaging.Models;
 using CommunityToolkit.Mvvm.Input;
 
 namespace Bankmanaging.ViewModels;
@@ -9,9 +7,12 @@ public partial class DashViewModel : ViewModelBase
 {
     private readonly HeaderViewModel _headerViewModel;
 
+    public Agence Agence {get;}
+
     public DashViewModel (HeaderViewModel headerViewModel)
     {
         _headerViewModel= headerViewModel;
+        Agence = new Agence{};
     }
 
     [RelayCommand]

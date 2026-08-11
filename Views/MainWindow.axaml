@@ -14,6 +14,8 @@
 	</Design.DataContext>
 
 		<ContentControl Content="{Binding CurrentView}"
-                                Margin="0"/>
+                                Margin="0"
+                                Background="WhiteSmoke"
+                                Foreground="#110099"/>
 
 </Window>

@@ -7,6 +7,12 @@ public partial class CCompteViewModel : ViewModelBase
 {
      private readonly HeaderViewModel _headerViewModel;
 
+    [ObservableProperty]
+    private string pIN;
+
+    [ObservableProperty]
+    private string confirmationPIN;
+
     public CCompteViewModel (HeaderViewModel headerViewModel)
     {
         _headerViewModel= headerViewModel;

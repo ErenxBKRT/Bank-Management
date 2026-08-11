@@ -1,6 +1,4 @@
-using Avalonia.Controls;
 using Bankmanaging.Models;
-using Bankmanaging.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
@@ -16,26 +14,32 @@ public partial class HeaderViewModel : ViewModelBase
     [ObservableProperty]
     private string _ce;
 
+    public Compte Compte1 {get;}
+    public Agence Agence1 {get;}
+
     public HeaderViewModel(MainViewModel mainViewModel,string mode)
     {
         _mainViewModel = mainViewModel;
         Ce = mode;
+        Compte1 = new Compte{};
+        Agence1 = new Agence{};
+
         if (mode == "E")
         {
             ControlView = new DashViewModel(this);
         }
         if (mode == "C")
         {
-            ControlView = new DCViewModel(this);
+            ControlView = new DCViewModel(this,Compte1);
         }
     }
     public void MenuClient()
     {
         ControlView= new ClientsViewModel(this);
     }
-    public void EntrerClient()
+    public void EntrerClient(Compte compte)
     {
-        ControlView = new DCViewModel(this);
+        ControlView = new DCViewModel(this, Compte1);
     }
 
     public void OuvrirClient(Client client)
@@ -51,6 +55,16 @@ public partial class HeaderViewModel : ViewModelBase
     public void MainMenu()
     {
         ControlView = new DashViewModel(this);
+    }
+
+    public void Retrait()
+    {
+        ControlView = new DCViewModel(this,Compte1);
+    }
+
+    public void ModifierP()
+    {
+        ControlView = new ModifierPViewModel(this,Compte1);
     }
 
     public void NouveauC()
@@ -82,22 +96,22 @@ public partial class HeaderViewModel : ViewModelBase
 
     public void Virement()
     {
-        ControlView = new VirementViewModel(this);
+        ControlView = new VirementViewModel(this,Agence1);
     }
 
     public void Depot()
     {
-        ControlView = new DepotViewModel(this);
+        ControlView = new DepotViewModel(this,Agence1);
     }
 
     public void Credit()
     {
-        ControlView = new CreditViewModel(this);
+        ControlView = new CreditViewModel(this,Agence1);
     }
 
     public void Rembourser()
     {
-        ControlView = new RembourserViewModel(this);
+        ControlView = new RembourserViewModel(this,Agence1);
     }
     
     [RelayCommand]

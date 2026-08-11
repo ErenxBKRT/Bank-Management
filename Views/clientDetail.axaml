@@ -18,23 +18,23 @@
                                         <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto,Auto,Auto,Auto">
                                                 <TextBlock Text="{Binding Numero}" Grid.Column="0" Grid.Row="0" FontSize="16" Margin="10"/>
                                                 <TextBlock Text="{Binding Solde}" Grid.Column="0" Grid.Row="1" FontSize="16" Margin="10"/>
-                                                <TextBlock Text="{Binding Numero}" Grid.Column="0" Grid.Row="2" FontSize="16" Margin="10"/>
+                                                <TextBlock Text="{Binding Credit}" Grid.Column="0" Grid.Row="2" FontSize="16" Margin="10"/>
                                                 <TextBlock Text="{Binding Bloque}" Grid.Column="0" Grid.Row="3" FontSize="16" Margin="10"/>
                                                 <StackPanel Grid.Column="1" Grid.Row="0" Grid.RowSpan="5" HorizontalAlignment="Center" VerticalAlignment="Center">
-                                                        <Button Width="200">
-                                                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                                                        <Image Source="/Assets/icons8-modifier-50.png" Width="20" Height="20" Margin="3"/>
-                                                                        <TextBlock Text="Modifier" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                                                </StackPanel>
-                                                        </Button>
                                                         <Button Width="200">
                                                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                                                         <Image Source="/Assets/icons8-interdit-50.png" Width="20" Height="20" Margin="3"/>
                                                                         <TextBlock Text="Bloquer" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                                                 </StackPanel>
                                                         </Button>
-                                                </StackPanel>
-                                        </Grid>
+                                                        <Button Width="200">
+                                                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                                                        <Image Source="/Assets/icons8-trash-can-50.png" Width="20" Height="20" Margin="3"/>
+                                                                        <TextBlock Text="Supprimer" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                                </StackPanel>
+                                                        </Button>
+                                                 </StackPanel>
+                                </Grid>
                                 </Border>
                                 </DataTemplate>
                         </ListBox.ItemTemplate>
@@ -49,6 +49,7 @@
         
         <Button Grid.Row="1" Width="180" Height="50"
                 HorizontalAlignment="Center"
+                Background="#001199" Foreground="#FFD700"
                 Command="{Binding CCompteCommand}">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                         <Image Source="/Assets/icons8-plus-50.png" Width="30" Height="30" Margin="5"/>
@@ -58,6 +59,7 @@
 
         <Button Grid.Row="2" Width="180" Height="50"
                 HorizontalAlignment="Center"
+                Background="#001199" Foreground="#FFD700"
                 Command="{Binding RetourCommand}">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                         <Image Source="/Assets/icons8-retour-30.png" Width="30" Height="30" Margin="5"/>

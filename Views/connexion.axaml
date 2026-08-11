@@ -25,13 +25,19 @@
         <TextBox Width="280"
                  Text="{Binding Password, Mode=TwoWay}"
                  PlaceholderText="Entrez votre mot de passe"
-                 PasswordChar="*"
+                 PasswordChar="o"
+                 MaxLength="4"
                  HorizontalAlignment="Center" TextAlignment="Center"/>
 
-        <Button Content="Se connecter"
-                Command="{Binding LoginCommand}"
-                HorizontalAlignment="Center"
-                Padding="12,6" />
+        <Button Width="180" Height="50"
+                    HorizontalAlignment="Center"
+                    Grid.Row="1"
+                    Command="{Binding LoginCommand}">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                            <Image Source="/Assets/icons8-connexion-50.png" Width="30" Height="30" Margin="5"/>
+                            <TextBlock Text="Se Connecter" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </StackPanel>
+        </Button>
 
         <TextBlock Text="{Binding StatusMessage}"
                    HorizontalAlignment="Center"
