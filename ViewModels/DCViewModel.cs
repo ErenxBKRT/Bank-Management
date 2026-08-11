@@ -1,6 +1,4 @@
-using System.Net.Http.Headers;
 using Bankmanaging.Models;
-using Bankmanaging.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
@@ -10,6 +8,8 @@ public partial class DCViewModel : ViewModelBase
 {
     private readonly HeaderViewModel _headerViewModel;
 
+    public Compte Compte {get;}
+
     [ObservableProperty]
     private decimal somme=0;
 
@@ -18,8 +18,6 @@ public partial class DCViewModel : ViewModelBase
 
     [ObservableProperty]
     private decimal credit=0;
-
-    public Compte Compte {get;}
 
     public DCViewModel (HeaderViewModel headerViewModel,Compte compte)
     {

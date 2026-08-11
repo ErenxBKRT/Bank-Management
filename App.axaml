@@ -16,7 +16,7 @@
             <Setter Property="Foreground" Value="#FFD700"/>
         </Style>
 
-        <Style Selector="Button:pointerover">
+        <Style Selector="Button:pointerover /template/ ContentPresenter#PART_ContentPresenter">
             <Setter Property="Background" Value="#000e7e"/>
         </Style>
     </Application.Styles>
