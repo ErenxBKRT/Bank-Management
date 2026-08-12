@@ -87,10 +87,10 @@ public static class ServiceCompte
             await row.ReadAsync();
             Compte compte = new()
             {
-                Numero = row.GetString(0),
-                Solde = row.GetDecimal(1),
-                Credit = row.GetDecimal(2),
-                Bloque = row.GetBoolean(3)
+                Numero = row.GetString(row.GetOrdinal("numero")),
+                Solde = row.GetDecimal(row.GetOrdinal("solde")),
+                Credit = row.GetDecimal(row.GetOrdinal("credit")),
+                Bloque = row.GetBoolean(row.GetOrdinal("bloquer"))
             };
             return new (true, "Connection réussie", compte);
         }

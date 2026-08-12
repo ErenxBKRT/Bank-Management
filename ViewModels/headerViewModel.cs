@@ -1,6 +1,9 @@
 using Bankmanaging.Models;
+using Bankmanaging.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using System;
+
 
 namespace Bankmanaging.ViewModels;
 
@@ -21,8 +24,11 @@ public partial class HeaderViewModel : ViewModelBase
     {
         _mainViewModel = mainViewModel;
         Ce = mode;
-        Compte1 = compte;
-        Agence1 = agence;
+
+        //get info account from session if not provided
+        Compte1 =  SessionServ.CurrentCompte;
+        Agence1 =  SessionServ.CurrentAgence;
+
 
         if (mode == "E")
         {
@@ -64,6 +70,7 @@ public partial class HeaderViewModel : ViewModelBase
 
     public void ModifierP()
     {
+        Console.WriteLine(Compte1.Credit);
         ControlView = new ModifierPViewModel(this, Compte1);
     }
 
