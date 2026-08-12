@@ -1,61 +1,81 @@
-<UserControl
-    xmlns="https://github.com/avaloniaui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:vm="using:Bankmanaging.ViewModels"
-    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="450"
-    x:Class="Bankmanaging.Views.ModifierPView"
-    x:DataType="vm:ModifierPViewModel">
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:Bankmanaging.ViewModels"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="450"
+             x:Class="Bankmanaging.Views.ModifierPView"
+             x:DataType="vm:ModifierPViewModel">
 
-    <Grid ColumnDefinitions="*,Auto">
-        
-        <Grid Grid.Column="0" ColumnDefinitions="Auto,Auto" RowDefinitions="Auto,Auto,Auto" ColumnSpacing="20" RowSpacing="20" Margin="20" VerticalAlignment="Center" HorizontalAlignment="Center">
-                <TextBlock Text="Ancien PIN" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center"/>
-                <TextBlock Text="Nouveau PIN" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center"/>
-                <TextBlock Text="Confirmation" Grid.Column="0" Grid.Row="2" VerticalAlignment="Center"/>
-            
-                <TextBox Grid.Column="1" Grid.Row="0" 
-                         Width="100"
-                         HorizontalAlignment="Center"
-                         MaxLength="4"
-                         PasswordChar="o"
-                         Text="{Binding AncienPin, Mode=TwoWay}"/>
-                <TextBox Grid.Column="1" Grid.Row="1" 
-                         Width="100"
-                         HorizontalAlignment="Center"
-                         MaxLength="4"
-                         PasswordChar="o"
-                         Text="{Binding NouveauPin, Mode=TwoWay}"/>
-                <TextBox Grid.Column="1" Grid.Row="2" 
-                         Width="100"
-                         HorizontalAlignment="Center"
-                         MaxLength="4"
-                         PasswordChar="o"
-                         Text="{Binding ConfirmationPin, Mode=TwoWay}"/>
-        </Grid>
-        <Grid Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" RowDefinitions="Auto,Auto" RowSpacing="20" Margin="20">
-            <Button Width="180" Height="50"
+	<Grid ColumnDefinitions="*,Auto" RowDefinitions="*,Auto" Margin="20">
+
+		<!-- Formulaire PIN -->
+		<Grid Grid.Row="0" Grid.Column="0"
+              ColumnDefinitions="Auto,Auto"
+              RowDefinitions="Auto,Auto,Auto"
+              ColumnSpacing="20"
+              RowSpacing="20"
+              Margin="20"
+              VerticalAlignment="Center"
+              HorizontalAlignment="Center">
+
+			<TextBlock Text="Ancien PIN" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center"/>
+			<TextBlock Text="Nouveau PIN" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center"/>
+			<TextBlock Text="Confirmation" Grid.Column="0" Grid.Row="2" VerticalAlignment="Center"/>
+
+			<TextBox Grid.Column="1" Grid.Row="0"
+                     Width="120"
+                     HorizontalAlignment="Center"
+                     MaxLength="4"
+                     PasswordChar="•"
+                     Text="{Binding AncienPin}"/>
+
+			<TextBox Grid.Column="1" Grid.Row="1"
+                     Width="120"
+                     HorizontalAlignment="Center"
+                     MaxLength="4"
+                     PasswordChar="•"
+                     Text="{Binding NouveauPin}"/>
+
+			<TextBox Grid.Column="1" Grid.Row="2"
+                     Width="120"
+                     HorizontalAlignment="Center"
+                     MaxLength="4"
+                     PasswordChar="•"
+                     Text="{Binding ConfirmationPin}"/>
+		</Grid>
+
+		<!-- Boutons d'action -->
+		<Grid Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" RowDefinitions="Auto,Auto" RowSpacing="20" Margin="20">
+			<Button Width="180" Height="50"
                     HorizontalAlignment="Center"
                     Background="#001199" Foreground="#FFD700"
-                    Grid.Row="0" 
+                    Grid.Row="0"
                     Command="{Binding ModifierCommand}">
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                            <Image Source="/Assets/icons8-confirmer-50.png" Width="30" Height="30" Margin="5"/>
-                            <TextBlock Text="Enregistrer" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                    </StackPanel>
-            </Button>
-            <Button Width="180" Height="50"
+				<StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+					<Image Source="/Assets/icons8-confirmer-50.png" Width="30" Height="30" Margin="5"/>
+					<TextBlock Text="Enregistrer" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+				</StackPanel>
+			</Button>
+
+			<Button Width="180" Height="50"
                     HorizontalAlignment="Center"
                     Background="#001199" Foreground="#FFD700"
                     Grid.Row="1"
                     Command="{Binding AnnulerCommand}">
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                            <Image Source="/Assets/icons8-annuler-50.png" Width="30" Height="30" Margin="5"/>
-                            <TextBlock Text="Annuler" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                    </StackPanel>
-            </Button>
-        </Grid>
-        </Grid>
+				<StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+					<Image Source="/Assets/icons8-annuler-50.png" Width="30" Height="30" Margin="5"/>
+					<TextBlock Text="Annuler" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+				</StackPanel>
+			</Button>
+		</Grid>
 
+		<!-- Message d'erreur -->
+		<TextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
+                   Text="{Binding MessageErreur}"
+                   Foreground="Red"
+                   FontWeight="Bold"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"/>
+	</Grid>
 </UserControl>
