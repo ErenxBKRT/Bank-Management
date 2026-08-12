@@ -8,10 +8,10 @@ public partial class CCompteViewModel : ViewModelBase
      private readonly HeaderViewModel _headerViewModel;
 
     [ObservableProperty]
-    private string pIN;
+    private string pIN = string.Empty;
 
     [ObservableProperty]
-    private string confirmationPIN;
+    private string confirmationPIN = string.Empty;
 
     public CCompteViewModel (HeaderViewModel headerViewModel)
     {

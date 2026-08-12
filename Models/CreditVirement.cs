@@ -7,6 +7,9 @@ namespace Bankmanaging.Models;
 
 public static class CreditVirement
 {
+    /*
+    utiliser pour faire un demande de credit, les parametre ne sont pas optionelle
+    */
     public static async Task<Result> CreditAsync (string numero, string codeAgence, decimal montant)
     {
         if (montant <= 0) 
@@ -19,6 +22,7 @@ public static class CreditVirement
 
         try
         {
+            //verifie si le compte existe, le numero est correct
             Result verifyCompte = await ServiceCompte.VerifyAsync(numero, kaeru, kaeruTransac);
             if (!verifyCompte.Status)
             {
@@ -26,12 +30,15 @@ public static class CreditVirement
                 return verifyCompte;
             }
             
+            //verifie si le code de l'agence est correct
             Result verifyAgence = await GestionAgence.VerifyCodeAsync(codeAgence, kaeru, kaeruTransac);
             if (!verifyAgence.Status)
             {
                 await kaeruTransac.RollbackAsync();
                 return verifyAgence;
             }
+
+            // verifie si le client a un credit qui n'est pas encore payé
             using NpgsqlCommand canDoCredit = new ("SELECT * FROM compte WHERE numero = @numero AND credit > 0 FOR UPDATE;", kaeru, kaeruTransac);
             canDoCredit.Parameters.AddWithValue("numero", numero);
             if (await canDoCredit.ExecuteScalarAsync() != null)
@@ -45,6 +52,7 @@ public static class CreditVirement
             int randomNumber = RandomNumberGenerator.GetInt32(0, 100);
             string code = microSecond + "-" + randomNumber.ToString("D2");
 
+            // verifie si le solde de l'agence n'est pas suffisant pour envoyé le credit
             NpgsqlCommand compareSolde = new ("SELECT solde FROM agence WHERE code_agence = @codeAgence FOR UPDATE;", kaeru, kaeruTransac);
             compareSolde.Parameters.AddWithValue("codeAgence", codeAgence);
             decimal solde = (decimal?)await compareSolde.ExecuteScalarAsync() ?? 0.00m;
@@ -89,6 +97,9 @@ public static class CreditVirement
         }
     }
 
+    /*
+    payé le credit que le client a emprunté
+    */
     public static async Task<Result> PayerCreditAsync (string numero, string codeAgence, decimal montant)
     {
         if (montant <= 0) 
@@ -101,6 +112,7 @@ public static class CreditVirement
 
         try
         {
+            //verifie si le compte existe, le numero est correct
             Result verifyCompte = await ServiceCompte.VerifyAsync(numero, kaeru, kaeruTransac);
             if (!verifyCompte.Status)
             {
@@ -108,12 +120,15 @@ public static class CreditVirement
                 return verifyCompte;
             }
             
+            //verifie si le code de l'agence est correct
             Result verifyAgence = await GestionAgence.VerifyCodeAsync(codeAgence, kaeru, kaeruTransac);
             if (!verifyAgence.Status)
             {
                 await kaeruTransac.RollbackAsync();
                 return verifyAgence;
             }
+
+            // verifie que le client a un credit a payé
             using NpgsqlCommand canDoCredit = new ("SELECT * FROM compte WHERE numero = @numero AND credit = 0 FOR UPDATE;", kaeru, kaeruTransac);
             canDoCredit.Parameters.AddWithValue("numero", numero);
             if (await canDoCredit.ExecuteScalarAsync() != null)
@@ -162,6 +177,9 @@ public static class CreditVirement
         }
     }
 
+    /*
+    envoyé un virement vers un compte et utilise le nom que l'expediteur utilise.
+    */
     public static async Task<Result> VirementAsync (string numero, string codeAgence, decimal montant, string nom, string description)
     {
         if (montant <= 0) return new (false, "Le montant doit être positif.");
@@ -171,6 +189,7 @@ public static class CreditVirement
 
         try 
         {
+            //verifie si le compte existe, le numero est correct
             Result verifyCompte = await ServiceCompte.VerifyAsync(numero, kaeru, kaeruTransac);
             if (!verifyCompte.Status)
             {
@@ -178,6 +197,7 @@ public static class CreditVirement
                 return verifyCompte;
             }
             
+            //verifie si le code de l'agence est correct
             Result isCompteLocked = await ServiceCompte.IsLockedAsync(numero, kaeru, kaeruTransac);
             if (isCompteLocked.Status)
             {
