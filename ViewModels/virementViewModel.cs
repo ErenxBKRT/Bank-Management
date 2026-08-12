@@ -90,7 +90,7 @@ public partial class VirementViewModel : ViewModelBase
             //Wait for the user to close the message box before navigating back to the client menu
             await box.ShowAsync();
             _headerViewModel.MainMenu();
-            RéinitialiserChamps();
+            ReinitialiserChamps();
         }
         else
         {
@@ -104,7 +104,7 @@ public partial class VirementViewModel : ViewModelBase
         _headerViewModel.Transaction();
     }
 
-    private void RéinitialiserChamps()
+    private void ReinitialiserChamps()
     {
         NumeroCompte = string.Empty;
         Montant = 0;

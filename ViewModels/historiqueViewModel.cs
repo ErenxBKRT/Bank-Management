@@ -62,4 +62,8 @@ public partial class HistoriqueViewModel : ViewModelBase
     {
         _headerViewModel.MainMenu();
     }
+
+    [RelayCommand]
+    private async Task GenPdf() { 
+    }
 }
