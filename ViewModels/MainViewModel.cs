@@ -12,9 +12,16 @@ public partial class MainViewModel : ViewModelBase
         CurrentView = new ConnexionViewModel(this);
     }
 
-    public void OuvrirApplication(string mode)
+    public void OuvrirApplication(string mode, Models.Agence? agence = null, Models.Compte? compte = null)
     {
-        CurrentView = new HeaderViewModel(this,mode);
+        if (agence == null)
+        {
+            CurrentView = new HeaderViewModel(this, mode, compte: compte);
+        }
+        else if (compte == null)
+        {
+            CurrentView = new HeaderViewModel(this, mode, agence: agence);
+        }
     }
 
     public void Deco()

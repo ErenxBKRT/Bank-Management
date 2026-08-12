@@ -8,7 +8,7 @@ public partial class RembourserViewModel : ViewModelBase
 {
     private readonly HeaderViewModel _headerViewModel;
 
-    public Agence Agence{get;} 
+    public Agence? Agence{get;} 
 
     [ObservableProperty]
     private decimal montant = 0;
@@ -16,7 +16,7 @@ public partial class RembourserViewModel : ViewModelBase
     [ObservableProperty]
     private string numeroCompte = "";
 
-    public RembourserViewModel(HeaderViewModel headerViewModel,Agence agence)
+    public RembourserViewModel(HeaderViewModel headerViewModel,Agence? agence)
     {
         _headerViewModel= headerViewModel;
         Agence = agence;
