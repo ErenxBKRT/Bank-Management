@@ -70,8 +70,7 @@ public partial class HeaderViewModel : ViewModelBase
 
     public void ModifierP()
     {
-        Console.WriteLine(Compte1.Credit);
-        ControlView = new ModifierPViewModel(this, Compte1);
+        ControlView = new ModifierPViewModel(this, Compte1!);
     }
 
     public void NouveauC()

@@ -16,15 +16,15 @@ public partial class DepotViewModel : ViewModelBase
     public Agence Agence { get; }
 
     [ObservableProperty]
-    [NotifyCanExecuteChangedFor(nameof(ConfirmerCommand))] // <-- Modifié ici
+    [NotifyCanExecuteChangedFor(nameof(ConfirmerCommand))] 
     private string numeroCompte = "";
 
     [ObservableProperty]
-    [NotifyCanExecuteChangedFor(nameof(ConfirmerCommand))] // <-- Modifié ici
+    [NotifyCanExecuteChangedFor(nameof(ConfirmerCommand))] 
     private decimal somme = 0;
 
     [ObservableProperty]
-    [NotifyCanExecuteChangedFor(nameof(ConfirmerCommand))] // <-- Modifié ici
+    [NotifyCanExecuteChangedFor(nameof(ConfirmerCommand))] 
     private string pin = string.Empty;
 
     [ObservableProperty]
