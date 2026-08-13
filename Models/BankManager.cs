@@ -18,22 +18,15 @@ public sealed class DatabaseConnection : IDatabaseConnection
 {
     private const string Owner = "Host=localhost;Database=bank;Username=manager;Password=manager;Timeout=15";
 
-    //private const string Owner = "Host=localhost;Database=bank;Username=manager;Password=manager;Timeout=15";
-
     private static readonly Lazy<DatabaseConnection> _instance = new (()=> new DatabaseConnection());
     
     public static IDatabaseConnection Instance => _instance.Value;
 
     private DatabaseConnection() {}
 
-    private static NpgsqlConnection Connected()
-    {
-        return new NpgsqlConnection(Owner);
-    }
-    
     public async Task<NpgsqlConnection> KaeruConnectAsync()
     {
-        NpgsqlConnection connection = Connected();
+        NpgsqlConnection connection = new NpgsqlConnection(Owner);
         await connection.OpenAsync();
         return connection;
     }
