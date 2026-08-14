@@ -16,17 +16,9 @@ public interface IDatabaseConnection
 
 public sealed class DatabaseConnection : IDatabaseConnection
 {
-<<<<<<< HEAD
-<<<<<<< HEAD
-    private const string Owner = "Host=localhost;Database=bank;Username=postgres;Password=root;Timeout=15";
+    private const string Owner = "Host=localhost;Database=bank;Username=manager;Password=manager;Timeout=15";
 
     //private const string Owner = "Host=localhost;Database=bank;Username=manager;Password=manager;Timeout=15";
-=======
-    private const string Owner = "Host=localhost;Database=bank;Username=postgres;Password=Amaranthe21I;Timeout=15";
->>>>>>> origin/nate
-=======
-    private const string Owner = "Host=localhost;Database=bank;Username=manager;Password=manager;Timeout=15";
->>>>>>> kaeru
 
     private static readonly Lazy<DatabaseConnection> _instance = new (()=> new DatabaseConnection());
     
@@ -34,9 +26,14 @@ public sealed class DatabaseConnection : IDatabaseConnection
 
     private DatabaseConnection() {}
 
+    private static NpgsqlConnection Connected()
+    {
+        return new NpgsqlConnection(Owner);
+    }
+    
     public async Task<NpgsqlConnection> KaeruConnectAsync()
     {
-        NpgsqlConnection connection = new(Owner);
+        NpgsqlConnection connection = Connected();
         await connection.OpenAsync();
         return connection;
     }
