@@ -16,7 +16,9 @@ public interface IDatabaseConnection
 
 public sealed class DatabaseConnection : IDatabaseConnection
 {
-    private const string Owner = "Host=localhost;Database=bank;Username=manager;Password=manager;Timeout=15";
+    private const string Owner = "Host=localhost;Database=bank;Username=postgres;Password=root;Timeout=15";
+
+    //private const string Owner = "Host=localhost;Database=bank;Username=manager;Password=manager;Timeout=15";
 
     private static readonly Lazy<DatabaseConnection> _instance = new (()=> new DatabaseConnection());
     

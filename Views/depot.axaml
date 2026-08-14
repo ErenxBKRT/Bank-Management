@@ -1,41 +1,61 @@
-<UserControl
-    xmlns="https://github.com/avaloniaui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-    xmlns:vm="using:Bankmanaging.ViewModels"
-    x:Class="Bankmanaging.Views.DepotView"
-    x:DataType="vm:DepotViewModel">
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:Bankmanaging.ViewModels"
+             x:Class="Bankmanaging.Views.DepotView"
+             x:DataType="vm:DepotViewModel">
 
-    <Grid RowSpacing="30" ColumnSpacing="20" ColumnDefinitions="*,Auto" Margin="20">
-        <Grid Grid.Column="0" ColumnDefinitions="Auto,Auto" RowDefinitions="Auto,Auto" ColumnSpacing="20" RowSpacing="20" Margin="20" VerticalAlignment="Center" HorizontalAlignment="Center">
-                <TextBlock Text="Numero de compte" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center"/>
-                <TextBlock Text="Somme" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center"/>
-        
-                <TextBox Grid.Column="1" Grid.Row="0" 
-                     Width="500"
-                     Text="{Binding NumeroCompte, Mode=TwoWay}"/>
-                <TextBox Grid.Column="1" Grid.Row="1" 
-                     Width="500"
-                     Text="{Binding Somme, Mode=TwoWay}"/>
-                
-        </Grid>
-        <StackPanel Grid.Column="1" VerticalAlignment="Center" Width="200">
-            <Button Width="180" Height="50"
-                    HorizontalAlignment="Center">
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                        <Image Source="/Assets/icons8-confirmer-50.png" Width="30" Height="30" Margin="5"/>
-                        <TextBlock Text="Confirmer" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                </StackPanel>
-            </Button> 
-           <Button Width="180" Height="50"
-                    HorizontalAlignment="Center"
-                    Background="#001199" Foreground="#FFD700"
-                    Command="{Binding annulerCommand}">
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                            <Image Source="/Assets/icons8-annuler-50.png" Width="30" Height="30" Margin="5"/>
-                            <TextBlock Text="Annuler" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                    </StackPanel>
-            </Button> 
-        </StackPanel>
+	<!-- Grille Principale : 2 colonnes, 2 lignes -->
+	<Grid ColumnDefinitions="*,Auto"
+          RowDefinitions="*,Auto"
+          ColumnSpacing="20"
+          RowSpacing="20"
+          Margin="20">
 
-    </Grid>
+		<!-- LIGNE 0, COLONNE 0 : Formulaire de Saisie -->
+		<Grid Grid.Row="0" Grid.Column="0"
+              ColumnDefinitions="Auto,Auto"
+              RowDefinitions="Auto,Auto,Auto"
+              ColumnSpacing="20"
+              RowSpacing="20"
+              Margin="20"
+              HorizontalAlignment="Center"
+              VerticalAlignment="Center">
+
+			<TextBlock Grid.Row="0" Grid.Column="0" Text="Numero de compte" VerticalAlignment="Center"/>
+			<TextBox Grid.Row="0" Grid.Column="1" Width="500" Text="{Binding NumeroCompte}"/>
+
+			<TextBlock Grid.Row="1" Grid.Column="0" Text="Somme" VerticalAlignment="Center"/>
+			<TextBox Grid.Row="1" Grid.Column="1" Width="500" Text="{Binding Somme}"/>
+
+			<TextBlock Grid.Row="2" Grid.Column="0" Text="Pin" VerticalAlignment="Center"/>
+			<TextBox Grid.Row="2" Grid.Column="1" Width="500" PasswordChar="•" MaxLength="4" Text="{Binding Pin}"/>
+		</Grid>
+
+		<!-- LIGNE 0, COLONNE 1 : Boutons d'action -->
+		<StackPanel Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" Width="200" Spacing="10">
+			<Button Width="180" Height="50" HorizontalAlignment="Center" Command="{Binding ConfirmerCommand}">
+				<StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+					<Image Source="/Assets/icons8-confirmer-50.png" Width="30" Height="30" Margin="5"/>
+					<TextBlock Text="Confirmer" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+				</StackPanel>
+			</Button>
+
+			<Button Width="180" Height="50" HorizontalAlignment="Center" Background="#001199" Foreground="#FFD700" Command="{Binding AnnulerCommand}">
+				<StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+					<Image Source="/Assets/icons8-annuler-50.png" Width="30" Height="30" Margin="5"/>
+					<TextBlock Text="Annuler" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+				</StackPanel>
+			</Button>
+		</StackPanel>
+
+		<!-- LIGNE 1 : Zone de Feedback / Message de statut (Sur toute la largeur) -->
+		<TextBlock Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2"
+                   Text="{Binding MessageErreur}"
+                   Foreground="Red"
+                   FontSize="16"
+                   FontWeight="Bold"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"/>
+
+	</Grid>
 </UserControl>
