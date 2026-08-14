@@ -13,17 +13,10 @@ public partial class CCompteViewModel : ViewModelBase
     private readonly Client _client;
 
     [ObservableProperty]
-<<<<<<< HEAD
-    private string pIN = string.Empty;
-
-    [ObservableProperty]
-    private string confirmationPIN = string.Empty;
-=======
     private string _PIN = string.Empty;
 
     [ObservableProperty]
     private string _confirmationPIN = string.Empty;
->>>>>>> origin/nate
 
     [ObservableProperty]
     private string _message = string.Empty;
