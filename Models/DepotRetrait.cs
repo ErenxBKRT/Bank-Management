@@ -77,7 +77,7 @@ public static class DepotRetrait
 
 
     // faire un retrait depuis le compte
-    public static async Task<Result> WithdrawAsync (string numero, string pin, decimal montant)
+    public static async Task<Result> WithdrawAsync (string numero, decimal montant)
     {
         if (montant <= 0) return new (false, "Le montant doit être positif");
 
@@ -102,10 +102,9 @@ public static class DepotRetrait
                 return isCompteLocked;
             }
 
-            using NpgsqlCommand withdraw = new ("UPDATE compte SET solde = solde - @montant WHERE numero = @numero AND solde >= @montant AND pin = @pin;", kaeru, kaeruTransac);
+            using NpgsqlCommand withdraw = new ("UPDATE compte SET solde = solde - @montant WHERE numero = @numero AND solde >= @montant;", kaeru, kaeruTransac);
             withdraw.Parameters.AddWithValue("montant", montant);
             withdraw.Parameters.AddWithValue("numero", numero);
-            withdraw.Parameters.AddWithValue("pin", pin);
             if (await withdraw.ExecuteNonQueryAsync() == 0)
             {
                 await kaeruTransac.RollbackAsync();

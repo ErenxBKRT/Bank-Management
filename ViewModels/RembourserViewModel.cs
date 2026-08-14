@@ -30,23 +30,23 @@ public partial class RembourserViewModel : ViewModelBase
     {
         if (Agence == null || string.IsNullOrWhiteSpace(Agence.CodeAgence))
         {
-            await AfficherPopupAsync("Erreur", "Agence non définie.", Icon.Error);
+            await AfficherPopupAsync("Erreur", "Agence non dï¿½finie.", Icon.Error);
             return;
         }
 
         if (string.IsNullOrWhiteSpace(NumeroCompte))
         {
-            await AfficherPopupAsync("Attention", "Veuillez entrer le numéro de compte.", Icon.Warning);
+            await AfficherPopupAsync("Attention", "Veuillez entrer le numï¿½ro de compte.", Icon.Warning);
             return;
         }
 
         if (Montant <= 0)
         {
-            await AfficherPopupAsync("Attention", "Le montant doit être supérieur à zéro.", Icon.Warning);
+            await AfficherPopupAsync("Attention", "Le montant doit ï¿½tre supï¿½rieur ï¿½ zï¿½ro.", Icon.Warning);
             return;
         }
 
-        // Appel à la méthode du modèle
+        // Appel ï¿½ la mï¿½thode du modï¿½le
         Result res = await CreditVirement.PayerCreditAsync(
             numero: NumeroCompte,
             codeAgence: Agence.CodeAgence,
@@ -55,13 +55,13 @@ public partial class RembourserViewModel : ViewModelBase
 
         if (res.Status)
         {
-            await AfficherPopupAsync("Succès", res.Message, Icon.Success);
-            RéinitialiserChamps();
+            await AfficherPopupAsync("Succï¿½s", res.Message, Icon.Success);
+            RÃ©initialiserChamps();
             _headerViewModel.Transaction();
         }
         else
         {
-            await AfficherPopupAsync("Échec", res.Message, Icon.Error);
+            await AfficherPopupAsync("ï¿½chec", res.Message, Icon.Error);
         }
     }
 
@@ -77,7 +77,7 @@ public partial class RembourserViewModel : ViewModelBase
         await box.ShowAsync();
     }
 
-    private void RéinitialiserChamps()
+    private void RÃ©initialiserChamps()
     {
         NumeroCompte = string.Empty;
         Montant = 0;
