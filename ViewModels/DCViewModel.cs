@@ -9,11 +9,7 @@ public partial class DCViewModel : ViewModelBase
 {
     private readonly HeaderViewModel _headerViewModel;
 
-<<<<<<< HEAD
-    public Compte? Compte {get;}
-=======
     public Compte Compte { get; }
->>>>>>> origin/nate
 
     [ObservableProperty]
     private decimal _somme = 0;
@@ -24,12 +20,6 @@ public partial class DCViewModel : ViewModelBase
     [ObservableProperty]
     private decimal _credit = 0;
 
-<<<<<<< HEAD
-    public DCViewModel (HeaderViewModel headerViewModel,Compte? compte)
-=======
-    [ObservableProperty]
-    private string _PIN = string.Empty;
-
     [ObservableProperty]
     private string _message = string.Empty;
 
@@ -38,7 +28,6 @@ public partial class DCViewModel : ViewModelBase
 
     //HeaderViewModel : new DCViewModel(this, Compte1)
     public DCViewModel(HeaderViewModel headerViewModel, Compte compte)
->>>>>>> origin/nate
     {
         _headerViewModel = headerViewModel;
         Compte = compte;
@@ -55,7 +44,7 @@ public partial class DCViewModel : ViewModelBase
 
         try
         {
-            Result result = await DepotRetrait.WithdrawAsync(Compte.Numero, PIN, Somme);
+            Result result = await DepotRetrait.WithdrawAsync(Compte.Numero, Somme);
             Message = result.Message;
 
             if (result.Status)
@@ -63,7 +52,6 @@ public partial class DCViewModel : ViewModelBase
                 Solde -= Somme;
                 Compte.Solde = Solde;
                 Somme = 0;
-                PIN = string.Empty;
             }
         }
         finally
