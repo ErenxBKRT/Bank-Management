@@ -26,7 +26,7 @@ public sealed class DatabaseConnection : IDatabaseConnection
 
     public async Task<NpgsqlConnection> KaeruConnectAsync()
     {
-        NpgsqlConnection connection = new NpgsqlConnection(Owner);
+        NpgsqlConnection connection = new(Owner);
         await connection.OpenAsync();
         return connection;
     }
