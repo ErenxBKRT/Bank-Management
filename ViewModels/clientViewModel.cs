@@ -1,4 +1,6 @@
+using System;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.Input;
 using Bankmanaging.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -17,55 +19,26 @@ public partial class ClientsViewModel : ViewModelBase
     public ClientsViewModel (HeaderViewModel headerViewModel)
     {
         _headerViewModel = headerViewModel;
-        Clients.Add(new Client{
-            Nom = "RAKOTO",
-            Prenom = "Nirina",
-            Id = 12,
-            Contact = "034222485",
-            Adresse = "Lot djflkdsfjlkd"
-        });
-        Clients.Add(new Client{
-            Nom= "RABE",
-            Prenom = "Zafy",
-            Id = 3,
-            Adresse = "Lot djflkdsfjlkd",
-            Contact = "034222535"
-        });
-        Clients.Add(new Client{
-            Nom= "RAZAFY",
-            Prenom = "Koto",
-            Id = 321,
-            Adresse = "Lot djflkdsfjlkd"
-        });
-        Clients.Add(new Client{
-            Nom= "RAZAFY",
-            Prenom = "Koto",
-            Id = 32,
-            Contact = "0342225245"
-        });
-        Clients.Add(new Client{
-            Nom= "RAZAFY",
-            Prenom = "Koto",
-            Id = 432,
-            Contact = "0342225245"
-        });
-        Clients.Add(new Client{
-            Nom= "RAZAFY",
-            Prenom = "Koto",
-            Id = 321,
-            Contact = "0342225245"
-        });
-        Clients.Add(new Client{
-            Nom= "RAZAFY",
-            Prenom = "Koto",
-            Id = 321,
-            Contact = "0342225135"
-        });
-        Clients.Add(new Client{
-            Nom= "RAZAFY",
-            Prenom = "Koto",
-            Id = 432
-        });
+
+        _ = LoadClientsAsync();
+    }
+
+    private async Task LoadClientsAsync()
+    {
+        try
+        {
+            var clients = await Listing.ListClientAsync();
+
+            Clients.Clear();
+            foreach (var client in clients)
+            {
+                Clients.Add(client);
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error : {ex.Message}");
+        }
     }
 
     [RelayCommand]
@@ -99,9 +72,26 @@ public partial class ClientsViewModel : ViewModelBase
     }
 
     [RelayCommand]
-    private void Bloquer(Client client)
+    private async Task Bloquer(Client client)
     {
-        
+        try
+        {
+            Result result = await ServiceClient.LockAsync(!client.Bloque, client.Id);
+
+            if (result.Status)
+            {
+                client.Bloque = !client.Bloque;
+                // recharger la liste entière après un blocage réussi.
+                await LoadClientsAsync();
+            }
+            else
+            {
+                Console.WriteLine($"Blocage échoué : {result.Message}");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error : {ex.Message}");
+        }
     }
 }
-

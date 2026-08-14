@@ -1,3 +1,4 @@
+using System;
 using Bankmanaging.Models;
 using Bankmanaging.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -30,11 +31,14 @@ public partial class HeaderViewModel : ViewModelBase
         Agence1 =  SessionServ.CurrentAgence;
 
 
+        // Ensure the property is initialized for every constructor path.
+        ControlView = new DashViewModel(this);
+
         if (mode == "E")
         {
             ControlView = new DashViewModel(this);
         }
-        if (mode == "C")
+        else if (mode == "C")
         {
             ControlView = new DCViewModel(this, Compte1);
         }
@@ -78,9 +82,9 @@ public partial class HeaderViewModel : ViewModelBase
         ControlView = new CreationCViewModel(this);
     }
 
-    public void CCompte()
+    public void CCompte(Client client)
     {
-        ControlView = new CCompteViewModel(this);
+        ControlView = new CCompteViewModel(this, client);
     }
     public void MenuHistorique()
     {
@@ -124,5 +128,10 @@ public partial class HeaderViewModel : ViewModelBase
     private void Deconnexion()
     {
         _mainViewModel.Deco();
+    }
+
+    internal void CCompte()
+    {
+        throw new NotImplementedException();
     }
 }

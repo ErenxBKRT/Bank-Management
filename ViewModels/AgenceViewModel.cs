@@ -1,28 +1,41 @@
 using CommunityToolkit.Mvvm.Input;
 using Bankmanaging.Models;
+using System;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 
 namespace Bankmanaging.ViewModels;
 
 public partial class AgenceViewModel : ViewModelBase
 {
     private readonly HeaderViewModel _headerViewModel;
-     public ObservableCollection<Agence> Agences {get; } = new();
+    public ObservableCollection<Agence> Agences { get; } = new();
 
     public AgenceViewModel (HeaderViewModel headerViewModel)
     {
         _headerViewModel = headerViewModel;
-        Agences.Add(new Agence
+            // Le constructeur ne peut pas être async
+        _ = LoadAgencesAsync();
+        
+    }
+
+    private async Task LoadAgencesAsync()
+    {
+        try
         {
-            CodeAgence="A1234",
-            Adresse = "lot Tanambao",
-            Solde = 1200000
-        });
-        Agences.Add(new Agence{
-            CodeAgence = "a4321",
-            Adresse = "lot Andrainjato",
-            Solde = 210000000
-        });
+            var agences = await Listing.ListAgenceAsync();
+
+            Agences.Clear();
+            foreach (var agence in agences)
+            {
+                Agences.Add(agence);
+            }
+        }
+        catch (Exception ex)
+        {
+            //un message d'erreur affiché dans la Vue
+            Console.WriteLine($"Error : {ex.Message}");
+        }
     }
 
     [RelayCommand]
@@ -30,11 +43,10 @@ public partial class AgenceViewModel : ViewModelBase
     {
         _headerViewModel.NouveauA();
     }
-    
+
     [RelayCommand]
     private void Menu()
     {
         _headerViewModel.MainMenu();
     }
 }
-
