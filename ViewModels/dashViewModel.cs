@@ -7,13 +7,19 @@ public partial class DashViewModel : ViewModelBase
 {
     private readonly HeaderViewModel _headerViewModel;
 
-    public Agence Agence {get;}
+    public Agence? Agence { get; }
 
-    public DashViewModel (HeaderViewModel headerViewModel)
+    public DashViewModel (HeaderViewModel headerViewModel, Agence agence)
     {
         _headerViewModel= headerViewModel;
-        Agence = new Agence{};
+        Agence = agence;
     }
+
+    public DashViewModel(HeaderViewModel headerViewModel)
+    {
+        _headerViewModel = headerViewModel;
+    }
+
 
     [RelayCommand]
     private void ActionClient()
