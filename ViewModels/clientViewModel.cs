@@ -27,7 +27,11 @@ public partial class ClientsViewModel : ViewModelBase
     {
         try
         {
-            var clients = await Listing.ListClientAsync();
+            // Formatage du paramètre pour la recherche SQL avec ILIKE / LIKE (%)
+            string? filtreNom = string.IsNullOrWhiteSpace(Recherche) ? null : $"%{Recherche.Trim()}%";
+
+            // Envoi filtre to fonction de base de données
+            var clients = await Listing.ListClientAsync(nom: filtreNom);
 
             Clients.Clear();
             foreach (var client in clients)
@@ -93,5 +97,11 @@ public partial class ClientsViewModel : ViewModelBase
         {
             Console.WriteLine($"Error : {ex.Message}");
         }
+    }
+
+    //recherche
+    async partial void OnRechercheChanged(string value)
+    {
+        await LoadClientsAsync();
     }
 }

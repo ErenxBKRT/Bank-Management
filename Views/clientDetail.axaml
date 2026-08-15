@@ -7,11 +7,12 @@
         x:Class="Bankmanaging.Views.ClientDetailView"
         x:DataType="vm:ClientDetailViewModel">
 
-    <Grid ColumnDefinitions="*,Auto">
+    <Grid ColumnDefinitions="*, Auto">
+		<Grid Grid.Column="0">
+			<Grid RowDefinitions="auto, *">
 
-
-        <Grid Grid.Column="0">
-             <ListBox ItemsSource="{Binding Comptes}">
+		        <TextBlock Text="Cartes bancaires" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="0" FontSize="20" Margin="10"/>
+                 <ListBox ItemsSource="{Binding Comptes}" Grid.Row="1">
                 <ListBox.ItemTemplate>
                                 <DataTemplate>
                                 <Border Margin="5" Padding="10">
@@ -43,9 +44,10 @@
                                 </DataTemplate>
                         </ListBox.ItemTemplate>
              </ListBox>
+			</Grid>
         </Grid>
 
-    <Grid Grid.Column="1" RowDefinitions="Auto,Auto,Auto" HorizontalAlignment="Right" Width="200" Margin="10" VerticalAlignment="Center">
+        <Grid Grid.Column="1" RowDefinitions="Auto,Auto,Auto" HorizontalAlignment="Right" Width="200" Margin="10" VerticalAlignment="Center">
         <StackPanel Grid.Row="0" HorizontalAlignment="Center">
             <TextBlock Text="{Binding Client.Nom}" FontSize="16" Margin="10"/>
             <TextBlock Text="{Binding Client.Prenom}" FontSize="16" Margin="10"/>
