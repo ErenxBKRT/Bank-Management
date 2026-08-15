@@ -8,9 +8,9 @@
     x:Class="Bankmanaging.Views.CreationAView"
     x:DataType="vm:CreationAViewModel">
 
-    <Grid ColumnDefinitions="*,Auto">
+    <Grid ColumnDefinitions="*,Auto, Auto">
         
-        <Grid Grid.Column="0" ColumnDefinitions="Auto,Auto" RowDefinitions="Auto,Auto,Auto,Auto" ColumnSpacing="20" RowSpacing="20" Margin="20" VerticalAlignment="Center" HorizontalAlignment="Center">
+        <Grid Grid.Column="0" ColumnDefinitions="Auto,Auto" RowDefinitions="Auto,Auto,Auto,Auto, Auto" ColumnSpacing="20" RowSpacing="20" Margin="20" VerticalAlignment="Center" HorizontalAlignment="Center">
                 <TextBlock Text="Adresse" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center"/>
                 <TextBlock Text="Solde" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center"/>
                 <TextBlock Text="PIN" Grid.Column="0" Grid.Row="2" VerticalAlignment="Center"/>
@@ -29,6 +29,7 @@
                          Width="500" 
                          Text="{Binding ConfirmationPIN, Mode=TwoWay}"/>
                 
+		        <TextBlock  Grid.Row="4" Text="{Binding StatusMessage}" Foreground="red" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         </Grid>
         <Grid Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Left" RowDefinitions="Auto,Auto" RowSpacing="20" Margin="20">
             <Button Width="180" Height="50"
@@ -52,6 +53,7 @@
                     </StackPanel>
             </Button>
         </Grid>
-        </Grid>
+
+	</Grid>
 
 </UserControl>
