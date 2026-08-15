@@ -1,8 +1,10 @@
-using System;
-using System.Threading.Tasks;
+using Bankmanaging.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using Bankmanaging.Models;
+using MsBox.Avalonia;
+using MsBox.Avalonia.Enums;
+using System;
+using System.Threading.Tasks;
 
 
 namespace Bankmanaging.ViewModels;
@@ -48,9 +50,20 @@ public partial class CreditViewModel : ViewModelBase
         {
             // Elle vérifie en interne : existence du compte, existence de l'agence, et si le compte appartient à l'agence.
             Result result = await CreditVirement.CreditAsync(NumeroCompte, Agence.CodeAgence, Somme);
+            Console.WriteLine(result.Status);
 
             if (result.Status)
             {
+                var box = MessageBoxManager.GetMessageBoxStandard(
+                    title: "Succes",
+                    text: result.Message,
+                    ButtonEnum.Ok,
+                    Icon.Success
+                );
+
+                //Wait for the user to close the message box before navigating back to the client menu
+                await box.ShowAsync();
+
                 _headerViewModel.Transaction();
             }
             else

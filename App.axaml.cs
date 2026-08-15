@@ -3,6 +3,7 @@ using Avalonia.Controls.ApplicationLifetimes;
 using Avalonia.Markup.Xaml;
 using Bankmanaging.ViewModels;
 using Bankmanaging.Views;
+using QuestPDF.Infrastructure;
 
 namespace Bankmanaging;
 
@@ -11,6 +12,7 @@ public partial class App : Application
     public override void Initialize()
     {
         AvaloniaXamlLoader.Load(this);
+        QuestPDF.Settings.License = LicenseType.Community;
     }
 
     public override void OnFrameworkInitializationCompleted()

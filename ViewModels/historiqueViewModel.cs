@@ -1,7 +1,11 @@
+using Avalonia.Platform.Storage;
 using Bankmanaging.Models;
 using Bankmanaging.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using QuestPDF.Fluent;
+using QuestPDF.Helpers;
+using QuestPDF.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -25,6 +29,7 @@ public partial class HistoriqueViewModel : ViewModelBase
     {
         _headerViewModel = headerViewModel;
 
+
         // Charger les données de manière asynchrone au démarrage
         _ = ChargerHistoriqueAsync();
     }
@@ -47,7 +52,7 @@ public partial class HistoriqueViewModel : ViewModelBase
             foreach (var item in resultats)
             {
                 Transactions.Add(item);
-                Console.WriteLine(item.Numero);
+                //Console.WriteLine(item.Numero);
             }
 
         }
@@ -63,7 +68,6 @@ public partial class HistoriqueViewModel : ViewModelBase
         _headerViewModel.MainMenu();
     }
 
-    [RelayCommand]
-    private async Task GenPdf() { 
-    }
+
+   
 }

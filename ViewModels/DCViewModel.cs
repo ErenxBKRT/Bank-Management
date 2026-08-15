@@ -1,7 +1,10 @@
-using System.Threading.Tasks;
 using Bankmanaging.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using MsBox.Avalonia;
+using MsBox.Avalonia.Enums;
+using System;
+using System.Threading.Tasks;
 
 namespace Bankmanaging.ViewModels;
 
@@ -22,6 +25,9 @@ public partial class DCViewModel : ViewModelBase
 
     [ObservableProperty]
     private string _message = string.Empty;
+
+    [ObservableProperty]
+    private string _errorMsg = string.Empty;
 
     [ObservableProperty]
     private bool _isBusy; // IsBusy est utilisé pour désactiver les boutons pendant l'exécution d'une commande asynchrone.
@@ -52,7 +58,25 @@ public partial class DCViewModel : ViewModelBase
                 Solde -= Somme;
                 Compte.Solde = Solde;
                 Somme = 0;
+                var box = MessageBoxManager.GetMessageBoxStandard(
+                    "Erreur",
+                    result.Message,
+                    ButtonEnum.Ok,
+                    Icon.Success
+                );
+                await box.ShowAsync();
             }
+            else
+            {
+                var box = MessageBoxManager.GetMessageBoxStandard(
+                    "Succes",
+                    result.Message,
+                    ButtonEnum.Ok,
+                    Icon.Error
+                );
+                await box.ShowAsync();
+            }
+              
         }
         finally
         {

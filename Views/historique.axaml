@@ -17,12 +17,7 @@
                                                         <TextBlock Text="{Binding Libelle}"/>
                                                         <TextBlock Text="{Binding CodeAgence}"/>
                                                 </StackPanel>
-                                                <Button HorizontalAlignment="Right" Width="200" >
-                                                        <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                                                <Image Source="/Assets/icons8-télécharger-32.png" Width="20" Height="20" Margin="3"/>
-                                                                <TextBlock Text="Telecharger" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                                        </StackPanel>
-                                                </Button>
+                                                
                                         </Grid>
                                 </Border>
                                 </DataTemplate>

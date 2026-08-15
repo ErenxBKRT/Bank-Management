@@ -6,7 +6,7 @@
     x:DataType="vm:CreditViewModel">
 
    <Grid RowSpacing="30" ColumnSpacing="20" ColumnDefinitions="*,Auto" Margin="10">
-        <Grid Grid.Column="0" ColumnDefinitions="Auto,Auto" RowDefinitions="Auto,Auto" ColumnSpacing="20" RowSpacing="20" Margin="20" VerticalAlignment="Center" HorizontalAlignment="Center">
+        <Grid Grid.Column="0" ColumnDefinitions="Auto,Auto" RowDefinitions="Auto,Auto, Auto" ColumnSpacing="20" RowSpacing="20" Margin="20" VerticalAlignment="Center" HorizontalAlignment="Center">
                 <TextBlock Text="Numero de compte" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center"/>
                 <TextBlock Text="Somme" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center"/>
         
@@ -16,12 +16,15 @@
                 <TextBox Grid.Column="1" Grid.Row="1" 
                          Width="500"
                          Text="{Binding Somme, Mode=TwoWay, TargetNullValue=0}"/>
-                
-        </Grid>
+			    <TextBlock Grid.Column="1" Grid.Row="2" Text="{Binding StatusMessage}" Foreground="red" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+
+
+		</Grid>
         <StackPanel Grid.Column="1" VerticalAlignment="Center" Width="200">
             <Button Width="180" Height="50"
                     HorizontalAlignment="Center"
-                    Background="#001199" Foreground="#FFD700">
+                    Background="#001199" Foreground="#FFD700"
+					Command="{Binding ValiderCommand}">
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                         <Image Source="/Assets/icons8-confirmer-50.png" Width="30" Height="30" Margin="5"/>
                         <TextBlock Text="Confirmer" HorizontalAlignment="Center" VerticalAlignment="Center"/>

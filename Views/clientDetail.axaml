@@ -7,11 +7,12 @@
         x:Class="Bankmanaging.Views.ClientDetailView"
         x:DataType="vm:ClientDetailViewModel">
 
-    <Grid ColumnDefinitions="*,Auto">
+    <Grid ColumnDefinitions="*, Auto">
+		<Grid Grid.Column="0">
+			<Grid RowDefinitions="auto, *">
 
-
-        <Grid Grid.Column="0">
-             <ListBox ItemsSource="{Binding Comptes}">
+		        <TextBlock Text="Cartes bancaires" HorizontalAlignment="Center" VerticalAlignment="Center" Grid.Row="0" FontSize="20" Margin="10"/>
+                 <ListBox ItemsSource="{Binding Comptes}" Grid.Row="1">
                 <ListBox.ItemTemplate>
                                 <DataTemplate>
                                 <Border Margin="5" Padding="10">
@@ -29,15 +30,24 @@
                                                                         <TextBlock Text="{Binding StatusBtn}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                                                 </StackPanel>
                                                         </Button>
+													    <Button Width="200" 
+																Command="{Binding $parent[UserControl].DataContext.DownPdfCommand}"
+																CommandParameter="{Binding}">
+														    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+															    <Image Source="/Assets/icons8-télécharger-32.png" Width="20" Height="20" Margin="3"/>
+															    <TextBlock Text="Releve bancaire" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+														    </StackPanel>
+													    </Button>
                                                  </StackPanel>
                                 </Grid>
                                 </Border>
                                 </DataTemplate>
                         </ListBox.ItemTemplate>
              </ListBox>
+			</Grid>
         </Grid>
 
-    <Grid Grid.Column="1" RowDefinitions="Auto,Auto,Auto" HorizontalAlignment="Right" Width="200" Margin="10" VerticalAlignment="Center">
+        <Grid Grid.Column="1" RowDefinitions="Auto,Auto,Auto" HorizontalAlignment="Right" Width="200" Margin="10" VerticalAlignment="Center">
         <StackPanel Grid.Row="0" HorizontalAlignment="Center">
             <TextBlock Text="{Binding Client.Nom}" FontSize="16" Margin="10"/>
             <TextBlock Text="{Binding Client.Prenom}" FontSize="16" Margin="10"/>
@@ -53,6 +63,8 @@
                 </StackPanel>
         </Button>
 
+		
+
         <Button Grid.Row="2" Width="180" Height="50"
                 HorizontalAlignment="Center"
                 Background="#001199" Foreground="#FFD700"
@@ -62,6 +74,7 @@
                         <TextBlock Text="Retour" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 </StackPanel>
         </Button>
+		
     </Grid>
     
     </Grid>

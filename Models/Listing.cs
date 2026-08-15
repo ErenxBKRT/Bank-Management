@@ -16,7 +16,7 @@ public static class Listing
 
         try 
         {
-            using NpgsqlCommand preparedQuery = new ("SELECT * FROM client WHERE (id_client = @idClient OR @idClient IS NULL) AND (bloquer = @bloque OR @bloque IS NULL) AND (nom LIKE @nom OR prenom LIKE @nom OR @nom IS NULL) ORDER BY id_client;", kaeru);
+            using NpgsqlCommand preparedQuery = new ("SELECT * FROM client WHERE (id_client = @idClient OR @idClient IS NULL) AND (bloquer = @bloque OR @bloque IS NULL) AND (nom ILIKE @nom OR prenom ILIKE @nom OR @nom IS NULL) ORDER BY id_client;", kaeru);
             preparedQuery.Parameters.AddWithValue("bloque", bloque ?? (object)DBNull.Value);
             preparedQuery.Parameters.AddWithValue("idClient", idClient ?? (object)DBNull.Value);
             preparedQuery.Parameters.AddWithValue("nom", nom ?? (object)DBNull.Value);

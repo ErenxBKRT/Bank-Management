@@ -49,10 +49,12 @@
                         </ListBox.ItemTemplate>
                 </ListBox>
         </Grid>
+		
+		<!-- Barre de navigation droite -->
         <Grid Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Center" Width="200" RowDefinitions="Auto, Auto, Auto" RowSpacing="20" Margin="20">
                 
                 <TextBox Grid.Row="0"
-                           Text="{Binding Recherche}"
+                           Text="{Binding Recherche, UpdateSourceTrigger=PropertyChanged}"
                            HorizontalAlignment="Center"
                            PlaceholderText="Rechercher"/>
 

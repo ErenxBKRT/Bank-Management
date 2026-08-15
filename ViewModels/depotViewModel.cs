@@ -23,9 +23,9 @@ public partial class DepotViewModel : ViewModelBase
     [NotifyCanExecuteChangedFor(nameof(ConfirmerCommand))] 
     private decimal somme = 0;
 
-    [ObservableProperty]
-    [NotifyCanExecuteChangedFor(nameof(ConfirmerCommand))] 
-    private string pin = string.Empty;
+    //[ObservableProperty]
+    //[NotifyCanExecuteChangedFor(nameof(ConfirmerCommand))] 
+    //private string pin = string.Empty;
 
     [ObservableProperty]
     private string messageErreur = string.Empty;
@@ -34,11 +34,12 @@ public partial class DepotViewModel : ViewModelBase
     {
         _headerViewModel = headerViewModel;
         Agence = agence;
+
+        Console.WriteLine(Agence.CodeAgence);
     }
 
     private bool CanValider() =>
         !string.IsNullOrWhiteSpace(NumeroCompte) &&
-        !string.IsNullOrWhiteSpace(Pin) &&
         Somme > 0;
 
     [RelayCommand(CanExecute = nameof(CanValider))]
@@ -46,7 +47,9 @@ public partial class DepotViewModel : ViewModelBase
     {
         try
         {
-            Result result = await DepotRetrait.DepositAsync(NumeroCompte, Somme, Pin);
+            //Agence =  SessionServ.CurrentAgence;
+
+            Result result = await DepotRetrait.DepositAsync(NumeroCompte, Somme, Agence.CodeAgence);
             if (!result.Status)
             {
                 MessageErreur = result.Message;
