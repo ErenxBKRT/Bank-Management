@@ -29,6 +29,14 @@
                                                                         <TextBlock Text="Bloquer" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                                                 </StackPanel>
                                                         </Button>
+													    <Button Width="200" 
+																Command="{Binding $parent[UserControl].DataContext.DownPdfCommand}"
+																CommandParameter="{Binding}">
+														    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+															    <Image Source="/Assets/icons8-télécharger-32.png" Width="20" Height="20" Margin="3"/>
+															    <TextBlock Text="Releve bancaire" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+														    </StackPanel>
+													    </Button>
                                                  </StackPanel>
                                 </Grid>
                                 </Border>
@@ -53,6 +61,8 @@
                 </StackPanel>
         </Button>
 
+		
+
         <Button Grid.Row="2" Width="180" Height="50"
                 HorizontalAlignment="Center"
                 Background="#001199" Foreground="#FFD700"
@@ -62,6 +72,7 @@
                         <TextBlock Text="Retour" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                 </StackPanel>
         </Button>
+		
     </Grid>
     
     </Grid>
