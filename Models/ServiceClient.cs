@@ -6,7 +6,7 @@ namespace Bankmanaging.Models;
 public static class ServiceClient
 {
     // ajouter un nouveau client 
-    public static async Task<Result> AddAsync (string nom, string adresse, string contact, string? prenom = null)
+    public static async Task<Result> AddAsync (string nom, string prenom, string adresse, string contact)
     {
         using NpgsqlConnection kaeru = await DatabaseConnection.Instance.KaeruConnectAsync();
 
@@ -14,7 +14,7 @@ public static class ServiceClient
         {
             using NpgsqlCommand preparedQuery = new ("INSERT INTO client (nom, prenom, adresse, contact) VALUES (@nom, @prenom, @adresse, @contact);", kaeru);
             preparedQuery.Parameters.AddWithValue("nom", nom);
-            preparedQuery.Parameters.AddWithValue("prenom", prenom ?? (object)DBNull.Value);
+            preparedQuery.Parameters.AddWithValue("prenom", prenom);
             preparedQuery.Parameters.AddWithValue("adresse", adresse);
             preparedQuery.Parameters.AddWithValue("contact", contact);
             await preparedQuery.ExecuteNonQueryAsync();
