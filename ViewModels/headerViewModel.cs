@@ -1,6 +1,10 @@
+using System;
 using Bankmanaging.Models;
+using Bankmanaging.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using System;
+
 
 namespace Bankmanaging.ViewModels;
 
@@ -9,33 +13,39 @@ public partial class HeaderViewModel : ViewModelBase
     private readonly MainViewModel _mainViewModel;
 
     [ObservableProperty]
-    private ViewModelBase _controlView;
+    private ViewModelBase? _controlView;
 
     [ObservableProperty]
     private string _ce;
 
-    public Compte Compte1 {get;}
-    public Agence Agence1 {get;}
+    public Compte? Compte1 {get;}
+    public Agence? Agence1 {get;}
 
-    public HeaderViewModel(MainViewModel mainViewModel,string mode)
+    public HeaderViewModel (MainViewModel mainViewModel, string mode, Compte? compte = null, Agence? agence = null)
     {
         _mainViewModel = mainViewModel;
         Ce = mode;
-        Compte1 = new Compte{};
-        Agence1 = new Agence{};
+
+        //get info account from session if not provided
+        Compte1 =  SessionServ.CurrentCompte;
+        Agence1 =  SessionServ.CurrentAgence;
+
+
+        // Ensure the property is initialized for every constructor path.
+        ControlView = new DashViewModel(this);
 
         if (mode == "E")
         {
             ControlView = new DashViewModel(this);
         }
-        if (mode == "C")
+        else if (mode == "C")
         {
-            ControlView = new DCViewModel(this,Compte1);
+            ControlView = new DCViewModel(this, Compte1);
         }
     }
     public void MenuClient()
     {
-        ControlView= new ClientsViewModel(this);
+        ControlView = new ClientsViewModel(this);
     }
     public void EntrerClient(Compte compte)
     {
@@ -59,12 +69,12 @@ public partial class HeaderViewModel : ViewModelBase
 
     public void Retrait()
     {
-        ControlView = new DCViewModel(this,Compte1);
+        ControlView = new DCViewModel(this, Compte1);
     }
 
     public void ModifierP()
     {
-        ControlView = new ModifierPViewModel(this,Compte1);
+        ControlView = new ModifierPViewModel(this, Compte1!);
     }
 
     public void NouveauC()
@@ -72,9 +82,9 @@ public partial class HeaderViewModel : ViewModelBase
         ControlView = new CreationCViewModel(this);
     }
 
-    public void CCompte()
+    public void CCompte(Client client)
     {
-        ControlView = new CCompteViewModel(this);
+        ControlView = new CCompteViewModel(this, client);
     }
     public void MenuHistorique()
     {
@@ -96,27 +106,32 @@ public partial class HeaderViewModel : ViewModelBase
 
     public void Virement()
     {
-        ControlView = new VirementViewModel(this,Agence1);
+        ControlView = new VirementViewModel(this, Agence1);
     }
 
     public void Depot()
     {
-        ControlView = new DepotViewModel(this,Agence1);
+        ControlView = new DepotViewModel(this, Agence1);
     }
 
     public void Credit()
     {
-        ControlView = new CreditViewModel(this,Agence1);
+        ControlView = new CreditViewModel(this, Agence1);
     }
 
     public void Rembourser()
     {
-        ControlView = new RembourserViewModel(this,Agence1);
+        ControlView = new RembourserViewModel(this, Agence1);
     }
     
     [RelayCommand]
     private void Deconnexion()
     {
         _mainViewModel.Deco();
+    }
+
+    internal void CCompte()
+    {
+        throw new NotImplementedException();
     }
 }

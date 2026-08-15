@@ -1,7 +1,8 @@
+using System;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.Input;
 using Bankmanaging.Models;
-using CommunityToolkit.Mvvm.ComponentModel;
 
 namespace Bankmanaging.ViewModels;
 
@@ -9,36 +10,34 @@ public partial class ClientDetailViewModel : ViewModelBase
 {
     private readonly HeaderViewModel _headerViewModel;
 
-    public ObservableCollection<Compte> Comptes {get; } = new();
+    public ObservableCollection<Compte> Comptes { get; } = new();
 
-    public Client Client {get;}
-    public ClientDetailViewModel (HeaderViewModel headerViewModel, Client client)
+    public Client Client { get; }
+
+    public ClientDetailViewModel(HeaderViewModel headerViewModel, Client client)
     {
         _headerViewModel = headerViewModel;
-        Client=client;
-        Comptes.Add(new Compte
-        {
-           Numero = "Ca123",
-           Solde = 12000000,
-           Credit = 1000000,
-           Bloque = true
-        });
+        Client = client;
 
-        Comptes.Add(new Compte
-        {
-           Numero = "Ca123",
-           Solde = 12000000,
-           Credit = 1000000,
-           Bloque = true
-        });
+        _ = LoadComptesAsync();
+    }
 
-        Comptes.Add(new Compte
+    private async Task LoadComptesAsync()
+    {
+        try
         {
-           Numero = "Ca123",
-           Solde = 12000000,
-           Credit = 1000000,
-           Bloque = true
-        });
+            var comptes = await Listing.ListCompteAsync(Client.Id.ToString());
+
+            Comptes.Clear();
+            foreach (var compte in comptes)
+            {
+                Comptes.Add(compte);
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error : {ex.Message}");
+        }
     }
 
     [RelayCommand]
@@ -50,36 +49,52 @@ public partial class ClientDetailViewModel : ViewModelBase
     [RelayCommand]
     private void Modifier()
     {
-        
+        _headerViewModel.ModifierClient(Client);
     }
 
     [RelayCommand]
-    private void Bloquer()
+    private async Task Bloquer()
     {
-        
+        try
+        {
+            Result result = await ServiceClient.LockAsync(!Client.Bloque, Client.Id);
+
+            if (result.Status)
+            {
+                Client.Bloque = !Client.Bloque;
+            }
+            else
+            {
+                Console.WriteLine($"Blocage échoué : {result.Message}");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error : {ex.Message}");
+        }
     }
 
     [RelayCommand]
     private void Virement()
     {
-        
+        _headerViewModel.Virement();
     }
 
     [RelayCommand]
     private void Depot()
     {
-        
+        _headerViewModel.Depot();
     }
 
     [RelayCommand]
     private void Credit()
     {
-        
+        _headerViewModel.Credit();
     }
-    
+
     [RelayCommand]
     private void CCompte()
     {
-        _headerViewModel.CCompte();
+        _headerViewModel.CCompte(Client);
     }
 }

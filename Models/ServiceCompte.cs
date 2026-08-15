@@ -9,6 +9,7 @@ public record Argent (decimal Solde, decimal Credit);
 
 public static class ServiceCompte
 {
+    // creation d'un nouveau compte bancaire
     public static async Task<Result> CreateAsync (int refClient, string pin)
     {
         using NpgsqlConnection kaeru = await DatabaseConnection.Instance.KaeruConnectAsync();
@@ -16,13 +17,16 @@ public static class ServiceCompte
 
         try
         {
-            Result verify = await ServiceClient.VerifyAsync(refClient, kaeru, kaeruTransac);
-            if (!verify.Status)
+            // verifie si l'id du client est correct
+            using NpgsqlCommand verifyClient = new ("SELECT * FROM client WHERE id_client = @idClient FOR UPDATE;", kaeru, kaeruTransac);
+            verifyClient.Parameters.AddWithValue("idClient", refClient);
+            if (await verifyClient.ExecuteScalarAsync() == null)
             {
                 await kaeruTransac.RollbackAsync();
-                return new (false, verify.Message);
+                return new (false, "L'identifiant du client est incorrect.");
             }
 
+            // verifie si le client n'est pas bloqué
             using NpgsqlCommand isClientLocked = new ("SELECT * FROM client WHERE bloquer = true FOR UPDATE;", kaeru, kaeruTransac);
             if (await isClientLocked.ExecuteScalarAsync() != null)
             {
@@ -58,7 +62,7 @@ public static class ServiceCompte
         }
     }
 
-    public static async Task<Result> LogInAsync (string numero, string pin)
+    public static async Task<LoginAccountClient> LogInAsync (string numero, string pin)
     {
         using NpgsqlConnection kaeru = await DatabaseConnection.Instance.KaeruConnectAsync();
         
@@ -70,15 +74,25 @@ public static class ServiceCompte
             {
                 return new (false, "Le compte est bloqué");
             }
+            
             using NpgsqlCommand preparedQuery = new ("SELECT * FROM compte WHERE numero = @numero AND pin = @pin;", kaeru);
             preparedQuery.Parameters.AddWithValue("numero", numero);
             preparedQuery.Parameters.AddWithValue("pin", pin);
-
-            if (await preparedQuery.ExecuteScalarAsync() == null)
+            
+            using NpgsqlDataReader row = await preparedQuery.ExecuteReaderAsync();
+            if (!row.HasRows)
             {
                 return new (false, "Identifiant ou Pin incorrect");
             }
-            return new (true, "Connection réussie");
+            await row.ReadAsync();
+            Compte compte = new()
+            {
+                Numero = row.GetString(row.GetOrdinal("numero")),
+                Solde = row.GetDecimal(row.GetOrdinal("solde")),
+                Credit = row.GetDecimal(row.GetOrdinal("credit")),
+                Bloque = row.GetBoolean(row.GetOrdinal("bloquer"))
+            };
+            return new (true, "Connection réussie", compte);
         }
         catch (NpgsqlException ex) 
         {
@@ -92,41 +106,58 @@ public static class ServiceCompte
         }
     }
 
-    public static async Task<Result> ChangePinAsync (string numero, string newPin)
+    //changer le pin du compte
+    // Changer le pin du compte (Version corrigée)
+    public static async Task<Result> ChangePinAsync(string numero, string oldPin, string newPin)
     {
         using NpgsqlConnection kaeru = await DatabaseConnection.Instance.KaeruConnectAsync();
         await using NpgsqlTransaction kaeruTransac = await kaeru.BeginTransactionAsync();
 
-        try 
+        try
         {
-            Result isCardLocked = await IsLockedAsync(numero, kaeru, kaeruTransac);
-            if (isCardLocked.Status)
+            // 1. Vérifier si le compte existe et si l'ancien PIN est correct
+            using NpgsqlCommand verifyPinQuery = new("SELECT * FROM compte WHERE numero = @numero AND pin = @pin FOR UPDATE;", kaeru, kaeruTransac);
+            verifyPinQuery.Parameters.AddWithValue("numero", numero);
+            verifyPinQuery.Parameters.AddWithValue("pin", oldPin);
+
+            if (await verifyPinQuery.ExecuteScalarAsync() == null)
             {
                 await kaeruTransac.RollbackAsync();
-                return new (false, isCardLocked.Message);
+                return new(false, "L'ancien PIN est incorrect.");
             }
 
-            using NpgsqlCommand preparedQuery = new ("UPDATE compte SET pin = @pin WHERE numero = @numero", kaeru);
+            // 2. Vérifier si le compte est bloqué
+            Result isCompteLocked = await IsLockedAsync(numero, kaeru, kaeruTransac);
+            if (isCompteLocked.Status) // Si Status == true, alors le compte est bloqué
+            {
+                await kaeruTransac.RollbackAsync();
+                return new(false, "Impossible de modifier le PIN : le compte est bloqué.");
+            }
+
+            // 3. Mise à jour du PIN avec la transaction associée
+            using NpgsqlCommand preparedQuery = new("UPDATE compte SET pin = @pin WHERE numero = @numero;", kaeru, kaeruTransac);
             preparedQuery.Parameters.AddWithValue("pin", newPin);
             preparedQuery.Parameters.AddWithValue("numero", numero);
+
             await preparedQuery.ExecuteNonQueryAsync();
             await kaeruTransac.CommitAsync();
-            return new (true, "Le pin a été modifié avec succès.");
-        } 
+
+            return new(true, "Le code PIN a été modifié avec succès.");
+        }
         catch (NpgsqlException ex)
         {
             await kaeruTransac.RollbackAsync();
             Console.WriteLine(ex.Message);
-            return new (false, "L'opération a échoué.");
+            return new(false, "L'opération a échoué due à une erreur réseau/BDD.");
         }
         catch (Exception ex)
         {
             await kaeruTransac.RollbackAsync();
             Console.WriteLine(ex.Message);
-            return new (false, "L'opération a échoué.");
+            return new(false, "L'opération a échoué.");
         }
     }
-
+    // bloqué un compte sans bloqué le client
     public static async Task<Result> LockAsync (bool bloquer, int? refClient = null, string? numero = null, NpgsqlConnection? kaeru = null, NpgsqlTransaction? kaeruTransac = null)
     {
         bool disposeAtFinal = kaeru == null;
@@ -156,6 +187,7 @@ public static class ServiceCompte
         finally { if (disposeAtFinal && kaeru != null) await kaeru.DisposeAsync(); }
     }
 
+    // verifie si le compte est bloqué
     public static async Task<Result> IsLockedAsync (string numero, NpgsqlConnection kaeru, NpgsqlTransaction? transaction = null)
     {
             using NpgsqlCommand preparedQuery = new ("SELECT bloquer FROM compte WHERE numero = @numero FOR UPDATE;", kaeru, transaction);
@@ -168,6 +200,7 @@ public static class ServiceCompte
             return new (bloquer, "Le compte est bloqué.");
     }
 
+    // verifie si le numero est exact
     public static async Task<Result> VerifyAsync (string numero, NpgsqlConnection kaeru, NpgsqlTransaction? kaeruTransac)
     {
         using NpgsqlCommand preparedQuery = new ("SELECT * FROM compte WHERE numero = @numero FOR UPDATE;", kaeru, kaeruTransac);

@@ -7,6 +7,7 @@ namespace Bankmanaging.Models;
 
 public static class DepotRetrait
 {
+    // faire un depot a la banque
     public static async Task<Result> DepositAsync (string numero, decimal montant, string codeAgence)
     {
         if (montant <= 0) return new (false, "Le montant doit être positif");
@@ -16,12 +17,15 @@ public static class DepotRetrait
 
         try
         {
+            //verifie si le compte existe, le numero est correct
             Result verifyAccount = await ServiceCompte.VerifyAsync(numero, kaeru, kaeruTransac);
             if (!verifyAccount.Status)
             {
                 await kaeruTransac.RollbackAsync();
                 return verifyAccount;
             }
+
+            // verifie si le compte est bloqué ou non return true si bloqué et false si non
             Result isAccountLocked = await ServiceCompte.IsLockedAsync(numero, kaeru, kaeruTransac);
             if (isAccountLocked.Status)
             {
@@ -29,6 +33,7 @@ public static class DepotRetrait
                 return isAccountLocked;
             }
 
+            //verifie si le code de l'agence est correct
             Result verifyCode = await GestionAgence.VerifyCodeAsync(codeAgence, kaeru, kaeruTransac);
             if (!verifyCode.Status)
             {
@@ -70,7 +75,9 @@ public static class DepotRetrait
         }
     }
 
-    public static async Task<Result> WithdrawAsync (string numero, string pin, decimal montant)
+
+    // faire un retrait depuis le compte
+    public static async Task<Result> WithdrawAsync (string numero, decimal montant)
     {
         if (montant <= 0) return new (false, "Le montant doit être positif");
 
@@ -79,6 +86,7 @@ public static class DepotRetrait
 
         try
         {
+            //verifie si le compte existe, le numero est correct
             Result verifyAccount = await ServiceCompte.VerifyAsync(numero, kaeru, kaeruTransac);
             if (!verifyAccount.Status)
             {
@@ -86,6 +94,7 @@ public static class DepotRetrait
                 return verifyAccount;
             }
 
+            // verifie si le compte est bloqué ou non return true si bloqué et false si non
             Result isCompteLocked = await ServiceCompte.IsLockedAsync(numero, kaeru, kaeruTransac);
             if (isCompteLocked.Status)
             {
@@ -93,10 +102,9 @@ public static class DepotRetrait
                 return isCompteLocked;
             }
 
-            using NpgsqlCommand withdraw = new ("UPDATE compte SET solde = solde - @montant WHERE numero = @numero AND solde >= @montant AND pin = @pin;", kaeru, kaeruTransac);
+            using NpgsqlCommand withdraw = new ("UPDATE compte SET solde = solde - @montant WHERE numero = @numero AND solde >= @montant;", kaeru, kaeruTransac);
             withdraw.Parameters.AddWithValue("montant", montant);
             withdraw.Parameters.AddWithValue("numero", numero);
-            withdraw.Parameters.AddWithValue("pin", pin);
             if (await withdraw.ExecuteNonQueryAsync() == 0)
             {
                 await kaeruTransac.RollbackAsync();

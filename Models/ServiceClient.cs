@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 namespace Bankmanaging.Models;
 public static class ServiceClient
 {
+    // ajouter un nouveau client 
     public static async Task<Result> AddAsync (string nom, string adresse, string contact, string? prenom = null)
     {
         using NpgsqlConnection kaeru = await DatabaseConnection.Instance.KaeruConnectAsync();
@@ -32,6 +33,7 @@ public static class ServiceClient
         }
     }
 
+    // mettre a jour les information du client, l'id du client est necessaire
     public static async Task<Result> UpdateAsync (int idClient, string nom, string adresse, string contact, string? prenom = null)
     {
         using NpgsqlConnection kaeru = await DatabaseConnection.Instance.KaeruConnectAsync();
@@ -63,6 +65,8 @@ public static class ServiceClient
         }
     }
 
+    /* bloquer le client  ou debloqué le client, le parametre booleen est true si le client doit etre bloqué
+    et false si elle doit etre debloqué */
     public static async Task<Result> LockAsync (bool bloque, int idClient)
     {
         using NpgsqlConnection kaeru = await DatabaseConnection.Instance.KaeruConnectAsync();
@@ -74,6 +78,7 @@ public static class ServiceClient
             preparedQuery.Parameters.AddWithValue("bloque", bloque);
             preparedQuery.Parameters.AddWithValue("idClient", idClient);
 
+            // verifie si l'id est correct
             if (await preparedQuery.ExecuteNonQueryAsync() == 0)
             {
                 await kaeruTransac.RollbackAsync();
@@ -81,6 +86,7 @@ public static class ServiceClient
             }
             if (bloque == true)
             {
+                // bloque tous les compte du client si il se fait bloqué, et ne fait rien si elle est debloqué, les compte doivent etre debloqué 1 a 1;
                 await ServiceCompte.LockAsync(true, idClient);
             }
             
@@ -103,18 +109,6 @@ public static class ServiceClient
             Console.WriteLine($"Error : {ex.Message}");
             return new (false, "La requête pour bloquer le client a échoué.");
         }
-    }
-
-    public static async Task<Result> VerifyAsync (int idClient, NpgsqlConnection kaeru, NpgsqlTransaction? kaeruTransac = null)
-    {
-        using NpgsqlCommand preparedQuery = new ("SELECT * FROM client WHERE id_client = @idClient FOR UPDATE;", kaeru, kaeruTransac);
-        preparedQuery.Parameters.AddWithValue("idClient", idClient);
-
-        if (await preparedQuery.ExecuteScalarAsync() == null)
-        {
-            return new (false, "L'identifiant du client est incorrect.");
-        }
-        return new (true, "Connection réussie");
     }
 
 }

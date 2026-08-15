@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using Bankmanaging.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -8,27 +9,55 @@ public partial class DCViewModel : ViewModelBase
 {
     private readonly HeaderViewModel _headerViewModel;
 
-    public Compte Compte {get;}
+    public Compte Compte { get; }
 
     [ObservableProperty]
-    private decimal somme=0;
+    private decimal _somme = 0;
 
     [ObservableProperty]
-    private decimal solde=0;
+    private decimal _solde = 0;
 
     [ObservableProperty]
-    private decimal credit=0;
+    private decimal _credit = 0;
 
-    public DCViewModel (HeaderViewModel headerViewModel,Compte compte)
+    [ObservableProperty]
+    private string _message = string.Empty;
+
+    [ObservableProperty]
+    private bool _isBusy; // IsBusy est utilisé pour désactiver les boutons pendant l'exécution d'une commande asynchrone.
+
+    //HeaderViewModel : new DCViewModel(this, Compte1)
+    public DCViewModel(HeaderViewModel headerViewModel, Compte compte)
     {
-        _headerViewModel= headerViewModel;
+        _headerViewModel = headerViewModel;
         Compte = compte;
+
+        Solde = compte.Solde;
+        Credit = compte.Credit;
     }
 
     [RelayCommand]
-    private void Retrait()
+    private async Task RetraitAsync()
     {
-        //code qui fait le retrait
+        if (IsBusy) return;
+        IsBusy = true;
+
+        try
+        {
+            Result result = await DepotRetrait.WithdrawAsync(Compte.Numero, Somme);
+            Message = result.Message;
+
+            if (result.Status)
+            {
+                Solde -= Somme;
+                Compte.Solde = Solde;
+                Somme = 0;
+            }
+        }
+        finally
+        {
+            IsBusy = false;
+        }
     }
 
     [RelayCommand]
@@ -36,5 +65,4 @@ public partial class DCViewModel : ViewModelBase
     {
         _headerViewModel.ModifierP();
     }
-
 }

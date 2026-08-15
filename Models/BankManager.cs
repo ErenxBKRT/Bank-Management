@@ -4,7 +4,10 @@ using System.Threading.Tasks;
 
 namespace Bankmanaging.Models;
 
-public record Result (bool Status, string Message);
+public record Result (bool Status, string Message); // la valeur de retour de chaque methode dans le modele a part les list dans Listing.cs
+public record LoginAccountClient (bool Status, string Message, Compte? CompteClient = null); // valeur pour le login client seulement
+public record LoginAccountAgence (bool Status, string Message, Agence? CompteAgence = null); // valeur pour le login Agence seulement
+
 
 public interface IDatabaseConnection
 {
@@ -14,6 +17,8 @@ public interface IDatabaseConnection
 public sealed class DatabaseConnection : IDatabaseConnection
 {
     private const string Owner = "Host=localhost;Database=bank;Username=postgres;Password=Amaranthe21I;Timeout=15";
+
+    //private const string Owner = "Host=localhost;Database=bank;Username=manager;Password=manager;Timeout=15";
 
     private static readonly Lazy<DatabaseConnection> _instance = new (()=> new DatabaseConnection());
     

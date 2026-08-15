@@ -1,5 +1,6 @@
 using System;
 using Bankmanaging.Models;
+using Bankmanaging.Services;
 using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
@@ -34,24 +35,30 @@ public partial class ConnexionViewModel : ViewModelBase
         }
         try
         {
-            Result logAsEmploye = await GestionAgence.LogInAsync(Username, Password);
-            Result logAsClient = await ServiceCompte.LogInAsync(Username, Password);
+            LoginAccountAgence logAsEmploye = await GestionAgence.LogInAsync(Username, Password);
+            LoginAccountClient logAsClient = await ServiceCompte.LogInAsync(Username, Password);
 
             if (!logAsEmploye.Status)
             {
                 if (!logAsClient.Status)
                 {
-                    if(logAsClient.Message == "Le compte est bloqué")
+                    if (logAsClient.Message == "Le compte est bloqué")
                     {
                         StatusMessage = logAsClient.Message;
                     }
                     else StatusMessage = logAsEmploye.Message;
                 }
-                else if (logAsClient.Status) _mainViewModel.OuvrirApplication("C");
+                else if (logAsClient.Status)
+                {
+                    //inject session info
+                    SessionServ.StartClientSession(logAsClient.CompteClient!);
+                    _mainViewModel.OuvrirApplication("C", compte: logAsClient.CompteClient);
+                }
             }
             else if (logAsEmploye.Status)
             {
-                _mainViewModel.OuvrirApplication("E");
+                SessionServ.StartEmployeSession(logAsEmploye.CompteAgence!);
+                _mainViewModel.OuvrirApplication("E", agence: logAsEmploye.CompteAgence);
             }
         }
         catch (Exception ex)
