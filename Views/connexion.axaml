@@ -13,7 +13,7 @@
                    Margin="0,0,0,20"
                    HorizontalAlignment="Center" />
 
-        <TextBlock Text="ID Utilisateur A001 || CPT1234001 "
+        <TextBlock Text="ID Utilisateur "
                    HorizontalAlignment="Center" />
         <TextBox Width="280"
                  Text="{Binding Username, Mode=TwoWay}"
