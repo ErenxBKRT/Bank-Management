@@ -1,0 +1,71 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:Bankmanaging.ViewModels"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             mc:Ignorable="d" d:DesignWidth="400" d:DesignHeight="450"
+             x:Class="Bankmanaging.Views.RapportView"
+             x:DataType="vm:RapportViewModel">
+
+	<Grid RowDefinitions="Auto,Auto,Auto" 
+          HorizontalAlignment="Center" 
+          VerticalAlignment="Center"
+          RowSpacing="20"
+          Width="800">
+
+        <StackPanel Grid.Row="0"
+                    Background="#001199"
+                    Height="50">
+                    <TextBlock Foreground="#FFD700"
+                                Text="Rapport Financier"
+                                FontSize="20"
+                                FontWeight="DemiBold"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"/>
+        </StackPanel>
+        <Grid Grid.Row="1"
+              ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto,Auto,Auto,Auto" RowSpacing="15" ColumnSpacing="50">
+            <TextBlock Text="Solde"
+                       Grid.Column="0" Grid.Row="0"
+                       Margin="10"/>
+            <TextBlock Text="Solde"
+                       Grid.Column="1" Grid.Row="0"
+                       HorizontalAlignment="Right"
+                       Margin="10"/>
+            <TextBlock Text="Virement"
+                       Grid.Column="0" Grid.Row="1"
+                       Margin="10"/>
+            <TextBlock Text="Solde"
+                       Grid.Column="1" Grid.Row="1"
+                       HorizontalAlignment="Right"
+                       Margin="10"/>
+            <TextBlock Text="Depot" 
+                       Grid.Column="0" Grid.Row="2"
+                       Margin="10"/>
+            <TextBlock Text="Solde"
+                       Grid.Column="1" Grid.Row="2"
+                       HorizontalAlignment="Right"
+                       Margin="10"/>
+            <TextBlock Text="Credit"
+                       Grid.Column="0" Grid.Row="3"
+                       Margin="10"/>
+            <TextBlock Text="Solde"
+                       Grid.Column="1" Grid.Row="3"
+                       HorizontalAlignment="Right"
+                       Margin="10"/>
+            <TextBlock Text="Remboursement"
+                       Grid.Column="0" Grid.Row="4"
+                       Margin="10"/>
+            <TextBlock Text="Solde"
+                       Grid.Column="1" Grid.Row="4"
+                       HorizontalAlignment="Right"
+                       Margin="10"/>
+        </Grid>
+        <Button Grid.Row="2" Width="180" Height="50" HorizontalAlignment="Center" Command="{Binding RetourCommand}">
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <Image Source="/Assets/icons8-retour-30.png" Width="30" Height="30" Margin="5"/>
+                <TextBlock Text="Retour" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            </StackPanel>
+		</Button>
+    </Grid>
+</UserControl>

@@ -45,4 +45,10 @@ public partial class DashViewModel : ViewModelBase
         _headerViewModel.MenuAgence();
     }
 
+    [RelayCommand]
+    private void Rapport()
+    {
+        _headerViewModel.Rapport();
+    }
+
 }

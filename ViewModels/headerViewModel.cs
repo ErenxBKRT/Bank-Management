@@ -3,7 +3,6 @@ using Bankmanaging.Models;
 using Bankmanaging.Services;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
-using System;
 
 
 namespace Bankmanaging.ViewModels;
@@ -80,6 +79,11 @@ public partial class HeaderViewModel : ViewModelBase
     public void NouveauC()
     {
         ControlView = new CreationCViewModel(this);
+    }
+
+    public void Rapport()
+    {
+        ControlView = new RapportViewModel(this,Agence1);
     }
 
     public void CCompte(Client client)
