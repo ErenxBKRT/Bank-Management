@@ -153,7 +153,7 @@ public static class CreditVirement
             await deposit.ExecuteNonQueryAsync();
 
 
-            using NpgsqlCommand preparedQuery = new ("INSERT INTO transaction (code, libelle, montant, numero, code_agence) VALUES (@code, 'Credit', @montant, @numero, @codeAgence);", kaeru, kaeruTransac);
+            using NpgsqlCommand preparedQuery = new ("INSERT INTO transaction (code, libelle, montant, numero, code_agence) VALUES (@code, 'Remboursement', @montant, @numero, @codeAgence);", kaeru, kaeruTransac);
             preparedQuery.Parameters.AddWithValue("code", code);
             preparedQuery.Parameters.AddWithValue("montant", montant);
             preparedQuery.Parameters.AddWithValue("numero", numero);

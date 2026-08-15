@@ -74,7 +74,7 @@ public static class Listing
                     Montant = row.GetDecimal(2),
                     Date = row.GetDateTime(3),
                     Nom = await row.IsDBNullAsync(4) ? null : row.GetString(4),
-                    CodeAgence =  row.GetString(5),
+                    CodeAgence = await row.IsDBNullAsync(5) ? null : row.GetString(5),
                     Numero = row.GetString(6),
                     Description = await row.IsDBNullAsync(7) ? null : row.GetString(7)
                 };

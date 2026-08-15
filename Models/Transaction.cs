@@ -10,6 +10,6 @@ public class Transaction
     public DateTime Date { get; set; }
     public string? Nom { get; set; }
     public string Numero { get; set; } = string.Empty;
-    public string CodeAgence { get; set; } = string.Empty;
+    public string? CodeAgence { get; set; }
     public string? Description;
 }
