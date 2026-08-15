@@ -19,7 +19,6 @@ public partial class ClientsViewModel : ViewModelBase
     public ClientsViewModel (HeaderViewModel headerViewModel)
     {
         _headerViewModel = headerViewModel;
-
         _ = LoadClientsAsync();
     }
 

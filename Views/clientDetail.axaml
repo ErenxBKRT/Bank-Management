@@ -19,14 +19,14 @@
                                                 <TextBlock Text="{Binding Numero}" Grid.Column="0" Grid.Row="0" FontSize="16" Margin="10"/>
                                                 <TextBlock Text="{Binding Solde}" Grid.Column="0" Grid.Row="1" FontSize="16" Margin="10"/>
                                                 <TextBlock Text="{Binding Credit}" Grid.Column="0" Grid.Row="2" FontSize="16" Margin="10"/>
-                                                <TextBlock Text="{Binding Bloque}" Grid.Column="0" Grid.Row="3" FontSize="16" Margin="10"/>
+                                                <TextBlock Text="{Binding StatusText}" Grid.Column="0" Grid.Row="3" FontSize="16" Margin="10"/>
                                                 <StackPanel Grid.Column="1" Grid.Row="0" Grid.RowSpan="5" HorizontalAlignment="Center" VerticalAlignment="Center">
                                                         <Button Width="200"
                                                                 Command="{Binding $parent[UserControl].DataContext.BloquerCommand}"
                                                                 CommandParameter="{Binding}">
                                                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                                                         <Image Source="/Assets/icons8-interdit-50.png" Width="20" Height="20" Margin="3"/>
-                                                                        <TextBlock Text="Bloquer" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                                                        <TextBlock Text="{Binding StatusBtn}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                                                 </StackPanel>
                                                         </Button>
                                                  </StackPanel>
