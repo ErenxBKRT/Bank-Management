@@ -55,13 +55,13 @@ public partial class RembourserViewModel : ViewModelBase
 
         if (res.Status)
         {
-            await AfficherPopupAsync("Succ�s", res.Message, Icon.Success);
+            await AfficherPopupAsync("Succes", res.Message, Icon.Success);
             RéinitialiserChamps();
             _headerViewModel.Transaction();
         }
         else
         {
-            await AfficherPopupAsync("�chec", res.Message, Icon.Error);
+            await AfficherPopupAsync("echec", res.Message, Icon.Error);
         }
     }
 
