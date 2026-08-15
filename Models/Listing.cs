@@ -74,7 +74,7 @@ public static class Listing
                     Montant = row.GetDecimal(2),
                     Date = row.GetDateTime(3),
                     Nom = await row.IsDBNullAsync(4) ? null : row.GetString(4),
-                    CodeAgence =  row.GetString(5),
+                    CodeAgence = await row.IsDBNullAsync(5) ? null : row.GetString(5),
                     Numero = row.GetString(6),
                     Description = await row.IsDBNullAsync(7) ? null : row.GetString(7)
                 };
@@ -135,15 +135,15 @@ public static class Listing
 
     /* donne la liste de tous comptes ; les parametres sont optionelle, 
     elle serve à rechercher le numero ou nom  specifique du compte; */
-    public static async Task<IEnumerable<Compte>> ListCompteAsync (string? numero = null)
+    public static async Task<IEnumerable<Compte>> ListCompteAsync (int refClient)
     {
         List<Compte> listCompte = [];
         using NpgsqlConnection kaeru = await DatabaseConnection.Instance.KaeruConnectAsync();
 
         try
         {
-            using NpgsqlCommand preparedQuery = new ("SELECT numero, solde, credit, bloquer FROM compte WHERE numero = @numero OR @numero IS NULL ORDER BY numero;", kaeru);
-            preparedQuery.Parameters.AddWithValue("numero", numero ?? (object)DBNull.Value);
+            using NpgsqlCommand preparedQuery = new ("SELECT numero, solde, credit, bloquer FROM compte WHERE refclient = @refClient ORDER BY numero;", kaeru);
+            preparedQuery.Parameters.AddWithValue("refClient", refClient);
             using NpgsqlDataReader row = await preparedQuery.ExecuteReaderAsync();
 
             while (await row.ReadAsync())

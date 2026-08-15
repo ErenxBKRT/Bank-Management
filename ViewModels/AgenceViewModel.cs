@@ -9,7 +9,7 @@ namespace Bankmanaging.ViewModels;
 public partial class AgenceViewModel : ViewModelBase
 {
     private readonly HeaderViewModel _headerViewModel;
-    public ObservableCollection<Agence> Agences { get; } = new();
+    public ObservableCollection<Agence> Agences { get; } = [];
 
     public AgenceViewModel (HeaderViewModel headerViewModel)
     {

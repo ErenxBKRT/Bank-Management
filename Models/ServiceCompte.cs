@@ -165,6 +165,14 @@ public static class ServiceCompte
 
         try
         {
+            using NpgsqlCommand isLocked = new ("SELECT * FROM client JOIN compte ON compte.refclient = client.id_client WHERE client.bloquer = true AND (compte.numero = @numero OR @numero IS NULL);", kaeru);
+            isLocked.Parameters.AddWithValue("numero", numero ?? (object)DBNull.Value);
+            if (await isLocked.ExecuteScalarAsync() != null)
+            {
+                Console.WriteLine("already Locked");
+                return new (false, "Le client est deja bloque");
+            }
+
             using NpgsqlCommand preparedQuery = new ("UPDATE compte SET bloquer = @bloquer WHERE (numero = @numero OR @numero IS NULL) AND (refclient = @refClient OR @refClient IS NULL);", kaeru, kaeruTransac);
             preparedQuery.Parameters.AddWithValue("numero", numero ?? (object)DBNull.Value);
             preparedQuery.Parameters.AddWithValue("bloquer", bloquer);

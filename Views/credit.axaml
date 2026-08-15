@@ -15,7 +15,7 @@
                          Text="{Binding NumeroCompte, Mode=TwoWay}"/>
                 <TextBox Grid.Column="1" Grid.Row="1" 
                          Width="500"
-                         Text="{Binding Somme, Mode=TwoWay}"/>
+                         Text="{Binding Somme, Mode=TwoWay, TargetNullValue=0}"/>
                 
         </Grid>
         <StackPanel Grid.Column="1" VerticalAlignment="Center" Width="200">
