@@ -10,7 +10,7 @@ public partial class ClientDetailViewModel : ViewModelBase
 {
     private readonly HeaderViewModel _headerViewModel;
 
-    public ObservableCollection<Compte> Comptes { get; } = new();
+    public ObservableCollection<Compte> Comptes { get; } = [];
 
     public Client Client { get; }
 
@@ -18,7 +18,6 @@ public partial class ClientDetailViewModel : ViewModelBase
     {
         _headerViewModel = headerViewModel;
         Client = client;
-
         _ = LoadComptesAsync();
     }
 
@@ -26,7 +25,7 @@ public partial class ClientDetailViewModel : ViewModelBase
     {
         try
         {
-            var comptes = await Listing.ListCompteAsync(Client.Id.ToString());
+            var comptes = await Listing.ListCompteAsync(Client.Id);
 
             Comptes.Clear();
             foreach (var compte in comptes)
@@ -36,6 +35,7 @@ public partial class ClientDetailViewModel : ViewModelBase
         }
         catch (Exception ex)
         {
+        
             Console.WriteLine($"Error : {ex.Message}");
         }
     }
@@ -53,15 +53,16 @@ public partial class ClientDetailViewModel : ViewModelBase
     }
 
     [RelayCommand]
-    private async Task Bloquer()
+    private async Task Bloquer(Compte compte)
     {
         try
         {
-            Result result = await ServiceClient.LockAsync(!Client.Bloque, Client.Id);
+            Result result = await ServiceCompte.LockAsync(!compte.Bloque, numero : compte.Numero);
 
             if (result.Status)
             {
-                Client.Bloque = !Client.Bloque;
+                // compte.Bloque = !compte.Bloque;
+                await LoadComptesAsync();
             }
             else
             {
@@ -72,24 +73,6 @@ public partial class ClientDetailViewModel : ViewModelBase
         {
             Console.WriteLine($"Error : {ex.Message}");
         }
-    }
-
-    [RelayCommand]
-    private void Virement()
-    {
-        _headerViewModel.Virement();
-    }
-
-    [RelayCommand]
-    private void Depot()
-    {
-        _headerViewModel.Depot();
-    }
-
-    [RelayCommand]
-    private void Credit()
-    {
-        _headerViewModel.Credit();
     }
 
     [RelayCommand]

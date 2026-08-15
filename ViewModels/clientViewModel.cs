@@ -14,7 +14,7 @@ public partial class ClientsViewModel : ViewModelBase
     [ObservableProperty]
     private string recherche="";
 
-    public ObservableCollection<Client> Clients {get; } = new(); 
+    public ObservableCollection<Client> Clients {get; } = []; 
 
     public ClientsViewModel (HeaderViewModel headerViewModel)
     {

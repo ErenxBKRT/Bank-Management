@@ -135,15 +135,15 @@ public static class Listing
 
     /* donne la liste de tous comptes ; les parametres sont optionelle, 
     elle serve à rechercher le numero ou nom  specifique du compte; */
-    public static async Task<IEnumerable<Compte>> ListCompteAsync (string? numero = null)
+    public static async Task<IEnumerable<Compte>> ListCompteAsync (int refClient)
     {
         List<Compte> listCompte = [];
         using NpgsqlConnection kaeru = await DatabaseConnection.Instance.KaeruConnectAsync();
 
         try
         {
-            using NpgsqlCommand preparedQuery = new ("SELECT numero, solde, credit, bloquer FROM compte WHERE numero = @numero OR @numero IS NULL ORDER BY numero;", kaeru);
-            preparedQuery.Parameters.AddWithValue("numero", numero ?? (object)DBNull.Value);
+            using NpgsqlCommand preparedQuery = new ("SELECT numero, solde, credit, bloquer FROM compte WHERE refclient = @refClient ORDER BY numero;", kaeru);
+            preparedQuery.Parameters.AddWithValue("refClient", refClient);
             using NpgsqlDataReader row = await preparedQuery.ExecuteReaderAsync();
 
             while (await row.ReadAsync())
