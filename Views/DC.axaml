@@ -16,7 +16,7 @@
                         PlaceholderText="Entrer la somme"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
-                        Text="{Binding Somme, Mode=TwoWay}"/>
+                        Text="{Binding Somme, Mode=TwoWay, TargetNullValue=0}"/>
 
                 <Button Grid.Row="3"
                         HorizontalAlignment="Center"

@@ -17,7 +17,7 @@
 
 			<TextBlock Text="Somme" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center"/>
 			<NumericUpDown Grid.Column="1" Grid.Row="1" Width="500" Minimum="1"
-                           Value="{Binding Montant, Mode=TwoWay}" HorizontalAlignment="Left"/>
+                           Value="{Binding Montant, Mode=TwoWay ,TargetNullValue=0}" HorizontalAlignment="Left"/>
 		</Grid>
 
 		<!-- Actions -->

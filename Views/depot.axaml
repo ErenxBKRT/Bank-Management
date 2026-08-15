@@ -25,7 +25,7 @@
 			<TextBox Grid.Row="0" Grid.Column="1" Width="500" Text="{Binding NumeroCompte}"/>
 
 			<TextBlock Grid.Row="1" Grid.Column="0" Text="Somme" VerticalAlignment="Center"/>
-			<TextBox Grid.Row="1" Grid.Column="1" Width="500" Text="{Binding Somme}"/>
+			<TextBox Grid.Row="1" Grid.Column="1" Width="500" Text="{Binding Somme, TargetNullValue=0}"/>
 
 			<TextBlock Grid.Row="2" Grid.Column="0" Text="Pin" VerticalAlignment="Center"/>
 			<TextBox Grid.Row="2" Grid.Column="1" Width="500" PasswordChar="•" MaxLength="4" Text="{Binding Pin}"/>
