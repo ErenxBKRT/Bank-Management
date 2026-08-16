@@ -13,6 +13,18 @@ public partial class RapportViewModel : ViewModelBase
 
      public Agence Agence {get;}
 
+     [ObservableProperty]
+     private decimal _nbrDepot=0;
+
+     [ObservableProperty]
+     private decimal _nbrVirement=0;
+
+     [ObservableProperty]
+     private decimal _nbrRemboursement=0;
+
+     [ObservableProperty]
+     private decimal _nbrCredit=0;
+
     public RapportViewModel (HeaderViewModel headerViewModel,Agence agence)
     {
         _headerViewModel= headerViewModel;

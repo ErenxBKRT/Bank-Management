@@ -13,50 +13,53 @@
           RowSpacing="20"
           Width="800">
 
-        <StackPanel Grid.Row="0"
-                    Background="#001199"
-                    Height="50">
-                    <TextBlock Foreground="#FFD700"
-                                Text="Rapport Financier"
-                                FontSize="20"
-                                FontWeight="DemiBold"
-                                HorizontalAlignment="Center"
-                                VerticalAlignment="Center"/>
-        </StackPanel>
+        <Border Grid.Row="0"
+            Background="#001199"
+            HorizontalAlignment="Stretch"
+            Height="50"
+            CornerRadius="5">
+
+        <TextBlock Text="Rapport Financier"
+                   Foreground="#FFD700"
+                   FontSize="20"
+                   FontWeight="DemiBold"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"/>
+    </Border>
         <Grid Grid.Row="1"
               ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto,Auto,Auto,Auto" RowSpacing="15" ColumnSpacing="50">
             <TextBlock Text="Solde"
                        Grid.Column="0" Grid.Row="0"
                        Margin="10"/>
-            <TextBlock Text="120000000"
+            <TextBlock Text="{Binding Agence.Solde}"
                        Grid.Column="1" Grid.Row="0"
                        HorizontalAlignment="Right"
                        Margin="10"/>
             <TextBlock Text="Virement"
                        Grid.Column="0" Grid.Row="1"
                        Margin="10"/>
-            <TextBlock Text="5"
+            <TextBlock Text="{Binding NbrVirement}"
                        Grid.Column="1" Grid.Row="1"
                        HorizontalAlignment="Right"
                        Margin="10"/>
             <TextBlock Text="Depot" 
                        Grid.Column="0" Grid.Row="2"
                        Margin="10"/>
-            <TextBlock Text="6"
+            <TextBlock Text="{Binding NbrDepot}"
                        Grid.Column="1" Grid.Row="2"
                        HorizontalAlignment="Right"
                        Margin="10"/>
             <TextBlock Text="Credit"
                        Grid.Column="0" Grid.Row="3"
                        Margin="10"/>
-            <TextBlock Text="2"
+            <TextBlock Text="{Binding NbrCredit}"
                        Grid.Column="1" Grid.Row="3"
                        HorizontalAlignment="Right"
                        Margin="10"/>
             <TextBlock Text="Remboursement"
                        Grid.Column="0" Grid.Row="4"
                        Margin="10"/>
-            <TextBlock Text="4"
+            <TextBlock Text="{Binding NbrRemboursement}"
                        Grid.Column="1" Grid.Row="4"
                        HorizontalAlignment="Right"
                        Margin="10"/>
