@@ -6,7 +6,7 @@ namespace Bankmanaging.Models;
 
 public class Releve
 {
-    private readonly string _numero = string.Empty;
+    private string _codeAgence;
     public decimal Solde { get; private set; }
     public int Virement { get; private set; }
     public int Retrait { get; private set; }
@@ -15,9 +15,9 @@ public class Releve
     public int Depot { get; private set; }
 
 
-    public Releve (string numero)
+    public Releve (string codeAgence)
     {
-        _numero = numero;
+        _codeAgence = codeAgence;
     }
 
     public async Task GetSoldeAsync()
@@ -26,12 +26,12 @@ public class Releve
 
         try
         {
-            using NpgsqlCommand preparedQuery = new("SELECT SUM(solde) FROM agence WHERE numero = @numero;", kaeru);
-            preparedQuery.Parameters.AddWithValue("numero", _numero);
+            using NpgsqlCommand preparedQuery = new("SELECT SUM(solde) FROM agence WHERE code_agence = @codeAgence;", kaeru);
+            preparedQuery.Parameters.AddWithValue("codeAgence", codeAgence);
             using NpgsqlDataReader solde = await preparedQuery.ExecuteReaderAsync();
             if (!await solde.ReadAsync())
             {
-                Console.WriteLine("Numero incorrecte");
+                return;
             }
             else if (await solde.ReadAsync())
             {
@@ -60,19 +60,19 @@ public class Releve
         try
         {
             libelle.Value = "Virement";
-            Virement = (int)(await preparedQuery.ExecuteScalarAsync() ?? 0);
+            Virement = Convert.ToInt32(await preparedQuery.ExecuteScalarAsync());
             
             libelle.Value = "Retrait";
-            Retrait = (int)(await preparedQuery.ExecuteScalarAsync() ?? 0);
+            Retrait = Convert.ToInt32(await preparedQuery.ExecuteScalarAsync());
             
             libelle.Value = "Credit";
-            Credit = (int)(await preparedQuery.ExecuteScalarAsync() ?? 0);
+            Credit = Convert.ToInt32(await preparedQuery.ExecuteScalarAsync());
             
             libelle.Value = "Remboursement";
-            Remboursement = (int)(await preparedQuery.ExecuteScalarAsync() ?? 0);
+            Remboursement = Convert.ToInt32(await preparedQuery.ExecuteScalarAsync());
 
             libelle.Value = "Depot";
-            Depot = (int)(await preparedQuery.ExecuteScalarAsync() ?? 0);
+            Depot = Convert.ToInt32(await preparedQuery.ExecuteScalarAsync() ?? 0);
 
             Console.WriteLine($"Virement {Virement}, Retrait {Retrait}, Credit {Credit}, Rembourse {Remboursement}, Depot {Depot}");
         }
