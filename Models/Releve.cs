@@ -1,5 +1,6 @@
 using Npgsql;
 using System;
+using System.Threading.Tasks;
 
 namespace Bankmanaging.Models;
 
@@ -19,7 +20,7 @@ public class Releve
         _numero = numero;
     }
 
-    public async Task getSoldeAsync()
+    public async Task GetSoldeAsync()
     {
         using NpgsqlConnection kaeru = await DatabaseConnection.Instance.KaeruConnectAsync();
 
@@ -28,7 +29,7 @@ public class Releve
             using NpgsqlCommand preparedQuery = new("SELECT SUM(solde) FROM agence WHERE numero = @numero;", kaeru);
             preparedQuery.Parameters.AddWithValue("numero", _numero);
             using NpgsqlDataReader solde = await preparedQuery.ExecuteReaderAsync();
-            if (await solde.ReadAsync() == null)
+            if (!await solde.ReadAsync())
             {
                 Console.WriteLine("Numero incorrecte");
             }
@@ -47,9 +48,9 @@ public class Releve
         }
     }
 
-    public async Task getTotalTransactionAsync()
+    public async Task GetTotalTransactionAsync()
     {
-        using NpgsqlConnection kaeru = await DatabaseConnectionl.Instance.KaeruConnectAsync();
+        using NpgsqlConnection kaeru = await DatabaseConnection.Instance.KaeruConnectAsync();
         await using NpgsqlTransaction kaeruTransac = await kaeru.BeginTransactionAsync();
         const string query = "SELECT COUNT(*) FROM transaction WHERE numero = @numero AND libelle = @libelle;";
         await using NpgsqlCommand preparedQuery = new(query, kaeru, kaeruTransac);

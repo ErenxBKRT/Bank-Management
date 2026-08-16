@@ -27,23 +27,9 @@
                                                                 CommandParameter="{Binding}">
                                                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                                                         <Image Source="/Assets/icons8-interdit-50.png" Width="20" Height="20" Margin="3"/>
-<<<<<<< HEAD
-                                                                        <TextBlock Text="{Binding StatusBtn}" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-                                                                </StackPanel>
-                                                        </Button>
-													    <Button Width="200" 
-																Command="{Binding $parent[UserControl].DataContext.DownPdfCommand}"
-																CommandParameter="{Binding}">
-														    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-															    <Image Source="/Assets/icons8-télécharger-32.png" Width="20" Height="20" Margin="3"/>
-															    <TextBlock Text="Releve bancaire" HorizontalAlignment="Center" VerticalAlignment="Center"/>
-														    </StackPanel>
-													    </Button>
-=======
                                                                         <TextBlock Text="Bloquer" HorizontalAlignment="Center" VerticalAlignment="Center"/>
                                                                 </StackPanel>
                                                         </Button>
->>>>>>> 9ffdf3a (.)
                                                  </StackPanel>
                                 </Grid>
                                 </Border>

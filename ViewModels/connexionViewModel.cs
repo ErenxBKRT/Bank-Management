@@ -33,8 +33,8 @@ public partial class ConnexionViewModel : ViewModelBase
         if (string.IsNullOrWhiteSpace(Username) || string.IsNullOrWhiteSpace(Password))
         {
             Releve releve = new("0");
-            _= releve.getSolde();
-            _= releve.getTotalTransactionAsync();
+            _= releve.GetSoldeAsync();
+            _= releve.GetTotalTransactionAsync();
             StatusMessage = $"Virement {releve.Virement}, Retrait {releve.Retrait}, Credit {releve.Credit}, Rembourse {releve.Remboursement}, Depot {releve.Depot}, solde {releve.Solde}";
             //StatusMessage = "Veuillez remplir tous les champs";
             return;
