@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
+using System.Diagnostics;
+
 namespace Bankmanaging.ViewModels;
 
 public partial class ConnexionViewModel : ViewModelBase

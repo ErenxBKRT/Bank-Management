@@ -42,6 +42,7 @@ public partial class ClientDetailViewModel : ViewModelBase
         }
         catch (Exception ex)
         {
+        
             Console.WriteLine($"Error : {ex.Message}");
         }
     }
@@ -63,7 +64,7 @@ public partial class ClientDetailViewModel : ViewModelBase
     {
         try
         {
-            Result result = await ServiceCompte.LockAsync(!compte.Bloque, numero: compte.Numero);
+            Result result = await ServiceCompte.LockAsync(!compte.Bloque, numero : compte.Numero);
 
             if (result.Status)
             {
