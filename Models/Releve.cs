@@ -74,7 +74,7 @@ public class Releve
             libelle.Value = "Depot";
             Depot = Convert.ToInt32(await preparedQuery.ExecuteScalarAsync() ?? 0);
 
-            Console.WriteLine($"Virement {Virement}, Retrait {Retrait}, Credit {Credit}, Rembourse {Remboursement}, Depot {Depot}");
+            // Console.WriteLine($"Virement {Virement}, Retrait {Retrait}, Credit {Credit}, Rembourse {Remboursement}, Depot {Depot}");
         }
         catch (NpgsqlException ex)
         {
