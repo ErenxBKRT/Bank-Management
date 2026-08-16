@@ -5,6 +5,8 @@ using System.Threading.Tasks;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
+using System.Diagnostics;
+
 namespace Bankmanaging.ViewModels;
 
 public partial class ConnexionViewModel : ViewModelBase
@@ -30,7 +32,11 @@ public partial class ConnexionViewModel : ViewModelBase
     {
         if (string.IsNullOrWhiteSpace(Username) || string.IsNullOrWhiteSpace(Password))
         {
-            StatusMessage = "Veuillez remplir tous les champs";
+            Releve releve = new("0");
+            _= releve.getSolde();
+            _= releve.getTotalTransactionAsync();
+            StatusMessage = $"Virement {releve.Virement}, Retrait {releve.Retrait}, Credit {releve.Credit}, Rembourse {releve.Remboursement}, Depot {releve.Depot}, solde {releve.Solde}";
+            //StatusMessage = "Veuillez remplir tous les champs";
             return;
         }
         try
