@@ -12,32 +12,46 @@
 		<!-- Formulaire PIN -->
 		<Grid Grid.Row="0" Grid.Column="0"
               ColumnDefinitions="Auto,Auto"
-              RowDefinitions="Auto,Auto,Auto"
+              RowDefinitions="Auto,Auto,Auto,Auto"
               ColumnSpacing="20"
               RowSpacing="20"
               Margin="20"
               VerticalAlignment="Center"
               HorizontalAlignment="Center">
 
-			<TextBlock Text="Ancien PIN" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center"/>
-			<TextBlock Text="Nouveau PIN" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center"/>
-			<TextBlock Text="Confirmation" Grid.Column="0" Grid.Row="2" VerticalAlignment="Center"/>
+                     <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
+                        Background="#001199"
+                        HorizontalAlignment="Stretch"
+                        Height="50"
+                        CornerRadius="5">
 
-			<TextBox Grid.Column="1" Grid.Row="0"
-                     Width="120"
-                     HorizontalAlignment="Center"
-                     MaxLength="4"
-                     PasswordChar="•"
-                     Text="{Binding AncienPin}"/>
+                        <TextBlock Text="Changer de PIN"
+                                Foreground="#FFD700"
+                                FontSize="20"
+                                FontWeight="DemiBold"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"/>
+                     </Border>
+
+			<TextBlock Text="Ancien PIN" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center"/>
+			<TextBlock Text="Nouveau PIN" Grid.Column="0" Grid.Row="2" VerticalAlignment="Center"/>
+			<TextBlock Text="Confirmation" Grid.Column="0" Grid.Row="3" VerticalAlignment="Center"/>
 
 			<TextBox Grid.Column="1" Grid.Row="1"
                      Width="120"
                      HorizontalAlignment="Center"
                      MaxLength="4"
                      PasswordChar="•"
-                     Text="{Binding NouveauPin}"/>
+                     Text="{Binding AncienPin}"/>
 
 			<TextBox Grid.Column="1" Grid.Row="2"
+                     Width="120"
+                     HorizontalAlignment="Center"
+                     MaxLength="4"
+                     PasswordChar="•"
+                     Text="{Binding NouveauPin}"/>
+
+			<TextBox Grid.Column="1" Grid.Row="3"
                      Width="120"
                      HorizontalAlignment="Center"
                      MaxLength="4"

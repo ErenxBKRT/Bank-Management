@@ -129,12 +129,12 @@ public static class CreditVirement
             }
 
             // verifie que le client a un credit a payé
-            using NpgsqlCommand canDoCredit = new ("SELECT * FROM compte WHERE numero = @numero AND credit = 0 FOR UPDATE;", kaeru, kaeruTransac);
+            using NpgsqlCommand canDoCredit = new ("SELECT * FROM compte WHERE numero = @numero AND credit = 0 AND credit > montant  FOR UPDATE;", kaeru, kaeruTransac);
             canDoCredit.Parameters.AddWithValue("numero", numero);
             if (await canDoCredit.ExecuteScalarAsync() != null)
             {
                 await kaeruTransac.RollbackAsync();
-                return new (false, "Vous n'avez aucun credit non payé");
+                return new (false, "Vous n'avez aucun credit non payé ou le montant est superieur au credit");
             }
 
             DateTime now = DateTime.Now;

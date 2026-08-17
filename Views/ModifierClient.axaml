@@ -12,24 +12,38 @@
 		<!-- Formulaire -->
 		<Grid Grid.Row="0" Grid.Column="0"
               ColumnDefinitions="Auto,Auto"
-              RowDefinitions="Auto,Auto,Auto,Auto"
+              RowDefinitions="Auto,Auto,Auto,Auto,Auto"
               ColumnSpacing="20"
               RowSpacing="20"
               Margin="20"
               VerticalAlignment="Center"
               HorizontalAlignment="Center">
 
+			  <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
+                        Background="#001199"
+                        HorizontalAlignment="Stretch"
+                        Height="50"
+                        CornerRadius="5">
+
+                        <TextBlock Text="Modification de Client"
+                                Foreground="#FFD700"
+                                FontSize="20"
+                                FontWeight="DemiBold"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"/>
+                </Border>
+
 			<!-- Label -->
-			<TextBlock Text="Nom" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center"/>
-			<TextBlock Text="Prénom" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center"/>
-			<TextBlock Text="Adresse" Grid.Column="0" Grid.Row="2" VerticalAlignment="Center"/>
-			<TextBlock Text="Contact" Grid.Column="0" Grid.Row="3" VerticalAlignment="Center"/>
+			<TextBlock Text="Nom" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center"/>
+			<TextBlock Text="Prénom" Grid.Column="0" Grid.Row="2" VerticalAlignment="Center"/>
+			<TextBlock Text="Adresse" Grid.Column="0" Grid.Row="3" VerticalAlignment="Center"/>
+			<TextBlock Text="Contact" Grid.Column="0" Grid.Row="4" VerticalAlignment="Center"/>
 
 			<!-- Champs de saisie -->
-			<TextBox Grid.Column="1" Grid.Row="0" Width="500" Text="{Binding NouveauNom, Mode=TwoWay}"/>
-			<TextBox Grid.Column="1" Grid.Row="1" Width="500" Text="{Binding NouveauPrenom, Mode=TwoWay}"/>
-			<TextBox Grid.Column="1" Grid.Row="2" Width="500" Text="{Binding NouvelleAdresse, Mode=TwoWay}"/>
-			<TextBox Grid.Column="1" Grid.Row="3" Width="500" Text="{Binding NouveauContact, Mode=TwoWay}"/>
+			<TextBox Grid.Column="1" Grid.Row="1" Width="500" Text="{Binding NouveauNom, Mode=TwoWay}"/>
+			<TextBox Grid.Column="1" Grid.Row="2" Width="500" Text="{Binding NouveauPrenom, Mode=TwoWay}"/>
+			<TextBox Grid.Column="1" Grid.Row="3" Width="500" Text="{Binding NouvelleAdresse, Mode=TwoWay}"/>
+			<TextBox Grid.Column="1" Grid.Row="4" Width="500" Text="{Binding NouveauContact, Mode=TwoWay}"/>
 		</Grid>
 
 		<!-- Btn validation -->

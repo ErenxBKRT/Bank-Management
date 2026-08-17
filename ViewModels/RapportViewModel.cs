@@ -1,9 +1,12 @@
-using System;
-using System.Threading.Tasks;
-using Avalonia.Media;
 using Bankmanaging.Models;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using MsBox.Avalonia;
+using MsBox.Avalonia.Enums;
+using System;
+using System.Threading.Tasks;
+using Bankmanaging.Services;
+
 
 namespace Bankmanaging.ViewModels;
 
@@ -13,22 +16,36 @@ public partial class RapportViewModel : ViewModelBase
 
      public Agence Agence {get;}
 
-     [ObservableProperty]
-     private decimal _nbrDepot=0;
+     public Releve Rel {get;set;}
 
      [ObservableProperty]
-     private decimal _nbrVirement=0;
+    private int virement;
 
-     [ObservableProperty]
-     private decimal _nbrRemboursement=0;
+    [ObservableProperty]
+    private int credit;
 
-     [ObservableProperty]
-     private decimal _nbrCredit=0;
+    [ObservableProperty]
+    private int remboursement;
+
+    [ObservableProperty]
+    private int depot;
 
     public RapportViewModel (HeaderViewModel headerViewModel,Agence agence)
     {
         _headerViewModel= headerViewModel;
         Agence = agence;
+        Rel = new Releve(Agence.CodeAgence);
+        _= rp();
+    }
+
+     public async Task rp()
+    {
+        await Rel.GetTotalTransactionAsync();
+
+        Virement = Rel.Virement;
+        Credit = Rel.Credit;
+        Remboursement = Rel.Remboursement;
+        Depot = Rel.Depot;
     }
 
     [RelayCommand]

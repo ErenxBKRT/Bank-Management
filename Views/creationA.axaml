@@ -10,22 +10,36 @@
 
     <Grid ColumnDefinitions="*,Auto, Auto">
         
-        <Grid Grid.Column="0" ColumnDefinitions="Auto,Auto" RowDefinitions="Auto,Auto,Auto,Auto, Auto" ColumnSpacing="20" RowSpacing="20" Margin="20" VerticalAlignment="Center" HorizontalAlignment="Center">
-                <TextBlock Text="Adresse" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center"/>
-                <TextBlock Text="Solde" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center"/>
-                <TextBlock Text="PIN" Grid.Column="0" Grid.Row="2" VerticalAlignment="Center"/>
-                <TextBlock Text="Confirmation PIN" Grid.Column="0" Grid.Row="3" VerticalAlignment="Center"/>
+        <Grid Grid.Column="0" ColumnDefinitions="Auto,Auto" RowDefinitions="Auto,Auto,Auto,Auto,Auto" ColumnSpacing="20" RowSpacing="20" Margin="20" VerticalAlignment="Center" HorizontalAlignment="Center">
+                <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
+                        Background="#001199"
+                        HorizontalAlignment="Stretch"
+                        Height="50"
+                        CornerRadius="5">
+
+                        <TextBlock Text="Nouvel Agence"
+                                Foreground="#FFD700"
+                                FontSize="20"
+                                FontWeight="DemiBold"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"/>
+                </Border>
+
+                <TextBlock Text="Adresse" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center"/>
+                <TextBlock Text="Solde" Grid.Column="0" Grid.Row="2" VerticalAlignment="Center"/>
+                <TextBlock Text="PIN" Grid.Column="0" Grid.Row="3" VerticalAlignment="Center"/>
+                <TextBlock Text="Confirmation PIN" Grid.Column="4" Grid.Row="3" VerticalAlignment="Center"/>
         
-                <TextBox Grid.Column="1" Grid.Row="0" 
+                <TextBox Grid.Column="1" Grid.Row="1" 
                          Width="500"
                          Text="{Binding Adresse, Mode=TwoWay}"/>
-                <TextBox Grid.Column="1" Grid.Row="1" 
-                         Width="500" 
-                         Text="{Binding Solde, Mode=TwoWay}"/>
                 <TextBox Grid.Column="1" Grid.Row="2" 
                          Width="500" 
-                         Text="{Binding PIN, Mode=TwoWay}"/>
+                         Text="{Binding Solde, Mode=TwoWay}"/>
                 <TextBox Grid.Column="1" Grid.Row="3" 
+                         Width="500" 
+                         Text="{Binding PIN, Mode=TwoWay}"/>
+                <TextBox Grid.Column="1" Grid.Row="4" 
                          Width="500" 
                          Text="{Binding ConfirmationPIN, Mode=TwoWay}"/>
                 

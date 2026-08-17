@@ -7,17 +7,30 @@
 	<Grid RowSpacing="30" ColumnSpacing="20" ColumnDefinitions="*,Auto" Margin="20">
 
 		<!-- Formulaire -->
-		<Grid Grid.Column="0" ColumnDefinitions="Auto,Auto" RowDefinitions="Auto,Auto"
+		<Grid Grid.Column="0" ColumnDefinitions="Auto,Auto" RowDefinitions="Auto,Auto,Auto"
               ColumnSpacing="20" RowSpacing="20" Margin="20"
               VerticalAlignment="Center" HorizontalAlignment="Center">
 
-			<TextBlock Text="Numéro de compte" Grid.Column="0" Grid.Row="0" VerticalAlignment="Center"/>
-			<TextBox Grid.Column="1" Grid.Row="0" Width="500"
+			  <Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
+                        Background="#001199"
+                        HorizontalAlignment="Stretch"
+                        Height="50"
+                        CornerRadius="5">
+
+                        <TextBlock Text="Rembourser"
+                                Foreground="#FFD700"
+                                FontSize="20"
+                                FontWeight="DemiBold"
+                                HorizontalAlignment="Center"
+                                VerticalAlignment="Center"/>
+                </Border>
+
+			<TextBlock Text="Numéro de compte" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center"/>
+			<TextBox Grid.Column="1" Grid.Row="1" Width="500"
                      Text="{Binding NumeroCompte, Mode=TwoWay}"/>
 
-			<TextBlock Text="Somme" Grid.Column="0" Grid.Row="1" VerticalAlignment="Center"/>
-			<NumericUpDown Grid.Column="1" Grid.Row="1" Width="500" Minimum="1"
-                           Value="{Binding Montant, Mode=TwoWay ,TargetNullValue=0}" HorizontalAlignment="Left"/>
+			<TextBlock Text="Somme" Grid.Column="0" Grid.Row="2" VerticalAlignment="Center"/>
+			<TextBox Grid.Row="2" Grid.Column="1" Width="500" MaxLength="18" Text="{Binding Montant, Mode=TwoWay ,TargetNullValue=0}"/>
 		</Grid>
 
 		<!-- Actions -->

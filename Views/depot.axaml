@@ -21,11 +21,25 @@
               HorizontalAlignment="Center"
               VerticalAlignment="Center">
 
-			<TextBlock Grid.Row="0" Grid.Column="0" Text="Numero de compte" VerticalAlignment="Center"/>
-			<TextBox Grid.Row="0" Grid.Column="1" Width="500" Text="{Binding NumeroCompte}"/>
+			<Border Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"
+					Background="#001199"
+					HorizontalAlignment="Stretch"
+					Height="50"
+					CornerRadius="5">
 
-			<TextBlock Grid.Row="1" Grid.Column="0" Text="Somme" VerticalAlignment="Center"/>
-			<TextBox Grid.Row="1" Grid.Column="1" Width="500" Text="{Binding Somme, TargetNullValue=0}"/>
+					<TextBlock Text="Depot"
+							Foreground="#FFD700"
+							FontSize="20"
+							FontWeight="DemiBold"
+							HorizontalAlignment="Center"
+							VerticalAlignment="Center"/>
+            </Border>
+
+			<TextBlock Grid.Row="1" Grid.Column="0" Text="Numero de compte" VerticalAlignment="Center"/>
+			<TextBox Grid.Row="1" Grid.Column="1" Width="500" Text="{Binding NumeroCompte}"/>
+
+			<TextBlock Grid.Row="2" Grid.Column="0" Text="Somme" VerticalAlignment="Center"/>
+			<TextBox Grid.Row="2" Grid.Column="1" Width="500" MaxLength="18" Text="{Binding Somme, TargetNullValue=0}"/>
 
 			<!-- <TextBlock Grid.Row="2" Grid.Column="0" Text="Pin" VerticalAlignment="Center"/>
 			<TextBox Grid.Row="2" Grid.Column="1" Width="500" PasswordChar="•" MaxLength="4" Text="{Binding Pin}"/> -->

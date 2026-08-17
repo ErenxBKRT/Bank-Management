@@ -13,6 +13,7 @@
                         HorizontalAlignment="Center"/>
                 <TextBox Width="500" Grid.Row="2"
                         Height="20"
+                        MaxLength="18"
                         PlaceholderText="Entrer la somme"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Center"
