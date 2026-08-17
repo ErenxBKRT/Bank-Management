@@ -12,13 +12,16 @@ namespace Bankmanaging.ViewModels;
 
 public partial class RapportViewModel : ViewModelBase
 {
-     private readonly HeaderViewModel _headerViewModel;
+    private readonly HeaderViewModel _headerViewModel;
 
-     public Agence Agence {get;}
+    public Agence Agence {get;}
 
-     public Releve Rel {get;set;}
+    public Releve Rel {get;set;}
+     
+    [ObservableProperty]
+    private decimal solde= 0;
 
-     [ObservableProperty]
+    [ObservableProperty]
     private int virement;
 
     [ObservableProperty]
@@ -34,6 +37,7 @@ public partial class RapportViewModel : ViewModelBase
     {
         _headerViewModel= headerViewModel;
         Agence = agence;
+        Solde = Agence.Solde;
         Rel = new Releve(Agence.CodeAgence);
         _= rp();
     }

@@ -31,7 +31,7 @@
             <TextBlock Text="Solde"
                        Grid.Column="0" Grid.Row="0"
                        Margin="10"/>
-            <TextBlock Text="{Binding Agence.Solde}"
+            <TextBlock Text="{Binding Solde}"
                        Grid.Column="1" Grid.Row="0"
                        HorizontalAlignment="Right"
                        Margin="10"/>
